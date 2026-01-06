@@ -3,101 +3,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dashboard | SkillHire</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | SkillHire</title>
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Libraries -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.0/dist/vanilla-tilt.min.js"></script>
-
   <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<aside class="sidebar">
-  <h2>SkillHire</h2>
-  <ul>
-    <li class="active">Dashboard</li>
-    <li>Resume Analyzer</li>
-    <li>ATS Simulator</li>
-    <li>Skill Gaps</li>
-    <li>Learning Path</li>
-    <li onclick="logout()">Logout</li>
-  </ul>
-</aside>
+<div class="layout">
 
-<!-- MAIN -->
-<main>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2>SkillHire</h2>
+    <nav>
+      <a class="active">Dashboard</a>
+      <a>Resume</a>
+      <a>ATS</a>
+      <a>Skills</a>
+      <a>Courses</a>
+      <a onclick="logout()">Logout</a>
+    </nav>
+  </aside>
 
-  <!-- HEADER -->
-  <header class="top">
-    <h1 data-aos="fade-right">Career Readiness Dashboard</h1>
-    <p data-aos="fade-right">Measured insights before you apply</p>
-  </header>
+  <!-- MAIN -->
+  <main>
 
-  <!-- METRICS -->
-  <section class="metrics">
-    <div class="metric glass tilt" data-aos="zoom-in">
-      <h3>Resume Score</h3>
-      <span>78 / 100</span>
-    </div>
-    <div class="metric glass tilt" data-aos="zoom-in">
-      <h3>ATS Match</h3>
-      <span>82%</span>
-    </div>
-    <div class="metric glass tilt" data-aos="zoom-in">
-      <h3>Job Readiness</h3>
-      <span>74%</span>
-    </div>
-  </section>
+    <!-- HEADER -->
+    <header class="dash-header">
+      <h1>Career Readiness</h1>
+      <p>Your job preparation snapshot</p>
+    </header>
 
-  <!-- VISUALS -->
-  <section class="visuals">
+    <!-- METRICS -->
+    <section class="metrics">
+      <div class="metric">
+        <span>Resume Score</span>
+        <strong>78 / 100</strong>
+      </div>
+      <div class="metric">
+        <span>ATS Match</span>
+        <strong>82%</strong>
+      </div>
+      <div class="metric">
+        <span>Job Readiness</span>
+        <strong>74%</strong>
+      </div>
+    </section>
 
-    <!-- DONUT -->
-    <div class="card glass" data-aos="fade-up">
-      <h3>Career Readiness</h3>
-      <canvas id="readinessChart"></canvas>
-    </div>
+    <!-- CHARTS -->
+    <section class="charts">
+      <div class="card">
+        <h3>Readiness Score</h3>
+        <canvas id="donut"></canvas>
+      </div>
 
-    <!-- RADAR -->
-    <div class="card glass" data-aos="fade-up">
-      <h3>Skill Gap Radar</h3>
-      <canvas id="skillRadar"></canvas>
-    </div>
+      <div class="card">
+        <h3>Skill Gap Radar</h3>
+        <canvas id="radar"></canvas>
+      </div>
+    </section>
 
-  </section>
+    <!-- AI FLOW -->
+    <section class="ai-flow">
+      <h3>AI Analysis Flow</h3>
+      <div class="flow">
+        <span>Resume Parsing</span>
+        <span>Skill Extraction</span>
+        <span>ATS Simulation</span>
+        <span>Scoring</span>
+        <span>Learning Path</span>
+      </div>
+    </section>
 
-  <!-- UPLOAD -->
-  <section class="upload glass" data-aos="fade-up">
-    <h3>Upload Resume</h3>
-    <input type="file">
-    <button onclick="analyzeResume()">Analyze Resume</button>
-  </section>
+  </main>
+</div>
 
-  <!-- RESULTS -->
-  <section class="results">
-
-    <div class="box glass" data-aos="fade-right">
-      <h3>Missing Skills</h3>
-      <ul id="skills"></ul>
-    </div>
-
-    <div class="box glass" data-aos="fade-left">
-      <h3>Recommended Courses</h3>
-      <ul id="courses"></ul>
-    </div>
-
-  </section>
-
-</main>
-
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="js/dashboard.js"></script>
 </body>
 </html>
