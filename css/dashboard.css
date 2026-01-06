@@ -1,0 +1,91 @@
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  background: #f1f5f9;
+}
+
+.sidebar {
+  width: 220px;
+  background: #0f172a;
+  color: white;
+  height: 100vh;
+  padding: 30px 20px;
+}
+
+.sidebar h2 {
+  margin-bottom: 40px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.sidebar li:hover,
+.sidebar .active {
+  background: #2563eb;
+}
+
+main {
+  flex: 1;
+  padding: 30px;
+}
+
+.topbar {
+  margin-bottom: 30px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 20px;
+}
+
+.metric-card {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.metric-card span {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.upload {
+  background: white;
+  padding: 25px;
+  margin: 30px 0;
+  border-radius: 14px;
+}
+
+.upload button {
+  margin-top: 10px;
+  padding: 10px 16px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+  gap: 20px;
+}
+
+.box {
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+}
