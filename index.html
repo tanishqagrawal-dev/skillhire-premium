@@ -3,21 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SkillHire — AI Skill-Based Hiring</title>
+  <title>SkillHire | AI Skill-Based Hiring</title>
 
+  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Libraries -->
+  <!-- Animations -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
 <!-- Animated Background -->
 <div class="bg-blobs">
-  <span></span><span></span><span></span>
+  <span></span>
+  <span></span>
+  <span></span>
 </div>
 
+<!-- NAVBAR -->
 <nav class="navbar">
   <div class="logo">SkillHire</div>
   <ul>
@@ -27,75 +33,95 @@
   </ul>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-text" data-aos="fade-right">
-    <h1>Don’t Apply Blindly.<br><span>Get Job-Ready First.</span></h1>
+    <h1>
+      Stop Applying Blindly.<br>
+      <span>Get Job-Ready First.</span>
+    </h1>
     <p>
-      SkillHire uses AI to analyze your resume, simulate ATS screening,
-      identify skill gaps, and create a personalized learning roadmap
-      before you apply.
+      SkillHire is an AI-powered platform that analyzes your resume,
+      simulates ATS screening, identifies skill gaps, and builds a
+      personalized learning roadmap before you apply.
     </p>
     <a href="login.html" class="btn primary">Analyze My Resume</a>
   </div>
 
-  <div class="hero-card tilt glass" data-aos="fade-left">
+  <div class="hero-card glass" data-aos="fade-left">
     <h3>Career Readiness</h3>
     <div class="progress">
-      <span style="width:78%"></span>
+      <span></span>
     </div>
-    <p>78% Job Match</p>
+    <p class="score">78% Match</p>
   </div>
 </section>
 
+<!-- STATS -->
 <section class="stats">
-  <div data-aos="fade-up"><h2>3×</h2><p>Higher Shortlisting</p></div>
-  <div data-aos="fade-up"><h2>90%</h2><p>ATS Accuracy</p></div>
-  <div data-aos="fade-up"><h2>100+</h2><p>Skill Paths</p></div>
+  <div data-aos="fade-up">
+    <h2>3×</h2>
+    <p>Higher Shortlisting</p>
+  </div>
+  <div data-aos="fade-up">
+    <h2>90%</h2>
+    <p>ATS Accuracy</p>
+  </div>
+  <div data-aos="fade-up">
+    <h2>100+</h2>
+    <p>Skill Paths</p>
+  </div>
 </section>
 
+<!-- FEATURES -->
 <section id="features" class="features">
   <h2 data-aos="fade-up">Platform Features</h2>
 
   <div class="feature-grid">
-    <div class="feature-card tilt" data-aos="zoom-in">
+    <div class="feature-card glass" data-aos="zoom-in">
       <h3>📄 Resume Analyzer</h3>
-      <p>AI parses resume & extracts skills instantly.</p>
+      <p>AI-based resume parsing and skill extraction.</p>
     </div>
 
-    <div class="feature-card tilt" data-aos="zoom-in">
+    <div class="feature-card glass" data-aos="zoom-in">
       <h3>🤖 ATS Simulator</h3>
-      <p>Predicts ATS pass probability before applying.</p>
+      <p>Predict ATS shortlisting before applying.</p>
     </div>
 
-    <div class="feature-card tilt" data-aos="zoom-in">
-      <h3>🎯 Skill Gap Mapping</h3>
-      <p>Compare your skills with industry roles.</p>
+    <div class="feature-card glass" data-aos="zoom-in">
+      <h3>🎯 Skill Gap Analysis</h3>
+      <p>Identify missing skills for your target role.</p>
     </div>
 
-    <div class="feature-card tilt" data-aos="zoom-in">
+    <div class="feature-card glass" data-aos="zoom-in">
       <h3>📚 Learning Roadmap</h3>
       <p>Personalized courses & project paths.</p>
     </div>
   </div>
 </section>
 
+<!-- HOW -->
 <section id="how" class="how">
   <h2 data-aos="fade-up">How SkillHire Works</h2>
+
   <div class="steps">
     <div data-aos="fade-right">Login with Google</div>
     <div data-aos="fade-right">Upload Resume</div>
-    <div data-aos="fade-right">ATS + Skill Analysis</div>
+    <div data-aos="fade-right">ATS & Skill Analysis</div>
     <div data-aos="fade-right">Learn & Apply Smart</div>
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   © 2026 SkillHire — AI Hiring Platform
 </footer>
 
+<!-- Scripts -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.0/dist/vanilla-tilt.min.js"></script>
-<script src="js/main.js"></script>
+<script>
+  AOS.init({ duration: 1000, once: true });
+</script>
 
 </body>
 </html>
