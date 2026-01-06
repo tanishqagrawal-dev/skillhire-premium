@@ -1,144 +1,101 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Skill-Based Hiring Platform</title>
+  <title>SkillHire — AI Skill-Based Hiring</title>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css">
+  <!-- Libraries -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
-<!-- NAVBAR -->
+<!-- Animated Background -->
+<div class="bg-blobs">
+  <span></span><span></span><span></span>
+</div>
+
 <nav class="navbar">
   <div class="logo">SkillHire</div>
   <ul>
     <li><a href="#features">Features</a></li>
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#dashboard">Dashboard</a></li>
-    <li><a href="#" class="btn">Get Started</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="login.html" class="btn">Get Started</a></li>
   </ul>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-text">
-    <h1>Stop Applying Blindly.<br><span>Get Hired Smartly.</span></h1>
+  <div class="hero-text" data-aos="fade-right">
+    <h1>Don’t Apply Blindly.<br><span>Get Job-Ready First.</span></h1>
     <p>
-      An AI-powered skill-based hiring platform that analyzes your resume,
-      checks ATS compatibility, identifies skill gaps, and builds a personalized
-      learning roadmap before you apply.
+      SkillHire uses AI to analyze your resume, simulate ATS screening,
+      identify skill gaps, and create a personalized learning roadmap
+      before you apply.
     </p>
-    <div class="hero-buttons">
-      <a href="#" class="btn primary">Analyze My Resume</a>
-      <a href="#how" class="btn secondary">See How It Works</a>
+    <a href="login.html" class="btn primary">Analyze My Resume</a>
+  </div>
+
+  <div class="hero-card tilt glass" data-aos="fade-left">
+    <h3>Career Readiness</h3>
+    <div class="progress">
+      <span style="width:78%"></span>
     </div>
-  </div>
-
-  <div class="hero-card">
-    <h3>Resume Readiness</h3>
-    <p>ATS Match</p>
-    <div class="progress"><span style="width:82%"></span></div>
-    <p class="score">82% Match</p>
+    <p>78% Job Match</p>
   </div>
 </section>
 
-<!-- TRUST STATS -->
 <section class="stats">
-  <div><h2>90%</h2><p>Reduced Rejections</p></div>
-  <div><h2>3x</h2><p>Smarter Applications</p></div>
-  <div><h2>100+</h2><p>Skill Paths</p></div>
+  <div data-aos="fade-up"><h2>3×</h2><p>Higher Shortlisting</p></div>
+  <div data-aos="fade-up"><h2>90%</h2><p>ATS Accuracy</p></div>
+  <div data-aos="fade-up"><h2>100+</h2><p>Skill Paths</p></div>
 </section>
 
-<!-- FEATURES -->
 <section id="features" class="features">
-  <h2>Platform Features</h2>
+  <h2 data-aos="fade-up">Platform Features</h2>
 
   <div class="feature-grid">
-    <div class="feature-card">
-      <h3>📄 AI Resume Analyzer</h3>
-      <p>Extracts skills, experience, keywords, and scores your resume instantly.</p>
+    <div class="feature-card tilt" data-aos="zoom-in">
+      <h3>📄 Resume Analyzer</h3>
+      <p>AI parses resume & extracts skills instantly.</p>
     </div>
 
-    <div class="feature-card">
-      <h3>🤖 ATS Compatibility Check</h3>
-      <p>Simulates real ATS systems and predicts shortlisting chances.</p>
+    <div class="feature-card tilt" data-aos="zoom-in">
+      <h3>🤖 ATS Simulator</h3>
+      <p>Predicts ATS pass probability before applying.</p>
     </div>
 
-    <div class="feature-card">
-      <h3>🎯 Skill Gap Analysis</h3>
-      <p>Compares your profile with industry job requirements.</p>
+    <div class="feature-card tilt" data-aos="zoom-in">
+      <h3>🎯 Skill Gap Mapping</h3>
+      <p>Compare your skills with industry roles.</p>
     </div>
 
-    <div class="feature-card">
-      <h3>📚 Course Recommendations</h3>
-      <p>Personalized learning paths from trusted platforms.</p>
-    </div>
-
-    <div class="feature-card">
-      <h3>📊 Smart Dashboard</h3>
-      <p>Track resume strength, readiness score, and progress.</p>
-    </div>
-
-    <div class="feature-card">
-      <h3>🔐 Google Login</h3>
-      <p>Secure authentication and cloud-saved profiles.</p>
+    <div class="feature-card tilt" data-aos="zoom-in">
+      <h3>📚 Learning Roadmap</h3>
+      <p>Personalized courses & project paths.</p>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
 <section id="how" class="how">
-  <h2>How It Works</h2>
-
+  <h2 data-aos="fade-up">How SkillHire Works</h2>
   <div class="steps">
-    <div class="step">
-      <span>1</span>
-      <p>Login with Google</p>
-    </div>
-    <div class="step">
-      <span>2</span>
-      <p>Upload Resume</p>
-    </div>
-    <div class="step">
-      <span>3</span>
-      <p>Get ATS & Skill Analysis</p>
-    </div>
-    <div class="step">
-      <span>4</span>
-      <p>Follow Learning Roadmap</p>
-    </div>
-    <div class="step">
-      <span>5</span>
-      <p>Apply Confidently</p>
-    </div>
+    <div data-aos="fade-right">Login with Google</div>
+    <div data-aos="fade-right">Upload Resume</div>
+    <div data-aos="fade-right">ATS + Skill Analysis</div>
+    <div data-aos="fade-right">Learn & Apply Smart</div>
   </div>
 </section>
 
-<!-- DASHBOARD PREVIEW -->
-<section id="dashboard" class="dashboard-preview">
-  <h2>Your Career Dashboard</h2>
-  <p>A single place to track readiness, skills, and growth.</p>
-
-  <div class="dashboard-card">
-    <ul>
-      <li>✔ Resume Score</li>
-      <li>✔ ATS Match %</li>
-      <li>✔ Missing Skills</li>
-      <li>✔ Course Progress</li>
-    </ul>
-  </div>
-</section>
-
-<!-- FOOTER -->
 <footer>
-  <p>© 2026 SkillHire | Hackathon Project</p>
+  © 2026 SkillHire — AI Hiring Platform
 </footer>
 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.0/dist/vanilla-tilt.min.js"></script>
 <script src="js/main.js"></script>
+
 </body>
 </html>
