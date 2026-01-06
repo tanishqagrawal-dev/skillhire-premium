@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <h2>Dashboard</h2>
+  <button onclick="logout()">Logout</button>
+</nav>
+
+<section class="dashboard">
+
+  <div class="box">
+    <h3>Upload Resume</h3>
+    <input type="file" id="resume">
+    <button onclick="analyzeResume()" class="btn">Analyze</button>
+  </div>
+
+  <div class="box">
+    <h3>Resume Score</h3>
+    <p id="resumeScore">--</p>
+  </div>
+
+  <div class="box">
+    <h3>ATS Match</h3>
+    <p id="atsScore">--</p>
+  </div>
+
+  <div class="box">
+    <h3>Skill Gap</h3>
+    <ul id="skills"></ul>
+  </div>
+
+  <div class="box">
+    <h3>Recommended Courses</h3>
+    <ul id="courses"></ul>
+  </div>
+
+</section>
+
+<script src="js/resume.js"></script>
+</body>
+</html>
