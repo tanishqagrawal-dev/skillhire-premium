@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillGap AI - Advanced Career Intelligence</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
+    <script src="https://unpkg.com/framer-motion/dist/framer-motion.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap');
+        
+        body {
+            background-color: #0B0E14;
+            font-family: 'Space Grotesk', sans-serif;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.08) 0%, transparent 25%);
+        }
+
+        /* Glass Panel Effect */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(6, 182, 212, 0.3);
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .neon-text {
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.6);
+        }
+
+        /* Loading Spinner Animation */
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .spinner { animation: spin 1s linear infinite; }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = window.Motion;
+        const { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } = window.Recharts;
+
+        // --- ICONS CONFIGURATION ---
+        const Icon = ({ name, className }) => {
+            // Mapping Lucide icons to SVG paths manually for browser compatibility without build
+            const icons = {
+                Cpu: <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM9 9h6v6H9zM9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/>,
+                LayoutDashboard: <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/>,
+                FileText: <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>,
+                Briefcase: <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>,
+                User: <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>,
+                LogOut: <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>,
+                Zap: <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>,
+                Activity: <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>,
+                CheckCircle: <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>,
+                Globe: <circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            };
+            return (
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                    {icons[name] || icons.Cpu}
+                </svg>
+            );
+        };
+
+        // --- MOCK DATA FOR GRAPHS ---
+        const CHART_DATA = [
+            { name: 'Week 1', score: 45 }, { name: 'Week 2', score: 52 }, { name: 'Week 3', score: 48 },
+            { name: 'Week 4', score: 70 }, { name: 'Week 5', score: 76 }, { name: 'Current', score: 88 },
+        ];
+        const SKILL_DATA = [
+            { subject: 'React', A: 120, fullMark: 150 }, { subject: 'Node', A: 98, fullMark: 150 },
+            { subject: 'Design', A: 86, fullMark: 150 }, { subject: 'Algorithms', A: 99, fullMark: 150 },
+            { subject: 'DevOps', A: 85, fullMark: 150 }, { subject: 'Database', A: 65, fullMark: 150 },
+        ];
+        const COMPANY_DATA = [
+            { name: "Google", role: "Frontend Eng", cutoff: 88, status: "Eligible" },
+            { name: "Amazon", role: "SDE I", cutoff: 82, status: "Eligible" },
+            { name: "Netflix", role: "UI Engineer", cutoff: 95, status: "Upskill Needed" },
+            { name: "Microsoft", role: "Azure Dev", cutoff: 85, status: "Eligible" }
+        ];
+
+        // --- COMPONENTS ---
+
+        const Sidebar = ({ active, setActive, logout }) => (
+            <div className="fixed left-0 top-0 h-full w-20 md:w-64 glass-panel border-r border-slate-700/50 z-50 flex flex-col justify-between py-8">
+                <div>
+                    <div className="flex items-center justify-center md:justify-start md:px-8 mb-12">
+                        <Icon name="Cpu" className="text-cyan-400 w-8 h-8 animate-pulse" />
+                        <span className="hidden md:block ml-3 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500">
+                            SkillGap
+                        </span>
+                    </div>
+                    <nav className="space-y-2 px-2 md:px-4">
+                        {[
+                            { id: 'dashboard', icon: 'LayoutDashboard', label: 'Dashboard' },
+                            { id: 'analyzer', icon: 'FileText', label: 'AI Analyzer' },
+                            { id: 'companies', icon: 'Briefcase', label: 'Company Intel' },
+                            { id: 'profile', icon: 'User', label: 'Profile' }
+                        ].map(item => (
+                            <button key={item.id} onClick={() => setActive(item.id)}
+                                className={`w-full flex items-center justify-center md:justify-start px-4 py-3 rounded-xl transition-all ${
+                                    active === item.id 
+                                    ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.1)]' 
+                                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                                }`}
+                            >
+                                <Icon name={item.icon} className="w-5 h-5" />
+                                <span className="hidden md:block ml-3 font-medium">{item.label}</span>
+                            </button>
+                        ))}
+                    </nav>
+                </div>
+                <div className="px-4">
+                    <button onClick={logout} className="w-full flex items-center justify-center md:justify-start px-4 py-3 text-red-400 hover:bg-red-500/10 rounded-xl transition">
+                        <Icon name="LogOut" className="w-5 h-5" />
+                        <span className="hidden md:block ml-3">Logout</span>
+                    </button>
+                </div>
+            </div>
+        );
+
+        const Dashboard = () => (
+            <motion.div initial={{opacity:0, y:20}} animate={{opacity:1, y:0}} className="space-y-8">
+                {/* Stats Row */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {[
+                        { label: "Resume Score", val: "88/100", color: "text-cyan-400", sub: "Top 10% of applicants" },
+                        { label: "Jobs Eligible", val: "14", color: "text-green-400", sub: "Based on current skills" },
+                        { label: "Profile Views", val: "203", color: "text-purple-400", sub: "+24% this week" }
+                    ].map((stat, i) => (
+                        <div key={i} className="glass-panel p-6 rounded-2xl relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition">
+                                <Icon name="Activity" className="w-16 h-16 text-white" />
+                            </div>
+                            <p className="text-slate-400 text-sm font-medium uppercase tracking-wider">{stat.label}</p>
+                            <h3 className={`text-4xl font-bold mt-2 ${stat.color} neon-text`}>{stat.val}</h3>
+                            <p className="text-xs text-slate-500 mt-2">{stat.sub}</p>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Graphs Row */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="glass-panel p-6 rounded-2xl">
+                        <h3 className="text-lg font-bold mb-6 text-white flex items-center"><Icon name="Activity" className="w-5 h-5 mr-2 text-cyan-400"/> Growth Trajectory</h3>
+                        <div className="h-64">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={CHART_DATA}>
+                                    <defs>
+                                        <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.8}/>
+                                            <stop offset="95%" stopColor="#06b6d4" stopOpacity={0}/>
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                                    <XAxis dataKey="name" stroke="#94a3b8" />
+                                    <YAxis stroke="#94a3b8" />
+                                    <Tooltip contentStyle={{backgroundColor: '#1e293b', border:'1px solid #334155', borderRadius:'8px'}} />
+                                    <Area type="monotone" dataKey="score" stroke="#06b6d4" fillOpacity={1} fill="url(#colorScore)" />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+
+                    <div className="glass-panel p-6 rounded-2xl">
+                        <h3 className="text-lg font-bold mb-6 text-white flex items-center"><Icon name="Cpu" className="w-5 h-5 mr-2 text-purple-400"/> Skill Matrix</h3>
+                        <div className="h-64">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={SKILL_DATA}>
+                                    <PolarGrid stroke="#334155" />
+                                    <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                                    <PolarRadiusAxis angle={30} domain={[0, 150]} stroke="#334155" />
+                                    <Radar name="Skills" dataKey="A" stroke="#a855f7" fill="#a855f7" fillOpacity={0.5} />
+                                </RadarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
+        );
+
+        const Analyzer = () => {
+            const [analyzing, setAnalyzing] = useState(false);
+            const [result, setResult] = useState(null);
+
+            const handleScan = () => {
+                setAnalyzing(true);
+                setTimeout(() => {
+                    setAnalyzing(false);
+                    setResult({ score: 82, missing: ["Docker", "Kubernetes"], found: ["React", "Node.js", "MongoDB", "Tailwind"] });
+                }, 2500);
+            };
+
+            return (
+                <motion.div initial={{opacity:0, scale:0.9}} animate={{opacity:1, scale:1}} className="flex flex-col items-center justify-center min-h-[60vh]">
+                    {!result ? (
+                        <div className="glass-panel p-10 rounded-3xl max-w-lg w-full text-center relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-cyan-500 to-purple-500"></div>
+                            <div className="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 relative border border-slate-700">
+                                <Icon name="Zap" className={`w-10 h-10 text-cyan-400 ${analyzing ? 'animate-pulse' : ''}`} />
+                                {analyzing && <div className="absolute inset-0 border-4 border-cyan-500 border-t-transparent rounded-full spinner"></div>}
+                            </div>
+                            <h2 className="text-3xl font-bold text-white mb-2">{analyzing ? "AI is Scanning..." : "AI Resume Analyzer"}</h2>
+                            <p className="text-slate-400 mb-8">Upload your resume. Our Neural Net will cross-reference 50+ ATS parameters.</p>
+                            
+                            <button disabled={analyzing} onClick={handleScan} className="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl font-bold text-white hover:scale-[1.02] transition shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+                                {analyzing ? "Processing..." : "Start Analysis"}
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="glass-panel p-8 rounded-3xl w-full max-w-2xl border-t-4 border-green-500">
+                            <div className="flex justify-between items-center mb-8">
+                                <div>
+                                    <h2 className="text-2xl font-bold text-white">Analysis Complete</h2>
+                                    <p className="text-slate-400">Target Role: Frontend Engineer</p>
+                                </div>
+                                <div className="text-right">
+                                    <span className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400">{result.score}</span>
+                                    <span className="block text-xs text-slate-500 uppercase tracking-widest">Match Score</span>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-green-500/10 p-5 rounded-xl border border-green-500/20">
+                                    <h4 className="text-green-400 font-bold mb-3 flex items-center"><Icon name="CheckCircle" className="w-4 h-4 mr-2"/> Strengths</h4>
+                                    <div className="flex flex-wrap gap-2">{result.found.map(s => <span key={s} className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded border border-green-500/20">{s}</span>)}</div>
+                                </div>
+                                <div className="bg-red-500/10 p-5 rounded-xl border border-red-500/20">
+                                    <h4 className="text-red-400 font-bold mb-3 flex items-center"><Icon name="FileText" className="w-4 h-4 mr-2"/> Missing Skills</h4>
+                                    <div className="flex flex-wrap gap-2">{result.missing.map(s => <span key={s} className="text-xs bg-red-500/20 text-red-300 px-2 py-1 rounded border border-red-500/20">{s}</span>)}</div>
+                                </div>
+                            </div>
+                            <button onClick={() => setResult(null)} className="mt-8 text-slate-400 hover:text-white text-sm w-full text-center underline">Scan Another Resume</button>
+                        </div>
+                    )}
+                </motion.div>
+            );
+        };
+
+        const Companies = () => (
+            <div className="glass-panel overflow-hidden rounded-2xl">
+                <div className="p-6 border-b border-slate-700/50">
+                    <h2 className="text-2xl font-bold text-white">Company Intelligence Database</h2>
+                    <p className="text-slate-400 text-sm">Real-time hiring criteria & cutoff scores</p>
+                </div>
+                <table className="w-full text-left">
+                    <thead className="bg-slate-800/50 text-slate-400 uppercase text-xs font-bold tracking-wider">
+                        <tr><th className="px-6 py-4">Company</th><th className="px-6 py-4">Role</th><th className="px-6 py-4">ATS Cutoff</th><th className="px-6 py-4">Your Status</th></tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-700/50 text-sm">
+                        {COMPANY_DATA.map((c, i) => (
+                            <tr key={i} className="hover:bg-white/5 transition">
+                                <td className="px-6 py-4 font-bold text-white">{c.name}</td>
+                                <td className="px-6 py-4 text-slate-300">{c.role}</td>
+                                <td className="px-6 py-4"><span className="text-cyan-400 font-mono">{c.cutoff}%</span></td>
+                                <td className="px-6 py-4">
+                                    <span className={`px-2 py-1 rounded text-xs font-bold border ${c.status === 'Eligible' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'}`}>
+                                        {c.status}
+                                    </span>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+
+        const Profile = ({ user }) => (
+            <motion.div initial={{opacity:0}} animate={{opacity:1}} className="max-w-4xl mx-auto mt-8">
+                <div className="glass-panel rounded-2xl overflow-hidden relative">
+                    <div className="h-32 bg-gradient-to-r from-blue-900 to-purple-900 opacity-60"></div>
+                    <div className="px-8 pb-8 relative z-10 -mt-12 flex flex-col md:flex-row items-end md:space-x-6">
+                        <img src={user.photo} className="w-32 h-32 rounded-full border-4 border-[#0B0E14] shadow-2xl bg-slate-800" />
+                        <div className="mb-2 text-center md:text-left">
+                            <h2 className="text-3xl font-bold text-white">{user.name}</h2>
+                            <p className="text-cyan-400">{user.email}</p>
+                        </div>
+                        <div className="flex-grow"></div>
+                        <div className="mt-4 md:mt-0 flex space-x-3">
+                            <button className="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium transition">Edit Profile</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div className="glass-panel p-6 rounded-2xl">
+                        <h4 className="text-slate-400 text-xs uppercase font-bold mb-4">Linked Accounts</h4>
+                        <div className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50 mb-2">
+                            <span className="text-white flex items-center"><Icon name="Globe" className="w-4 h-4 mr-2 text-slate-400"/> GitHub</span>
+                            <span className="text-green-400 text-sm flex items-center"><Icon name="CheckCircle" className="w-3 h-3 mr-1"/> Connected</span>
+                        </div>
+                        <div className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
+                            <span className="text-white flex items-center"><Icon name="Briefcase" className="w-4 h-4 mr-2 text-slate-400"/> LinkedIn</span>
+                            <span className="text-blue-400 text-sm cursor-pointer hover:underline">Connect</span>
+                        </div>
+                    </div>
+                    <div className="glass-panel p-6 rounded-2xl">
+                        <h4 className="text-slate-400 text-xs uppercase font-bold mb-4">Recent Activity</h4>
+                        <ul className="space-y-3 text-sm">
+                            <li className="flex justify-between text-slate-300"><span>Analyzed Resume (Google)</span><span className="text-slate-500">2h ago</span></li>
+                            <li className="flex justify-between text-slate-300"><span>Updated Skills: React</span><span className="text-slate-500">1d ago</span></li>
+                            <li className="flex justify-between text-slate-300"><span>Viewed Amazon Salary</span><span className="text-slate-500">3d ago</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </motion.div>
+        );
+
+        // --- MAIN APP SHELL ---
+
+        const App = () => {
+            const [user, setUser] = useState(null);
+            const [activeTab, setActiveTab] = useState('dashboard');
+
+            const handleLogin = () => setUser({ 
+                name: "Alex Johnson", 
+                email: "alex.j@skillgap.ai", 
+                photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
+            });
+
+            if (!user) {
+                return (
+                    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+                        <div className="absolute w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[120px] -top-20 -left-20 animate-pulse"></div>
+                        <div className="glass-panel p-12 rounded-3xl w-full max-w-md relative z-10 text-center border-t border-slate-700/50">
+                            <div className="w-20 h-20 bg-slate-800/80 rounded-2xl mx-auto flex items-center justify-center mb-8 shadow-xl shadow-cyan-500/10 ring-1 ring-slate-700">
+                                <Icon name="Cpu" className="w-10 h-10 text-cyan-400" />
+                            </div>
+                            <h1 className="text-5xl font-bold text-white mb-2 tracking-tight">SkillGap AI</h1>
+                            <p className="text-slate-400 mb-10 text-lg">Your Career Intelligence Engine</p>
+                            
+                            <button onClick={handleLogin} className="w-full bg-white text-slate-900 font-bold py-4 rounded-xl hover:scale-[1.02] hover:shadow-lg transition flex items-center justify-center text-lg">
+                                <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-6 h-6 mr-3" />
+                                Login with Google
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen text-slate-200">
+                    <Sidebar active={activeTab} setActive={setActiveTab} logout={() => setUser(null)} />
+                    
+                    <main className="ml-20 md:ml-64 p-6 md:p-10 relative">
+                        <header className="flex justify-between items-center mb-10">
+                            <div>
+                                <h1 className="text-3xl font-bold text-white capitalize">{activeTab.replace('-', ' ')}</h1>
+                                <p className="text-slate-400 text-sm">Real-time overview</p>
+                            </div>
+                            <div className="flex items-center space-x-4">
+                                <span className="text-sm font-medium text-slate-300 hidden md:block">{user.name}</span>
+                                <img src={user.photo} className="w-10 h-10 rounded-full border-2 border-slate-700 cursor-pointer hover:border-cyan-400 transition" />
+                            </div>
+                        </header>
+                        
+                        <AnimatePresence mode="wait">
+                            <motion.div 
+                                key={activeTab} 
+                                initial={{opacity:0, x:20}} 
+                                animate={{opacity:1, x:0}} 
+                                exit={{opacity:0, x:-20}} 
+                                transition={{duration:0.2}}
+                            >
+                                {activeTab === 'dashboard' && <Dashboard />}
+                                {activeTab === 'analyzer' && <Analyzer />}
+                                {activeTab === 'companies' && <Companies />}
+                                {activeTab === 'profile' && <Profile user={user} />}
+                            </motion.div>
+                        </AnimatePresence>
+                    </main>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
