@@ -1,29 +1,32 @@
 let charts = {};
 
-function renderCharts(data) {
-    if(charts.radar) charts.radar.destroy();
-    if(charts.bar) charts.bar.destroy();
+function renderVisuals(data) {
+    if(charts.r) charts.r.destroy();
+    if(charts.b) charts.b.destroy();
 
-    charts.radar = new Chart(document.getElementById('skillRadar'), {
+    const ctxR = document.getElementById('radarChart').getContext('2d');
+    charts.r = new Chart(ctxR, {
         type: 'radar',
         data: {
-            labels: data.skills.labels,
-            datasets: [{ label: 'Score', data: data.skills.data, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.2)' }]
-        },
-        options: { plugins: { legend: { display: false } } }
+            labels: ['Technical', 'Soft Skills', 'Experience', 'Leadership', 'Education'],
+            datasets: [{ label: 'Skill Set', data: data.radar, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.2)' }]
+        }
     });
 
-    charts.bar = new Chart(document.getElementById('ratioBar'), {
+    const ctxB = document.getElementById('barChart').getContext('2d');
+    charts.b = new Chart(ctxB, {
         type: 'bar',
         data: {
-            labels: data.ratios.labels,
-            datasets: [{ label: 'Fit %', data: data.ratios.data, backgroundColor: '#3b82f6' }]
+            labels: Object.keys(data.ratios),
+            datasets: [{ label: 'Placement Ratio %', data: Object.values(data.ratios), backgroundColor: '#3b82f6' }]
         }
     });
 }
 
 // Visit Counter Simulation
 setInterval(() => {
-    let count = parseInt(document.getElementById('vCount').innerText.replace(',',''));
-    document.getElementById('vCount').innerText = (count + Math.floor(Math.random()*5)).toLocaleString();
-}, 4000);
+    const el = document.getElementById('visitorCount');
+    el.innerText = (parseInt(el.innerText.replace(',','')) + 1).toLocaleString();
+}, 5000);
+
+lucide.createIcons();
