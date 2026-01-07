@@ -8,49 +8,35 @@ import google.generativeai as genai
 app = Flask(__name__)
 CORS(app)
 
-# YOUR PROVIDED API KEY
+# YOUR SPECIFIC API KEY INTEGRATED
 genai.configure(api_key="AIzaSyDfgce8f7NAAWHAdAX2k--JXoLV7NOB5fE")
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
     try:
-        # Get data from request
         file = request.files['resume']
-        jd_text = request.form.get('jd', 'Software Engineer Role')
+        jd_text = request.form.get('jd', 'Software Engineer')
         
-        # 1. Extract Text from PDF
+        # Accurate Extraction
         pdf_reader = PyPDF2.PdfReader(file)
-        resume_text = ""
-        for page in pdf_reader.pages:
-            resume_text += page.extract_text()
+        resume_text = "".join([page.extract_text() for page in pdf_reader.pages])
 
-        # 2. AI Prompting (Gemini Pro)
         model = genai.GenerativeModel('gemini-pro')
         prompt = f"""
-        Act as an expert ATS (Applicant Tracking System) and Recruiter.
-        Target Job Description: {jd_text}
-        Candidate Resume: {resume_text}
-        
-        Provide a detailed analysis in JSON format ONLY:
-        {{
-          "score": (integer 0-100),
-          "gaps": ["Missing Skill 1", "Missing Skill 2"],
-          "salary_est": "e.g. 15L - 20L",
-          "courses": [
-            {{"title": "Course Name", "provider": "Coursera/Udemy/YouTube", "time": "Duration"}},
-            {{"title": "Course Name", "provider": "Coursera/Udemy/YouTube", "time": "Duration"}}
-          ],
-          "market_insight": "One line about demand for this role"
-        }}
+        Analyze this resume for the role: {jd_text}
+        Resume Text: {resume_text}
+        Return ONLY valid JSON with these fields:
+        "score": (0-100),
+        "skill_metrics": {{"technical": 0-100, "soft": 0-100, "experience": 0-100, "education": 0-100}},
+        "gaps": ["skill1", "skill2"],
+        "company_ratio": {{"Google": 15, "Amazon": 10, "Startup": 45, "Others": 30}},
+        "roadmap": ["Step 1", "Step 2"]
         """
         
         response = model.generate_content(prompt)
-        # Clean the response to ensure it's valid JSON
-        clean_json = response.text.replace('```json', '').replace('```', '').strip()
-        return jsonify(json.loads(clean_json))
-
+        return jsonify(json.loads(response.text.strip('`json\n ')))
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=5000)
