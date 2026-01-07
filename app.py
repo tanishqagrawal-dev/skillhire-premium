@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 # YOUR PROVIDED API KEY
-genai.configure(api_key="AIzaSyB-NmKF4ouTaHg-KrndRUwb1Qh6ioqYQD8")
+genai.configure(api_key="AIzaSyDfgce8f7NAAWHAdAX2k--JXoLV7NOB5fE")
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
