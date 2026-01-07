@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Configure your AI API Key
-genai.configure(api_key="YOUR_GEMINI_API_KEY")
+genai.configure(api_key="AIzaSyB-NmKF4ouTaHg-KrndRUwb1Qh6ioqYQD8")
 
 @app.route('/analyze', methods=['POST'])
 def analyze_resume():
