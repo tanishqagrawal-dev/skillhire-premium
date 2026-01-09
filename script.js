@@ -111,8 +111,8 @@ window.handleLogin = function () {
     console.log("Guest Login Clicked");
     alert("Guest Login Activated"); // Debug alert
     user.isLoggedIn = true;
-    user.name = "Guest User";
-    user.email = "guest@skillhire.ai";
+    user.name = "Test User";
+    user.email = "testuser@gmail.com";
     user.photo = "https://api.dicebear.com/7.x/avataaars/svg?seed=Guest";
 
     updateUI();
@@ -133,7 +133,7 @@ window.handleLogin = function () {
 // Google Login with Firebase
 async function handleGoogleLogin() {
     if (!auth) {
-        alert("Firebase Auth is not initialized. Check console for errors.");
+        checkAuthStatus();
         return;
     }
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -141,8 +141,42 @@ async function handleGoogleLogin() {
         await auth.signInWithPopup(provider);
     } catch (error) {
         console.error("Google Auth Error:", error);
-        alert(error.message);
+        alert("Google Login Error: " + error.message);
     }
+}
+
+// Email Login
+async function handleEmailLogin() {
+    const email = document.getElementById('email-input').value;
+    const password = document.getElementById('password-input').value;
+
+    if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+    }
+
+    if (!auth) {
+        checkAuthStatus();
+        return;
+    }
+
+    try {
+        await auth.signInWithEmailAndPassword(email, password);
+    } catch (error) {
+        console.error("Email Auth Error:", error);
+        alert("Login Failed: " + error.message);
+    }
+}
+
+function checkAuthStatus() {
+    let msg = "Firebase Auth is not initialized.\n";
+    if (typeof firebaseConfig === 'undefined') msg += "- firebaseConfig is MISSING\n";
+    else msg += "- firebaseConfig is loaded\n";
+
+    if (typeof firebase === 'undefined') msg += "- firebase SDK is MISSING\n";
+    else msg += "- firebase SDK is loaded\n";
+
+    alert(msg + "\nPlease verify config.js and network connection.");
 }
 
 function handleLogout() {
