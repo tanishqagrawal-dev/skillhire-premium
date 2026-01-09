@@ -237,6 +237,14 @@ function switchTab(tabId) {
         'faq': 'Help Center'
     };
     document.getElementById('page-title').innerText = titles[tabId] || 'Dashboard';
+
+    // Auto-close sidebar on mobile
+    const sidebar = document.querySelector('.sidebar');
+    if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+        const overlay = document.getElementById('sidebar-overlay');
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+    }
 }
 
 // --- ANALYZER LOGIC ---
@@ -277,8 +285,8 @@ function initCharts() {
             datasets: [{
                 label: 'Resume Score',
                 data: [45, 52, 49, 68, 75, 88],
-                borderColor: '#06b6d4',
-                backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                borderColor: '#00f2fe',
+                backgroundColor: 'rgba(0, 242, 254, 0.1)',
                 fill: true,
                 tension: 0.4
             }]
@@ -303,8 +311,8 @@ function initCharts() {
             datasets: [{
                 label: 'Current Skills',
                 data: [90, 60, 80, 70, 50],
-                backgroundColor: 'rgba(168, 85, 247, 0.4)',
-                borderColor: '#a855f7',
+                backgroundColor: 'rgba(188, 122, 249, 0.4)',
+                borderColor: '#bc7af9',
                 borderWidth: 2
             }]
         },

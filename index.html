@@ -31,64 +31,66 @@
             </div>
             <h1>Unlock Your Career Potential</h1>
             <p>AI-driven resume analysis and skill bridging for top-tier tech roles.</p>
-
-            <button class="google-btn firebase-google-btn" onclick="handleGoogleLogin()">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="G" style="width: 20px;">
-                Continue with Google
-            </button>
-
-            <p class="login-subtext">OR</p>
-
-            <div class="manual-auth-buttons">
-                <button class="btn-outline full-width" onclick="showAuthView('email-login')">
-                    <i data-lucide="mail"></i> Email Login
+            <div id="login-options">
+                <button class="google-btn firebase-google-btn" onclick="handleGoogleLogin()">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="G" style="width: 20px;">
+                    Continue with Google
                 </button>
-                <button class="btn-outline full-width" onclick="showAuthView('signup')">
-                    <i data-lucide="user-plus"></i> Create Account
-                </button>
-                <button class="google-btn" onclick="handleLogin()">
-                    <i data-lucide="user"></i> Continue as Guest
-                </button>
-            </div>
-        </div>
 
-        <div id="email-login-form" class="hidden">
-            <h2>Welcome Back</h2>
-            <div class="form-group">
-                <input type="email" id="login-email" placeholder="Email Address">
-            </div>
-            <div class="form-group">
-                <input type="password" id="login-password" placeholder="Password">
-            </div>
-            <button class="btn-primary full-width" onclick="handleManualLogin()">Login</button>
-            <p class="toggle-text">New here? <a href="#" onclick="showAuthView('signup')">Create Account</a></p>
-            <button class="btn-back" onclick="showAuthView('options')"><i data-lucide="arrow-left"></i>
-                Back</button>
-        </div>
+                <p class="login-subtext">OR</p>
 
-        <div id="signup-form" class="hidden">
-            <h2>Create Account</h2>
-            <div class="form-group">
-                <input type="text" id="signup-name" placeholder="Full Name">
+                <div class="manual-auth-buttons">
+                    <button class="btn-outline full-width" onclick="showAuthView('email-login')">
+                        <i data-lucide="mail"></i> Email Login
+                    </button>
+                    <button class="btn-outline full-width" onclick="showAuthView('signup')">
+                        <i data-lucide="user-plus"></i> Create Account
+                    </button>
+                    <button class="google-btn" onclick="handleLogin()">
+                        <i data-lucide="user"></i> Continue as Guest
+                    </button>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="email" id="signup-email" placeholder="Email Address">
-            </div>
-            <div class="form-group">
-                <input type="password" id="signup-password" placeholder="Password">
-            </div>
-            <button class="btn-primary full-width" onclick="handleManualSignup()">Sign Up</button>
-            <p class="toggle-text">Already have an account? <a href="#" onclick="showAuthView('email-login')">Login</a>
-            </p>
-            <button class="btn-back" onclick="showAuthView('options')"><i data-lucide="arrow-left"></i>
-                Back</button>
-        </div>
 
-        <div class="login-footer">
-            <span>Privacy Policy</span> • <span>Terms of Service</span>
+            <div id="email-login-form" class="hidden">
+                <h2>Welcome Back</h2>
+                <div class="form-group">
+                    <input type="email" id="login-email" placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="login-password" placeholder="Password">
+                </div>
+                <button class="btn-primary full-width" onclick="handleManualLogin()">Login</button>
+                <p class="toggle-text">New here? <a href="#" onclick="showAuthView('signup')">Create Account</a></p>
+                <button class="btn-back" onclick="showAuthView('options')"><i data-lucide="arrow-left"></i>
+                    Back</button>
+            </div>
+
+            <div id="signup-form" class="hidden">
+                <h2>Create Account</h2>
+                <div class="form-group">
+                    <input type="text" id="signup-name" placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <input type="email" id="signup-email" placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signup-password" placeholder="Password">
+                </div>
+                <button class="btn-primary full-width" onclick="handleManualSignup()">Sign Up</button>
+                <p class="toggle-text">Already have an account? <a href="#"
+                        onclick="showAuthView('email-login')">Login</a>
+                </p>
+                <button class="btn-back" onclick="showAuthView('options')"><i data-lucide="arrow-left"></i>
+                    Back</button>
+            </div>
+
+            <div class="login-footer">
+                <span>Privacy Policy</span> • <span>Terms of Service</span>
+            </div>
         </div>
     </div>
-    </div>
+
 
     <div id="app-container" class="app-container hidden">
         <div id="sidebar-overlay" class="sidebar-overlay"></div>
@@ -96,10 +98,6 @@
             <button id="close-sidebar" class="mobile-only close-btn">
                 <i data-lucide="chevron-left"></i>
             </button>
-            <div class="brand">
-                <i data-lucide="cpu"></i>
-                <span>SkillHire</span>
-            </div>
 
             <nav>
                 <button class="nav-item active" onclick="switchTab('dashboard')">
@@ -132,10 +130,18 @@
         <main class="main-content">
 
             <header class="top-bar">
-                <button id="menu-toggle" class="mobile-only">
-                    <i data-lucide="menu"></i>
-                </button>
-                <h2 id="page-title">Overview</h2>
+                <div class="top-bar-left">
+                    <button id="menu-toggle" class="menu-btn">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <div class="header-metadata">
+                        <div class="brand">
+                            <i data-lucide="cpu"></i>
+                            <span>SkillHire</span>
+                        </div>
+                        <h2 id="page-title">Overview</h2>
+                    </div>
+                </div>
                 <div class="user-pill" onclick="switchTab('profile')">
                     <span id="header-username">Guest User</span>
                     <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User">
@@ -453,6 +459,31 @@
 
     <script src="script.js"></script>
     <script>lucide.createIcons();</script>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyCisPmVF44PanIfYDiGZgCf3AICTn8l8aM",
+            authDomain: "skill-hire-test.firebaseapp.com",
+            projectId: "skill-hire-test",
+            storageBucket: "skill-hire-test.firebasestorage.app",
+            messagingSenderId: "217750622906",
+            appId: "1:217750622906:web:5426dbebfd8ea47f0ee883",
+            measurementId: "G-5YGX4KTSL9"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
+
 </body>
 
 </html>
