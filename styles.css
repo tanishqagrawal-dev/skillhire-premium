@@ -637,13 +637,21 @@ th {
 }
 
 /* Responsive Styles */
-#menu-toggle {
+#menu-toggle,
+.close-btn {
     display: none;
     background: none;
     border: none;
     color: var(--text-main);
     cursor: pointer;
     padding: 8px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2002;
 }
 
 @media (max-width: 1024px) {
@@ -698,7 +706,8 @@ th {
         display: block;
     }
 
-    #menu-toggle {
+    #menu-toggle,
+    .close-btn {
         display: flex;
         align-items: center;
         justify-content: center;

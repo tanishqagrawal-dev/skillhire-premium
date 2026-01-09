@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Mobile Menu Toggle
     const menuToggle = document.getElementById('menu-toggle');
+    const closeSidebar = document.getElementById('close-sidebar');
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.getElementById('sidebar-overlay');
 
@@ -30,6 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (menuToggle) {
         menuToggle.addEventListener('click', toggleMenu);
+    }
+
+    if (closeSidebar) {
+        closeSidebar.addEventListener('click', toggleMenu);
     }
 
     if (overlay) {
