@@ -4,16 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auth | Skill Hire</title>
+    <title>Create Account | Skill Hire</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
-
-    <!-- Firebase SDKs (Compat) -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="config.js"></script>
 
     <style>
         :root {
@@ -65,7 +60,7 @@
 
         .container {
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             padding: 20px;
             transform-style: preserve-3d;
         }
@@ -168,6 +163,13 @@
             padding-left: 5px;
         }
 
+        .form-group label span.optional {
+            font-size: 0.75rem;
+            color: var(--accent);
+            opacity: 0.8;
+            margin-left: 5px;
+        }
+
         .input-box {
             position: relative;
         }
@@ -205,7 +207,38 @@
             color: var(--primary);
         }
 
-        /* Buttons */
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: rgba(0, 242, 254, 0.05);
+        }
+
+        .file-upload i {
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .file-upload span {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Button */
         .btn-submit {
             width: 100%;
             background: linear-gradient(135deg, var(--primary), #4facfe);
@@ -221,11 +254,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             transform: translateZ(30px);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            margin-top: 10px;
         }
 
         .btn-submit:hover {
@@ -233,68 +262,35 @@
             box-shadow: 0 10px 30px rgba(0, 242, 254, 0.5);
         }
 
-        .btn-secondary {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 14px;
-            border-radius: 14px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transform: translateZ(20px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateZ(25px);
-        }
-
-        .divider {
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            transform: translateZ(20px);
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-
-        .divider span {
-            padding: 0 10px;
-        }
-
-        .back-link {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: var(--text-muted);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        /* Footer */
+        .card-footer {
+            margin-top: 25px;
+            text-align: center;
             font-size: 0.9rem;
-            transition: color 0.3s;
+            color: var(--text-muted);
             transform: translateZ(20px);
-            z-index: 20;
         }
 
-        .back-link:hover {
-            color: white;
+        .card-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .card-footer a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .card-footer a:hover::after {
+            width: 100%;
         }
 
         /* Holographic Shine */
@@ -322,10 +318,6 @@
     <div class="floating-shape shape-1"></div>
     <div class="floating-shape shape-2"></div>
 
-    <a href="index.html" class="back-link">
-        <i data-lucide="arrow-left" style="width: 18px;"></i> Back
-    </a>
-
     <div class="container" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
         <div class="glass-card">
             <div class="shine"></div>
@@ -334,47 +326,62 @@
                 <div class="logo">
                     <i data-lucide="cpu"></i> Skill Hire
                 </div>
-                <h2>Welcome Back</h2>
-                <p>Login to your account dashboard</p>
+                <h2>Join the Future</h2>
+                <p>Create your detailed profile</p>
             </div>
 
-            <!-- Login Form -->
-            <div class="form-group">
-                <label>Email</label>
-                <div class="input-box">
-                    <input type="email" id="email-input" placeholder="john@example.com">
-                    <i data-lucide="mail"></i>
+            <form action="dashboard.html">
+                <!-- Essential Details -->
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <div class="input-box">
+                        <input type="text" placeholder="John Doe" required>
+                        <i data-lucide="user"></i>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label>Password</label>
-                <div class="input-box">
-                    <input type="password" id="password-input" placeholder="••••••••">
-                    <i data-lucide="lock"></i>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-box">
+                        <input type="email" placeholder="john@example.com" required>
+                        <i data-lucide="mail"></i>
+                    </div>
                 </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-box">
+                        <input type="password" placeholder="••••••••" required>
+                        <i data-lucide="lock"></i>
+                    </div>
+                </div>
+
+                <!-- Optional Details -->
+                <div class="form-group">
+                    <label>Target Role <span class="optional">(Optional)</span></label>
+                    <div class="input-box">
+                        <input type="text" placeholder="e.g. Frontend Developer">
+                        <i data-lucide="briefcase"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Resume <span class="optional">(Optional)</span></label>
+                    <label class="file-upload">
+                        <input type="file" accept=".pdf,.doc,.docx">
+                        <i data-lucide="upload-cloud"></i>
+                        <span id="file-name">Drop PDF or Click to Upload</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    Initialize Account
+                </button>
+            </form>
+
+            <div class="card-footer">
+                Already have an access key? <a href="auth.html">Log In</a>
             </div>
-
-            <button class="btn-submit" onclick="handleEmailLogin()">
-                Log In
-            </button>
-
-            <div class="divider"><span>OR</span></div>
-
-            <button class="btn-secondary" onclick="handleCreateAccount()">
-                <i data-lucide="user-plus" style="width: 18px;"></i> Create Account
-            </button>
-
-            <button class="btn-secondary" onclick="handleGoogleLogin()">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="G" style="width: 18px;">
-                Continue with Google
-            </button>
-
-            <button class="btn-secondary"
-                style="border:none; background:transparent; font-size:0.85rem; color:var(--text-muted); margin-top:5px;"
-                onclick="handleGuestLogin()">
-                Continue as Guest
-            </button>
         </div>
     </div>
 
@@ -389,40 +396,17 @@
             "max-glare": 0.2
         });
 
-        // Initialize Firebase
-        if (typeof firebaseConfig !== 'undefined' && typeof firebase !== 'undefined') {
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-        } else {
-            console.error("Firebase Config missing!");
-        }
+        // File Input Change
+        const fileInput = document.querySelector('input[type="file"]');
+        const fileName = document.querySelector('#file-name');
 
-        // Logic
-        function handleGoogleLogin() {
-            if (!firebase.apps.length) return alert("System Error: Firebase not loaded.");
-            const provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider)
-                .then(() => window.location.href = 'dashboard.html')
-                .catch((error) => alert("Login failed: " + error.message));
-        }
-
-        function handleGuestLogin() {
-            localStorage.setItem('skillhire_guest', 'true');
-            window.location.href = 'dashboard.html';
-        }
-
-        function handleEmailLogin() {
-            const email = document.getElementById('email-input').value;
-            const password = document.getElementById('password-input').value;
-            if (!email || !password) return alert("Please enter both email and password.");
-            firebase.auth().signInWithEmailAndPassword(email, password)
-                .then(() => window.location.href = 'dashboard.html')
-                .catch((error) => alert("Email Login Error: " + error.message));
-        }
-
-        function handleCreateAccount() {
-            window.location.href = 'signup.html';
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    fileName.textContent = e.target.files[0].name;
+                    fileName.style.color = '#00f2fe';
+                }
+            });
         }
     </script>
 </body>
