@@ -17,6 +17,7 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 </head>
 
@@ -151,9 +152,10 @@
                 <div class="analyzer-container">
                     <div class="upload-zone" id="drop-zone">
                         <i data-lucide="cloud-upload"></i>
-                        <h3>Drag & Drop Resume</h3>
-                        <p>Supports PDF, DOCX (Max 5MB)</p>
-                        <button class="btn-primary" onclick="simulateUpload()">Browse Files</button>
+                        <h3>Analyze Your Resume via Gemini AI</h3>
+                        <textarea id="resume-text" class="resume-input"
+                            placeholder="Paste your resume text here (PDF support coming soon)..."></textarea>
+                        <button class="btn-primary" onclick="handleResumeAnalysis()">Analyze Now</button>
                     </div>
 
                     <div id="analysis-loader" class="loader-container hidden">
@@ -194,8 +196,11 @@
             <section id="companies" class="view-section hidden">
                 <div class="table-card">
                     <div class="table-header">
-                        <h3>Live Hiring Data</h3>
-                        <input type="text" placeholder="Search companies..." class="search-input">
+                        <h3>Live Hiring Data (AI Powered)</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-sm" onclick="fetchMarketData()">Refresh Data</button>
+                            <input type="text" placeholder="Search companies..." class="search-input">
+                        </div>
                     </div>
                     <table>
                         <thead>
@@ -207,150 +212,65 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="market-data-body">
+                            <!-- Populated by AI -->
                             <tr>
-                                <td class="company-name">
-                                    <img src="https://tse1.mm.bing.net/th/id/OIP.WZEsF8Yzchv1bEJgr7AiZAHaHa?pid=Api&P=0&h=180"
-                                        class="co-logo">
-                                    Google
+                                <td colspan="5" style="text-align: center; padding: 2rem;">
+                                    Click "Refresh Data" to get live market insights.
                                 </td>
-                                <td>Frontend Engineer</td>
-                                <td class="score-high">92%</td>
-                                <td><span class="badge warning">Upskill</span></td>
-                                <td><button class="btn-sm">View Gaps</button></td>
                             </tr>
-
-                            <tr>
-                                <td class="company-name">
-                                    <img src="https://tse3.mm.bing.net/th/id/OIP.YKFZjzosPzcUtBNHe9cAdAHaEK?pid=Api&P=0&h=180"
-                                        class="co-logo">
-                                    Amazon
-                                </td>
-                                <td>SDE-1</td>
-                                <td class="score-med">84%</td>
-                                <td><span class="badge success">Eligible</span></td>
-                                <td><button class="btn-sm">Apply</button></td>
-                            </tr>
-
-                            <tr>
-                                <td class="company-name">
-                                    <img src="https://tse1.mm.bing.net/th/id/OIP.CnlidGvyCZgGnztLkfgwUAHaHa?pid=Api&P=0&h=180"
-                                        class="co-logo">
-                                    Netflix
-                                </td>
-                                <td>Sr. UI Eng</td>
-                                <td class="score-high">95%</td>
-                                <td><span class="badge danger">Not Ready</span></td>
-                                <td><button class="btn-sm">View Gaps</button></td>
-                            </tr>
-                            <tr>
-                                <td class="company-name">
-                                    <img src="https://tse1.mm.bing.net/th/id/OIP.AKyCP44z4UUp2gqH8BTf3QHaGB?pid=Api&P=0&h=180"
-                                        class="co-logo">
-                                    Microsoft
-                                </td>
-                                <td>Software Engineer</td>
-                                <td class="score-high">89%</td>
-                                <td><span class="badge success">Eligible</span></td>
-                                <td><button class="btn-sm">Apply</button></td>
-                            </tr>
-
-                            <tr>
-                                <td class="company-name">
-                                    <img src="https://tse1.mm.bing.net/th/id/OIP.3qsMnUTHk9Zs8dA5meZsSwHaEK?pid=Api&P=0&h=180"
-                                        class="co-logo">
-                                    Apple
-                                </td>
-                                <td>iOS Engineer</td>
-                                <td class="score-med">85%</td>
-                                <td><span class="badge warning">Upskill</span></td>
-                                <td><button class="btn-sm">View Gaps</button></td>
-                            </tr>
-
-                            <tr>
-                                <td class="company-name">
-                                    <img src="https://tse1.mm.bing.net/th/id/OIP.VgfWevmVdjRKHG8bfhpVsgHaHa?pid=Api&P=0&h=180"
-                                        class="co-logo">
-                                    Facebook
-                                </td>
-                                <td>Product Engineer</td>
-                                <td class="score-high">90%</td>
-                                <td><span class="badge success">Eligible</span></td>
-                                <td><button class="btn-sm">Apply</button></td>
-                            </tr>
-
-                            <tr>
-                                <td class="company-name">
-                                    <img src="https://tse3.mm.bing.net/th/id/OIP.y8OX_qav2XCIW8jNeaqXBwHaCB?pid=Api&P=0&h=180"
-                                        class="co-logo">
-                                    Adobe
-                                </td>
-                                <td>UI/UX Developer</td>
-                                <td class="score-med">83%</td>
-                                <td><span class="badge warning">Upskill</span></td>
-                                <td><button class="btn-sm">View Gaps</button></td>
-                            </tr>
-
-                            <tr>
-                                <td class="company-name">
-                                    <img src="https://tse3.mm.bing.net/th/id/OIP.vJzP4ngqOD78iyOyJZn4XQHaFL?pid=Api&P=0&h=180"
-                                        class="co-logo">
-                                    Salesforce
-                                </td>
-                                <td>CRM Developer</td>
-                                <td class="score-high">88%</td>
-                                <td><span class="badge success">Eligible</span></td>
-                                <td><button class="btn-sm">Apply</button></td>
-                            </tr>
-                            <tr>
-                                <td class="company-name">
-                                    <img src="https://tse3.mm.bing.net/th/id/OIP.jdQ0-zCqys8HUsVr1-EE6AHaEK?pid=Api&P=0&h=180"
-                                        class="co-logo">
-                                    Oracle
-                                </td>
-                                <td>Backend Engineer</td>
-                                <td class="score-med">80%</td>
-                                <td><span class="badge warning">Upskill</span></td>
-                                <td><button class="btn-sm">View Gaps</button></td>
-                            </tr>
-
-                            <tr>
-                                <td class="company-name">
-                                    <img src="https://tse3.mm.bing.net/th/id/OIP.XIZDhSibILo3WFUdQjLM-wHaE8?pid=Api&P=0&h=180"
-                                        class="co-logo">
-                                    IBM
-                                </td>
-                                <td>Cloud Developer</td>
-                                <td class="score-high">87%</td>
-                                <td><span class="badge success">Eligible</span></td>
-                                <td><button class="btn-sm">Apply</button></td>
-                            </tr>
-
-
-
                         </tbody>
                     </table>
+
                 </div>
             </section>
 
             <section id="learning" class="view-section hidden">
-                <div class="learning-grid">
-                    <div class="course-card">
-                        <div class="course-img" style="background: linear-gradient(45deg, #FF9966, #FF5E62);"></div>
-                        <div class="course-content">
-                            <span class="tag">Recommended</span>
-                            <h4>Advanced Docker & Kubernetes</h4>
-                            <p>Master containerization to boost your resume score by 15%.</p>
-                            <button class="btn-primary full-width">Start Course</button>
+                <div class="roadmap-header">
+                    <h3>Personalized Learning Roadmap</h3>
+                    <div class="progress-box">
+                        <div class="progress-info">
+                            <span>Progress</span>
+                            <span id="progress-text">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="learning-progress" style="width: 0%"></div>
                         </div>
                     </div>
-                    <div class="course-card">
-                        <div class="course-img" style="background: linear-gradient(45deg, #00C9FF, #92FE9D);"></div>
+                </div>
+
+                <div class="learning-grid">
+                    <!-- Dynamic Checklist Item -->
+                    <div class="course-card interactive" onclick="toggleTask(this, 'task1')">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="task1" onchange="event.stopPropagation(); updateProgress()">
+                        </div>
                         <div class="course-content">
-                            <span class="tag">Internship</span>
-                            <h4>Google Summer of Code Prep</h4>
-                            <p>A guided path to crack open source contributions.</p>
-                            <button class="btn-secondary full-width">View Details</button>
+                            <span class="tag">Fundamentals</span>
+                            <h4>Data Structures & Algorithms</h4>
+                            <p>Master Arrays, Linked Lists, and Trees for interviews.</p>
+                        </div>
+                    </div>
+
+                    <div class="course-card interactive" onclick="toggleTask(this, 'task2')">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="task2" onchange="event.stopPropagation(); updateProgress()">
+                        </div>
+                        <div class="course-content">
+                            <span class="tag">System Design</span>
+                            <h4>Scalable Architecture</h4>
+                            <p>Learn Load Balancers, Caching, and Sharding.</p>
+                        </div>
+                    </div>
+
+                    <div class="course-card interactive" onclick="toggleTask(this, 'task3')">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="task3" onchange="event.stopPropagation(); updateProgress()">
+                        </div>
+                        <div class="course-content">
+                            <span class="tag">Cloud</span>
+                            <h4>AWS Essentials</h4>
+                            <p>Deploy a full-stack app on EC2 with CI/CD pipelines.</p>
                         </div>
                     </div>
                 </div>

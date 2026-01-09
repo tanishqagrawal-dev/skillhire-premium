@@ -2,7 +2,8 @@
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+var auth = firebase.auth();
+var db = firebase.firestore();
 
 // --- STATE MANAGEMENT ---
 let user = {
@@ -80,12 +81,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Firebase Auth State Observer
 function setupAuthObserver() {
-    auth.onAuthStateChanged((firebaseUser) => {
+    auth.onAuthStateChanged(async (firebaseUser) => {
         if (firebaseUser) {
             user.isLoggedIn = true;
             user.name = firebaseUser.displayName || "User";
             user.email = firebaseUser.email;
+            user.uid = firebaseUser.uid; // Add UID to user object
             user.photo = firebaseUser.photoURL || "https://api.dicebear.com/7.x/avataaars/svg?seed=" + firebaseUser.uid;
+
+            // Load additional data from Firestore
+            try {
+                const userDoc = await db.collection('users').doc(firebaseUser.uid).get();
+                if (userDoc.exists) {
+                    const cloudData = userDoc.data();
+                    user = { ...user, ...cloudData };
+                } else {
+                    // Initialize new user in Firestore
+                    await db.collection('users').doc(firebaseUser.uid).set({
+                        name: user.name,
+                        email: user.email,
+                        photo: user.photo,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+            } catch (error) {
+                console.error("Firestore Load Error:", error);
+            }
 
             updateUI();
             document.getElementById('login-screen').classList.add('hidden');
@@ -137,6 +158,25 @@ async function handleGoogleLogin() {
 
 function saveUserToLocal() {
     localStorage.setItem('skillhire_user', JSON.stringify(user));
+    if (user.isLoggedIn && user.uid) {
+        syncUserWithFirestore();
+    }
+}
+
+async function syncUserWithFirestore() {
+    try {
+        await db.collection('users').doc(user.uid).set({
+            name: user.name,
+            email: user.email,
+            photo: user.photo,
+            role: user.role || "",
+            atsScore: user.atsScore || 88, // Placeholder for now
+            lastSync: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+        console.log("Cloud Sync Successful");
+    } catch (error) {
+        console.error("Cloud Sync Error:", error);
+    }
 }
 
 function updateUI() {
@@ -183,7 +223,19 @@ function switchTab(tabId) {
 }
 
 // --- ANALYZER LOGIC ---
-function simulateUpload() {
+// --- GEMINI AI ANALYZER ---
+async function handleResumeAnalysis() {
+    const resumeText = document.getElementById('resume-text').value;
+    if (!resumeText || resumeText.length < 50) {
+        alert("Please paste your full resume text (at least 50 characters).");
+        return;
+    }
+
+    if (!geminiConfig || geminiConfig.apiKey === "YOUR_GEMINI_API_KEY") {
+        alert("Gemini API Key is missing. Please update config.js.");
+        return;
+    }
+
     const zone = document.getElementById('drop-zone');
     const loader = document.getElementById('analysis-loader');
     const result = document.getElementById('analysis-result');
@@ -191,10 +243,83 @@ function simulateUpload() {
     zone.classList.add('hidden');
     loader.classList.remove('hidden');
 
-    setTimeout(() => {
+    try {
+        const analysis = await analyzeWithGemini(resumeText);
+        displayAnalysisResults(analysis);
         loader.classList.add('hidden');
         result.classList.remove('hidden');
-    }, 2500);
+    } catch (error) {
+        console.error("Analysis Failed:", error);
+        alert("AI Analysis failed. Please try again.");
+        loader.classList.add('hidden');
+        zone.classList.remove('hidden');
+    }
+}
+
+async function analyzeWithGemini(text) {
+    const API_KEY = geminiConfig.apiKey;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+    const prompt = `
+    You are an expert ATS (Applicant Tracking System) Resmue Analyzer. 
+    Analyze the following resume text. 
+    Provide the output strictly in the following JSON format (no markdown code blocks):
+    {
+        "score": 85,
+        "strengths": ["Skill 1", "Skill 2"],
+        "missing_skills": ["Missing 1", "Missing 2"],
+        "summary": "One sentence summary of the candidate."
+    }
+    
+    Resume Text:
+    ${text}
+    `;
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            contents: [{
+                parts: [{ text: prompt }]
+            }]
+        })
+    });
+
+    const data = await response.json();
+    const resultText = data.candidates[0].content.parts[0].text;
+
+    // Clean up markdown block if present
+    const jsonString = resultText.replace(/```json/g, '').replace(/```/g, '').trim();
+    return JSON.parse(jsonString);
+}
+
+function displayAnalysisResults(data) {
+    // Update Score
+    const scoreCircle = document.querySelector('.circular-chart.green .circle');
+    const percentageText = document.querySelector('.percentage');
+    const radius = 15.9155;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (data.score / 100) * circumference;
+
+    scoreCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+    scoreCircle.style.strokeDashoffset = offset;
+    percentageText.innerText = `${data.score}%`;
+
+    // Update Feedback
+    const strengthsList = data.strengths.map(s => `<li><i data-lucide="check"></i> ${s}</li>`).join('');
+    const missingList = data.missing_skills.map(s => `<li><i data-lucide="x"></i> ${s}</li>`).join('');
+
+    document.querySelector('.feedback-item.good ul').innerHTML = strengthsList;
+    document.querySelector('.feedback-item.bad ul').innerHTML = missingList;
+
+    // Refresh Icons
+    lucide.createIcons();
+
+    // Update User State
+    user.atsScore = data.score;
+    saveUserToLocal();
 }
 
 // --- PROFILE LOGIC ---
@@ -262,4 +387,124 @@ function initCharts() {
             }
         }
     });
+}
+
+// --- MARKET INTELLIGENCE (Gemini Powered) ---
+async function fetchMarketData() {
+    if (!geminiConfig || !geminiConfig.apiKey || geminiConfig.apiKey === "YOUR_GEMINI_API_KEY") {
+        alert("Gemini API Key is missing. Please update config.js.");
+        return;
+    }
+
+    const tbody = document.getElementById('market-data-body');
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 2rem;"><div class="spinner"></div><p>AI is scanning the market...</p></td></tr>`;
+
+    const userSkills = user.skills ? user.skills.join(', ') : "React, JavaScript, Node.js"; // Fallback to default if no skills yet
+    const prompt = `
+    You are a Real-Time Job Market Analyzer. 
+    Based on the following skills: "${userSkills}", list 5 top companies actively hiring for relevant roles.
+    For each company, estimate the ATS Cutoff Score (0-100) and provide a status (Eligible or Upskill).
+    
+    Provide the output strictly in the following JSON format:
+    {
+        "market_data": [
+            {
+                "company": "Company Name",
+                "role": "Job Role",
+                "cutoff": 85,
+                "status": "Eligible", // or "Upskill" or "Not Ready"
+                "logo_url": "https://logo.clearbit.com/company.com" // Estimate the domain for logo
+            }
+        ]
+    }
+    `;
+
+    try {
+        const API_KEY = geminiConfig.apiKey;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+        });
+
+        const data = await response.json();
+        const resultText = data.candidates[0].content.parts[0].text;
+        const jsonString = resultText.replace(/```json/g, '').replace(/```/g, '').trim();
+        const marketData = JSON.parse(jsonString).market_data;
+
+        renderMarketTable(marketData);
+
+    } catch (error) {
+        console.error("Market Data Error:", error);
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--danger);">Failed to fetch market data. Try again.</td></tr>`;
+    }
+}
+
+function renderMarketTable(data) {
+    const tbody = document.getElementById('market-data-body');
+    tbody.innerHTML = '';
+
+    data.forEach(item => {
+        const row = document.createElement('tr');
+
+        let badgeClass = 'success';
+        if (item.status === 'Upskill') badgeClass = 'warning';
+        if (item.status === 'Not Ready') badgeClass = 'danger';
+
+        let scoreClass = 'score-high';
+        if (item.cutoff < 85) scoreClass = 'score-med';
+        if (item.cutoff < 75) scoreClass = 'score-low';
+
+        row.innerHTML = `
+            <td class="company-name">
+                <img src="${item.logo_url}" class="co-logo" onerror="this.src='https://ui-avatars.com/api/?name=${item.company}&background=random'">
+                ${item.company}
+            </td>
+            <td>${item.role}</td>
+            <td class="${scoreClass}">${item.cutoff}%</td>
+            <td><span class="badge ${badgeClass}">${item.status}</span></td>
+            <td><button class="btn-sm">Apply</button></td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// --- LEARNING PATH LOGIC ---
+function toggleTask(card, taskId) {
+    const checkbox = card.querySelector('input[type="checkbox"]');
+    if (event.target !== checkbox) {
+        checkbox.checked = !checkbox.checked;
+    }
+    updateProgress();
+}
+
+async function updateProgress() {
+    const checkboxes = document.querySelectorAll('.learning-grid input[type="checkbox"]');
+    const total = checkboxes.length;
+    let checked = 0;
+
+    checkboxes.forEach(cb => {
+        if (cb.checked) checked++;
+    });
+
+    const percent = Math.floor((checked / total) * 100);
+
+    // Update UI
+    document.getElementById('progress-text').innerText = `${percent}%`;
+    document.getElementById('learning-progress').style.width = `${percent}%`;
+
+    // Sync to Firestore
+    if (user.isLoggedIn && user.uid) {
+        try {
+            await db.collection('users').doc(user.uid).update({
+                learningProgress: percent,
+                completedTasks: Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.id)
+            });
+            console.log("Progress Synced");
+        } catch (error) {
+            console.error("Sync Error:", error);
+        }
+    }
 }

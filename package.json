@@ -22,5 +22,8 @@
   "homepage": "https://github.com/tanishqagrawal-dev/skillhire-premium#readme",
   "devDependencies": {
     "firebase-tools": "^15.2.1"
+  },
+  "dependencies": {
+    "firebase": "^12.7.0"
   }
 }
