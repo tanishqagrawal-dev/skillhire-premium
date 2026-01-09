@@ -81,7 +81,7 @@ function handleLogin() {
     setTimeout(() => {
         user.isLoggedIn = true;
         user.name = "Alex Johnson";
-        user.email = "alex.j@skillgap.ai";
+        user.email = "alex.j@skillhire.ai";
         user.photo = "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex";
 
         saveUserToLocal();
@@ -95,12 +95,12 @@ function handleLogin() {
 
 function handleLogout() {
     user.isLoggedIn = false;
-    localStorage.removeItem('skillgap_user');
+    localStorage.removeItem('skillhire_user');
     window.location.reload();
 }
 
 function checkLogin() {
-    const savedUser = localStorage.getItem('skillgap_user');
+    const savedUser = localStorage.getItem('skillhire_user');
     if (savedUser) {
         user = JSON.parse(savedUser);
         if (user.isLoggedIn) {
@@ -116,7 +116,7 @@ function checkLogin() {
 }
 
 function saveUserToLocal() {
-    localStorage.setItem('skillgap_user', JSON.stringify(user));
+    localStorage.setItem('skillhire_user', JSON.stringify(user));
 }
 
 function updateUI() {

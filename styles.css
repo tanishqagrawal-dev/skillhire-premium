@@ -807,3 +807,13 @@ th {
         height: 140px;
     }
 }
+
+#user-info {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#user-pic {
+    width: 80px;
+    border-radius: 50%;
+}

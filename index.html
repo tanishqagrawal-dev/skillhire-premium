@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkillGap AI | Career Intelligence Platform</title>
+    <title>SkillHire AI | Career Intelligence Platform</title>
 
     <link rel="stylesheet" href="styles.css">
 
@@ -13,15 +13,34 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
 </head>
 
 <body>
+    <div id="g_id_onload" data-client_id="456987112710-bqo6d88312hsuje2qmg21hitdljf0cm9.apps.googleusercontent.com"
+        data-callback="handleCredentialResponse" data-auto_prompt="false">
+    </div>
+
+    <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+        data-shape="rectangular" data-logo_alignment="left">
+    </div>
+
+    <!-- User info -->
+    <div id="user-info" style="display:none;">
+        <img id="user-pic" />
+        <h3 id="user-name"></h3>
+        <p id="user-email"></p>
+        <button onclick="logout()">Logout</button>
+    </div>
+
 
     <div id="login-screen" class="login-container">
         <div class="glass-login-card" data-tilt>
             <div class="logo-large">
                 <i data-lucide="cpu"></i>
-                <span>SkillGap AI</span>
+                <span>SkillHire AI</span>
             </div>
             <h1>Unlock Your Career Potential</h1>
             <p>AI-driven resume analysis and skill bridging for top-tier tech roles.</p>
@@ -44,7 +63,7 @@
             </button>
             <div class="brand">
                 <i data-lucide="cpu"></i>
-                <span>SkillGap</span>
+                <span>SkillHire</span>
             </div>
 
             <nav>
