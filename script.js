@@ -1,9 +1,22 @@
 // Firebase initialization is now handled via config.js
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-var auth = firebase.auth();
-var db = firebase.firestore();
+// Declare variables to prevent reference errors if init fails
+var auth;
+var db;
+
+// Safe Firebase Initialization
+try {
+    if (typeof firebaseConfig !== 'undefined' && typeof firebase !== 'undefined') {
+        firebase.initializeApp(firebaseConfig);
+        auth = firebase.auth();
+        db = firebase.firestore();
+        console.log("Firebase initialized successfully.");
+    } else {
+        console.error("Firebase Config or SDK not found.");
+    }
+} catch (error) {
+    console.error("Firebase Initialization Error:", error);
+}
 
 // --- STATE MANAGEMENT ---
 let user = {
@@ -15,14 +28,25 @@ let user = {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
-    lucide.createIcons();
-    setupAuthObserver();
+    // Initialize Icons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+
+    // Only setup auth observer if auth is initialized
+    if (auth) {
+        setupAuthObserver();
+    } else {
+        console.warn("Auth not initialized, skipping observer setup.");
+    }
 
     // Setup FAQ Accordion
     document.querySelectorAll('.faq-question').forEach(btn => {
         btn.addEventListener('click', () => {
             const answer = btn.nextElementSibling;
-            answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+            if (answer) {
+                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+            }
         });
     });
 
@@ -33,12 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('sidebar-overlay');
 
     function toggleMenu() {
+        if (!sidebar) return;
+
         if (window.innerWidth <= 768) {
             sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
+            if (overlay) overlay.classList.toggle('active');
         } else {
             sidebar.classList.toggle('collapsed');
-            document.querySelector('.main-content').classList.toggle('expanded');
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) mainContent.classList.toggle('expanded');
             // Trigger resize for charts
             setTimeout(() => window.dispatchEvent(new Event('resize')), 300);
         }
@@ -50,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', () => {
-            if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+            if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('active')) {
                 toggleMenu();
             }
         });
@@ -69,8 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 reader.onload = function (event) {
                     const base64Image = event.target.result;
                     user.photo = base64Image;
-                    profileImgPreview.src = base64Image;
-                    headerAvatar.src = base64Image;
+                    if (profileImgPreview) profileImgPreview.src = base64Image;
+                    if (headerAvatar) headerAvatar.src = base64Image;
                     saveUserToLocal();
                 };
                 reader.readAsDataURL(file);
@@ -79,74 +106,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Firebase Auth State Observer
-function setupAuthObserver() {
-    auth.onAuthStateChanged(async (firebaseUser) => {
-        if (firebaseUser) {
-            user.isLoggedIn = true;
-            user.name = firebaseUser.displayName || "User";
-            user.email = firebaseUser.email;
-            user.uid = firebaseUser.uid; // Add UID to user object
-            user.photo = firebaseUser.photoURL || "https://api.dicebear.com/7.x/avataaars/svg?seed=" + firebaseUser.uid;
-
-            // Load additional data from Firestore
-            try {
-                const userDoc = await db.collection('users').doc(firebaseUser.uid).get();
-                if (userDoc.exists) {
-                    const cloudData = userDoc.data();
-                    user = { ...user, ...cloudData };
-                } else {
-                    // Initialize new user in Firestore
-                    await db.collection('users').doc(firebaseUser.uid).set({
-                        name: user.name,
-                        email: user.email,
-                        photo: user.photo,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                }
-            } catch (error) {
-                console.error("Firestore Load Error:", error);
-            }
-
-            updateUI();
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('app-container').classList.remove('hidden');
-
-            setTimeout(() => {
-                initCharts();
-                window.dispatchEvent(new Event('resize'));
-            }, 500);
-        } else {
-            user.isLoggedIn = false;
-            document.getElementById('login-screen').classList.remove('hidden');
-            document.getElementById('app-container').classList.add('hidden');
-        }
-    });
-}
-
-// Guest Login (Simulated)
-function handleLogin() {
+// Guest Login (Simulated) - GLOBAL FUNCTION
+window.handleLogin = function () {
+    console.log("Guest Login Clicked");
+    alert("Guest Login Activated"); // Debug alert
     user.isLoggedIn = true;
     user.name = "Guest User";
     user.email = "guest@skillhire.ai";
     user.photo = "https://api.dicebear.com/7.x/avataaars/svg?seed=Guest";
 
     updateUI();
-    document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('app-container').classList.remove('hidden');
-    initCharts();
-    window.dispatchEvent(new Event('resize'));
-}
 
-function handleLogout() {
-    auth.signOut().then(() => {
-        localStorage.removeItem('skillhire_user');
-        window.location.reload();
-    });
-}
+    // UI Transitions
+    const loginScreen = document.getElementById('login-screen');
+    const appContainer = document.getElementById('app-container');
+
+    if (loginScreen) loginScreen.classList.add('hidden');
+    if (appContainer) appContainer.classList.remove('hidden');
+
+    setTimeout(() => {
+        initCharts();
+        window.dispatchEvent(new Event('resize'));
+    }, 100);
+};
 
 // Google Login with Firebase
 async function handleGoogleLogin() {
+    if (!auth) {
+        alert("Firebase Auth is not initialized. Check console for errors.");
+        return;
+    }
     const provider = new firebase.auth.GoogleAuthProvider();
     try {
         await auth.signInWithPopup(provider);
@@ -156,21 +145,94 @@ async function handleGoogleLogin() {
     }
 }
 
+function handleLogout() {
+    if (auth) {
+        auth.signOut().then(() => {
+            localStorage.removeItem('skillhire_user');
+            window.location.reload();
+        });
+    } else {
+        localStorage.removeItem('skillhire_user');
+        window.location.reload();
+    }
+}
+
+// Firebase Auth State Observer
+function setupAuthObserver() {
+    if (!auth) return;
+
+    auth.onAuthStateChanged(async (firebaseUser) => {
+        const loginScreen = document.getElementById('login-screen');
+        const appContainer = document.getElementById('app-container');
+
+        if (firebaseUser) {
+            user.isLoggedIn = true;
+            user.name = firebaseUser.displayName || "User";
+            user.email = firebaseUser.email;
+            user.uid = firebaseUser.uid;
+            user.photo = firebaseUser.photoURL || "https://api.dicebear.com/7.x/avataaars/svg?seed=" + firebaseUser.uid;
+
+            // Load additional data from Firestore
+            try {
+                if (db) {
+                    const userDoc = await db.collection('users').doc(firebaseUser.uid).get();
+                    if (userDoc.exists) {
+                        const cloudData = userDoc.data();
+                        user = { ...user, ...cloudData };
+                    } else {
+                        // Initialize new user in Firestore
+                        await db.collection('users').doc(firebaseUser.uid).set({
+                            name: user.name,
+                            email: user.email,
+                            photo: user.photo,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("Firestore Load Error:", error);
+            }
+
+            updateUI();
+            if (loginScreen) loginScreen.classList.add('hidden');
+            if (appContainer) appContainer.classList.remove('hidden');
+
+            setTimeout(() => {
+                initCharts();
+                window.dispatchEvent(new Event('resize'));
+            }, 500);
+        } else {
+            // Only force show login screen if we are not manually toggling it
+            // This prevents a race condition, but for now standard behavior is fine
+            user.isLoggedIn = false;
+            // Note: We don't automatically show login screen here to allow Guest Mode to work if needed, 
+            // but strict auth observer usually overrides. 
+            // In this app, Guest Login is just local state. 
+            // If auth state is "null", it might re-show login screen if we are not careful.
+
+            // If we are currently in "Guest Mode", user.isLoggedIn might be true from handleLogin
+            // But this observer fires on load. 
+            // We will let the Default Logic apply, but handleLogin overrides the UI classes manually.
+        }
+    });
+}
+
 function saveUserToLocal() {
     localStorage.setItem('skillhire_user', JSON.stringify(user));
-    if (user.isLoggedIn && user.uid) {
+    if (user.isLoggedIn && user.uid && db) {
         syncUserWithFirestore();
     }
 }
 
 async function syncUserWithFirestore() {
+    if (!db || !user.uid) return;
     try {
         await db.collection('users').doc(user.uid).set({
             name: user.name,
             email: user.email,
             photo: user.photo,
             role: user.role || "",
-            atsScore: user.atsScore || 88, // Placeholder for now
+            atsScore: user.atsScore || 88,
             lastSync: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
         console.log("Cloud Sync Successful");
@@ -180,12 +242,16 @@ async function syncUserWithFirestore() {
 }
 
 function updateUI() {
-    document.getElementById('header-username').innerText = user.name;
-    document.getElementById('profile-name-display').innerText = user.name;
-    document.getElementById('input-name').value = user.name;
-    document.getElementById('input-email').value = user.email;
-    document.getElementById('header-avatar').src = user.photo;
-    document.getElementById('profile-img-preview').src = user.photo;
+    const ids = ['header-username', 'profile-name-display', 'input-name', 'input-email', 'header-avatar', 'profile-img-preview'];
+
+    const elements = ids.map(id => document.getElementById(id));
+
+    if (elements[0]) elements[0].innerText = user.name;
+    if (elements[1]) elements[1].innerText = user.name;
+    if (elements[2]) elements[2].value = user.name;
+    if (elements[3]) elements[3].value = user.email;
+    if (elements[4]) elements[4].src = user.photo;
+    if (elements[5]) elements[5].src = user.photo;
 }
 
 // --- NAVIGATION ---
@@ -212,18 +278,18 @@ function switchTab(tabId) {
         'learning': 'Learning Roadmap',
         'faq': 'Help Center'
     };
-    document.getElementById('page-title').innerText = titles[tabId] || 'Dashboard';
+    const titleEl = document.getElementById('page-title');
+    if (titleEl) titleEl.innerText = titles[tabId] || 'Dashboard';
 
     const sidebar = document.querySelector('.sidebar');
-    if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
-        const overlay = document.getElementById('sidebar-overlay');
+    const overlay = document.getElementById('sidebar-overlay');
+    if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('active')) {
         sidebar.classList.remove('active');
-        overlay.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
     }
 }
 
 // --- ANALYZER LOGIC ---
-// --- GEMINI AI ANALYZER ---
 async function handleResumeAnalysis() {
     const resumeText = document.getElementById('resume-text').value;
     if (!resumeText || resumeText.length < 50) {
@@ -231,7 +297,7 @@ async function handleResumeAnalysis() {
         return;
     }
 
-    if (!geminiConfig || geminiConfig.apiKey === "YOUR_GEMINI_API_KEY") {
+    if (typeof geminiConfig === 'undefined' || !geminiConfig || !geminiConfig.apiKey || geminiConfig.apiKey === "YOUR_GEMINI_API_KEY") {
         alert("Gemini API Key is missing. Please update config.js.");
         return;
     }
@@ -240,19 +306,19 @@ async function handleResumeAnalysis() {
     const loader = document.getElementById('analysis-loader');
     const result = document.getElementById('analysis-result');
 
-    zone.classList.add('hidden');
-    loader.classList.remove('hidden');
+    if (zone) zone.classList.add('hidden');
+    if (loader) loader.classList.remove('hidden');
 
     try {
         const analysis = await analyzeWithGemini(resumeText);
         displayAnalysisResults(analysis);
-        loader.classList.add('hidden');
-        result.classList.remove('hidden');
+        if (loader) loader.classList.add('hidden');
+        if (result) result.classList.remove('hidden');
     } catch (error) {
         console.error("Analysis Failed:", error);
         alert("AI Analysis failed. Please try again.");
-        loader.classList.add('hidden');
-        zone.classList.remove('hidden');
+        if (loader) loader.classList.add('hidden');
+        if (zone) zone.classList.remove('hidden');
     }
 }
 
@@ -289,35 +355,35 @@ async function analyzeWithGemini(text) {
 
     const data = await response.json();
     const resultText = data.candidates[0].content.parts[0].text;
-
-    // Clean up markdown block if present
     const jsonString = resultText.replace(/```json/g, '').replace(/```/g, '').trim();
     return JSON.parse(jsonString);
 }
 
 function displayAnalysisResults(data) {
-    // Update Score
     const scoreCircle = document.querySelector('.circular-chart.green .circle');
     const percentageText = document.querySelector('.percentage');
-    const radius = 15.9155;
-    const circumference = 2 * Math.PI * radius;
-    const offset = circumference - (data.score / 100) * circumference;
 
-    scoreCircle.style.strokeDasharray = `${circumference} ${circumference}`;
-    scoreCircle.style.strokeDashoffset = offset;
-    percentageText.innerText = `${data.score}%`;
+    if (scoreCircle && percentageText) {
+        const radius = 15.9155;
+        const circumference = 2 * Math.PI * radius;
+        const offset = circumference - (data.score / 100) * circumference;
 
-    // Update Feedback
+        scoreCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+        scoreCircle.style.strokeDashoffset = offset;
+        percentageText.innerText = `${data.score}%`;
+    }
+
     const strengthsList = data.strengths.map(s => `<li><i data-lucide="check"></i> ${s}</li>`).join('');
     const missingList = data.missing_skills.map(s => `<li><i data-lucide="x"></i> ${s}</li>`).join('');
 
-    document.querySelector('.feedback-item.good ul').innerHTML = strengthsList;
-    document.querySelector('.feedback-item.bad ul').innerHTML = missingList;
+    const goodUl = document.querySelector('.feedback-item.good ul');
+    const badUl = document.querySelector('.feedback-item.bad ul');
 
-    // Refresh Icons
-    lucide.createIcons();
+    if (goodUl) goodUl.innerHTML = strengthsList;
+    if (badUl) badUl.innerHTML = missingList;
 
-    // Update User State
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
     user.atsScore = data.score;
     saveUserToLocal();
 }
@@ -336,70 +402,74 @@ function saveProfile() {
 
 // --- CHARTS (Chart.js) ---
 function initCharts() {
-    const ctx1 = document.getElementById('lineChart').getContext('2d');
-    new Chart(ctx1, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            datasets: [{
-                label: 'Resume Score',
-                data: [45, 52, 49, 68, 75, 88],
-                borderColor: '#00f2fe',
-                backgroundColor: 'rgba(0, 242, 254, 0.1)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { grid: { color: 'rgba(255,255,255,0.05)' } },
-                x: { grid: { display: false } }
-            }
-        }
-    });
-
-    const ctx2 = document.getElementById('radarChart').getContext('2d');
-    new Chart(ctx2, {
-        type: 'radar',
-        data: {
-            labels: ['Coding', 'Design', 'Communication', 'System Design', 'Cloud'],
-            datasets: [{
-                label: 'Current Skills',
-                data: [90, 60, 80, 70, 50],
-                backgroundColor: 'rgba(188, 122, 249, 0.4)',
-                borderColor: '#bc7af9',
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                r: {
-                    grid: { color: 'rgba(255,255,255,0.1)' },
-                    angleLines: { color: 'rgba(255,255,255,0.1)' },
-                    suggestedMin: 0,
-                    suggestedMax: 100
+    const ctx1 = document.getElementById('lineChart');
+    if (ctx1) {
+        new Chart(ctx1.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Resume Score',
+                    data: [45, 52, 49, 68, 75, 88],
+                    borderColor: '#00f2fe',
+                    backgroundColor: 'rgba(0, 242, 254, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' } },
+                    x: { grid: { display: false } }
                 }
             }
-        }
-    });
+        });
+    }
+
+    const ctx2 = document.getElementById('radarChart');
+    if (ctx2) {
+        new Chart(ctx2.getContext('2d'), {
+            type: 'radar',
+            data: {
+                labels: ['Coding', 'Design', 'Communication', 'System Design', 'Cloud'],
+                datasets: [{
+                    label: 'Current Skills',
+                    data: [90, 60, 80, 70, 50],
+                    backgroundColor: 'rgba(188, 122, 249, 0.4)',
+                    borderColor: '#bc7af9',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        grid: { color: 'rgba(255,255,255,0.1)' },
+                        angleLines: { color: 'rgba(255,255,255,0.1)' },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+    }
 }
 
 // --- MARKET INTELLIGENCE (Gemini Powered) ---
 async function fetchMarketData() {
-    if (!geminiConfig || !geminiConfig.apiKey || geminiConfig.apiKey === "YOUR_GEMINI_API_KEY") {
+    if (typeof geminiConfig === 'undefined' || !geminiConfig || !geminiConfig.apiKey || geminiConfig.apiKey === "YOUR_GEMini_API_KEY") {
         alert("Gemini API Key is missing. Please update config.js.");
         return;
     }
 
     const tbody = document.getElementById('market-data-body');
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 2rem;"><div class="spinner"></div><p>AI is scanning the market...</p></td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 2rem;"><div class="spinner"></div><p>AI is scanning the market...</p></td></tr>`;
 
-    const userSkills = user.skills ? user.skills.join(', ') : "React, JavaScript, Node.js"; // Fallback to default if no skills yet
+    const userSkills = user.skills ? user.skills.join(', ') : "React, JavaScript, Node.js";
     const prompt = `
     You are a Real-Time Job Market Analyzer. 
     Based on the following skills: "${userSkills}", list 5 top companies actively hiring for relevant roles.
@@ -438,12 +508,14 @@ async function fetchMarketData() {
 
     } catch (error) {
         console.error("Market Data Error:", error);
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--danger);">Failed to fetch market data. Try again.</td></tr>`;
+        if (tbody) tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--danger);">Failed to fetch market data. Try again.</td></tr>`;
     }
 }
 
 function renderMarketTable(data) {
     const tbody = document.getElementById('market-data-body');
+    if (!tbody) return;
+
     tbody.innerHTML = '';
 
     data.forEach(item => {
@@ -474,6 +546,8 @@ function renderMarketTable(data) {
 // --- LEARNING PATH LOGIC ---
 function toggleTask(card, taskId) {
     const checkbox = card.querySelector('input[type="checkbox"]');
+    if (!checkbox) return;
+
     if (event.target !== checkbox) {
         checkbox.checked = !checkbox.checked;
     }
@@ -492,11 +566,14 @@ async function updateProgress() {
     const percent = Math.floor((checked / total) * 100);
 
     // Update UI
-    document.getElementById('progress-text').innerText = `${percent}%`;
-    document.getElementById('learning-progress').style.width = `${percent}%`;
+    const progressText = document.getElementById('progress-text');
+    const learningProgress = document.getElementById('learning-progress');
+
+    if (progressText) progressText.innerText = `${percent}%`;
+    if (learningProgress) learningProgress.style.width = `${percent}%`;
 
     // Sync to Firestore
-    if (user.isLoggedIn && user.uid) {
+    if (user.isLoggedIn && user.uid && db) {
         try {
             await db.collection('users').doc(user.uid).update({
                 learningProgress: percent,
