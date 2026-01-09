@@ -33,16 +33,58 @@
             <h1>Unlock Your Career Potential</h1>
             <p>AI-driven resume analysis and skill bridging for top-tier tech roles.</p>
 
-            <div class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_blue"
-                data-text="continue_with" data-shape="rectangular" data-logo_alignment="left" data-width="300">
+            <div id="login-options">
+                <div class="g_id_signin" data-type="standard" data-size="large" data-theme="filled_blue"
+                    data-text="continue_with" data-shape="rectangular" data-logo_alignment="left" data-width="300">
+                </div>
+
+                <p class="login-subtext">OR</p>
+
+                <div class="manual-auth-buttons">
+                    <button class="btn-outline full-width" onclick="showAuthView('email-login')">
+                        <i data-lucide="mail"></i> Email Login
+                    </button>
+                    <button class="btn-outline full-width" onclick="showAuthView('signup')">
+                        <i data-lucide="user-plus"></i> Create Account
+                    </button>
+                    <button class="google-btn" onclick="handleLogin()">
+                        <i data-lucide="user"></i> Continue as Guest
+                    </button>
+                </div>
             </div>
 
-            <p class="login-subtext">OR</p>
+            <div id="email-login-form" class="hidden">
+                <h2>Welcome Back</h2>
+                <div class="form-group">
+                    <input type="email" id="login-email" placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="login-password" placeholder="Password">
+                </div>
+                <button class="btn-primary full-width" onclick="handleManualLogin()">Login</button>
+                <p class="toggle-text">New here? <a href="#" onclick="showAuthView('signup')">Create Account</a></p>
+                <button class="btn-back" onclick="showAuthView('options')"><i data-lucide="arrow-left"></i>
+                    Back</button>
+            </div>
 
-            <button class="google-btn" onclick="handleLogin()">
-                <i data-lucide="user"></i>
-                Continue as Guest
-            </button>
+            <div id="signup-form" class="hidden">
+                <h2>Create Account</h2>
+                <div class="form-group">
+                    <input type="text" id="signup-name" placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <input type="email" id="signup-email" placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signup-password" placeholder="Password">
+                </div>
+                <button class="btn-primary full-width" onclick="handleManualSignup()">Sign Up</button>
+                <p class="toggle-text">Already have an account? <a href="#"
+                        onclick="showAuthView('email-login')">Login</a></p>
+                <button class="btn-back" onclick="showAuthView('options')"><i data-lucide="arrow-left"></i>
+                    Back</button>
+            </div>
+
             <div class="login-footer">
                 <span>Privacy Policy</span> • <span>Terms of Service</span>
             </div>
@@ -203,122 +245,122 @@
                         </thead>
                         <tbody>
                             <tr>
-    <td class="company-name">
-        <img src="https://tse1.mm.bing.net/th/id/OIP.WZEsF8Yzchv1bEJgr7AiZAHaHa?pid=Api&P=0&h=180"
-             class="co-logo">
-        Google
-    </td>
-    <td>Frontend Engineer</td>
-    <td class="score-high">92%</td>
-    <td><span class="badge warning">Upskill</span></td>
-    <td><button class="btn-sm">View Gaps</button></td>
-</tr>
+                                <td class="company-name">
+                                    <img src="https://tse1.mm.bing.net/th/id/OIP.WZEsF8Yzchv1bEJgr7AiZAHaHa?pid=Api&P=0&h=180"
+                                        class="co-logo">
+                                    Google
+                                </td>
+                                <td>Frontend Engineer</td>
+                                <td class="score-high">92%</td>
+                                <td><span class="badge warning">Upskill</span></td>
+                                <td><button class="btn-sm">View Gaps</button></td>
+                            </tr>
 
-<tr>
-    <td class="company-name">
-        <img src="https://tse3.mm.bing.net/th/id/OIP.YKFZjzosPzcUtBNHe9cAdAHaEK?pid=Api&P=0&h=180"
-             class="co-logo">
-        Amazon
-    </td>
-    <td>SDE-1</td>
-    <td class="score-med">84%</td>
-    <td><span class="badge success">Eligible</span></td>
-    <td><button class="btn-sm">Apply</button></td>
-</tr>
-
-<tr>
-    <td class="company-name">
-        <img src="https://tse1.mm.bing.net/th/id/OIP.CnlidGvyCZgGnztLkfgwUAHaHa?pid=Api&P=0&h=180"
-             class="co-logo">
-        Netflix
-    </td>
-    <td>Sr. UI Eng</td>
-    <td class="score-high">95%</td>
-    <td><span class="badge danger">Not Ready</span></td>
-    <td><button class="btn-sm">View Gaps</button></td>
-</tr>
                             <tr>
-    <td class="company-name">
-        <img src="https://tse1.mm.bing.net/th/id/OIP.AKyCP44z4UUp2gqH8BTf3QHaGB?pid=Api&P=0&h=180"
-             class="co-logo">
-        Microsoft
-    </td>
-    <td>Software Engineer</td>
-    <td class="score-high">89%</td>
-    <td><span class="badge success">Eligible</span></td>
-    <td><button class="btn-sm">Apply</button></td>
-</tr>
+                                <td class="company-name">
+                                    <img src="https://tse3.mm.bing.net/th/id/OIP.YKFZjzosPzcUtBNHe9cAdAHaEK?pid=Api&P=0&h=180"
+                                        class="co-logo">
+                                    Amazon
+                                </td>
+                                <td>SDE-1</td>
+                                <td class="score-med">84%</td>
+                                <td><span class="badge success">Eligible</span></td>
+                                <td><button class="btn-sm">Apply</button></td>
+                            </tr>
 
-<tr>
-    <td class="company-name">
-        <img src="https://tse1.mm.bing.net/th/id/OIP.3qsMnUTHk9Zs8dA5meZsSwHaEK?pid=Api&P=0&h=180"
-             class="co-logo">
-        Apple
-    </td>
-    <td>iOS Engineer</td>
-    <td class="score-med">85%</td>
-    <td><span class="badge warning">Upskill</span></td>
-    <td><button class="btn-sm">View Gaps</button></td>
-</tr>
-
-<tr>
-    <td class="company-name">
-        <img src="https://tse1.mm.bing.net/th/id/OIP.VgfWevmVdjRKHG8bfhpVsgHaHa?pid=Api&P=0&h=180"
-             class="co-logo">
-        Facebook
-    </td>
-    <td>Product Engineer</td>
-    <td class="score-high">90%</td>
-    <td><span class="badge success">Eligible</span></td>
-    <td><button class="btn-sm">Apply</button></td>
-</tr>
-
-<tr>
-    <td class="company-name">
-        <img src="https://tse3.mm.bing.net/th/id/OIP.y8OX_qav2XCIW8jNeaqXBwHaCB?pid=Api&P=0&h=180"
-             class="co-logo">
-        Adobe
-    </td>
-    <td>UI/UX Developer</td>
-    <td class="score-med">83%</td>
-    <td><span class="badge warning">Upskill</span></td>
-    <td><button class="btn-sm">View Gaps</button></td>
-</tr>
-
-<tr>
-    <td class="company-name">
-        <img src="https://tse3.mm.bing.net/th/id/OIP.vJzP4ngqOD78iyOyJZn4XQHaFL?pid=Api&P=0&h=180"
-             class="co-logo">
-        Salesforce
-    </td>
-    <td>CRM Developer</td>
-    <td class="score-high">88%</td>
-    <td><span class="badge success">Eligible</span></td>
-    <td><button class="btn-sm">Apply</button></td>
-</tr>
                             <tr>
-    <td class="company-name">
-        <img src="https://tse3.mm.bing.net/th/id/OIP.jdQ0-zCqys8HUsVr1-EE6AHaEK?pid=Api&P=0&h=180"
-             class="co-logo">
-        Oracle
-    </td>
-    <td>Backend Engineer</td>
-    <td class="score-med">80%</td>
-    <td><span class="badge warning">Upskill</span></td>
-    <td><button class="btn-sm">View Gaps</button></td>
-</tr>
+                                <td class="company-name">
+                                    <img src="https://tse1.mm.bing.net/th/id/OIP.CnlidGvyCZgGnztLkfgwUAHaHa?pid=Api&P=0&h=180"
+                                        class="co-logo">
+                                    Netflix
+                                </td>
+                                <td>Sr. UI Eng</td>
+                                <td class="score-high">95%</td>
+                                <td><span class="badge danger">Not Ready</span></td>
+                                <td><button class="btn-sm">View Gaps</button></td>
+                            </tr>
+                            <tr>
+                                <td class="company-name">
+                                    <img src="https://tse1.mm.bing.net/th/id/OIP.AKyCP44z4UUp2gqH8BTf3QHaGB?pid=Api&P=0&h=180"
+                                        class="co-logo">
+                                    Microsoft
+                                </td>
+                                <td>Software Engineer</td>
+                                <td class="score-high">89%</td>
+                                <td><span class="badge success">Eligible</span></td>
+                                <td><button class="btn-sm">Apply</button></td>
+                            </tr>
 
-<tr>
-    <td class="company-name">
-        <img src="https://tse3.mm.bing.net/th/id/OIP.XIZDhSibILo3WFUdQjLM-wHaE8?pid=Api&P=0&h=180"
-             class="co-logo">
-        IBM
-    </td>
-    <td>Cloud Developer</td>
-    <td class="score-high">87%</td>
-    <td><span class="badge success">Eligible</span></td>
-    <td><button class="btn-sm">Apply</button></td>
-</tr>
+                            <tr>
+                                <td class="company-name">
+                                    <img src="https://tse1.mm.bing.net/th/id/OIP.3qsMnUTHk9Zs8dA5meZsSwHaEK?pid=Api&P=0&h=180"
+                                        class="co-logo">
+                                    Apple
+                                </td>
+                                <td>iOS Engineer</td>
+                                <td class="score-med">85%</td>
+                                <td><span class="badge warning">Upskill</span></td>
+                                <td><button class="btn-sm">View Gaps</button></td>
+                            </tr>
+
+                            <tr>
+                                <td class="company-name">
+                                    <img src="https://tse1.mm.bing.net/th/id/OIP.VgfWevmVdjRKHG8bfhpVsgHaHa?pid=Api&P=0&h=180"
+                                        class="co-logo">
+                                    Facebook
+                                </td>
+                                <td>Product Engineer</td>
+                                <td class="score-high">90%</td>
+                                <td><span class="badge success">Eligible</span></td>
+                                <td><button class="btn-sm">Apply</button></td>
+                            </tr>
+
+                            <tr>
+                                <td class="company-name">
+                                    <img src="https://tse3.mm.bing.net/th/id/OIP.y8OX_qav2XCIW8jNeaqXBwHaCB?pid=Api&P=0&h=180"
+                                        class="co-logo">
+                                    Adobe
+                                </td>
+                                <td>UI/UX Developer</td>
+                                <td class="score-med">83%</td>
+                                <td><span class="badge warning">Upskill</span></td>
+                                <td><button class="btn-sm">View Gaps</button></td>
+                            </tr>
+
+                            <tr>
+                                <td class="company-name">
+                                    <img src="https://tse3.mm.bing.net/th/id/OIP.vJzP4ngqOD78iyOyJZn4XQHaFL?pid=Api&P=0&h=180"
+                                        class="co-logo">
+                                    Salesforce
+                                </td>
+                                <td>CRM Developer</td>
+                                <td class="score-high">88%</td>
+                                <td><span class="badge success">Eligible</span></td>
+                                <td><button class="btn-sm">Apply</button></td>
+                            </tr>
+                            <tr>
+                                <td class="company-name">
+                                    <img src="https://tse3.mm.bing.net/th/id/OIP.jdQ0-zCqys8HUsVr1-EE6AHaEK?pid=Api&P=0&h=180"
+                                        class="co-logo">
+                                    Oracle
+                                </td>
+                                <td>Backend Engineer</td>
+                                <td class="score-med">80%</td>
+                                <td><span class="badge warning">Upskill</span></td>
+                                <td><button class="btn-sm">View Gaps</button></td>
+                            </tr>
+
+                            <tr>
+                                <td class="company-name">
+                                    <img src="https://tse3.mm.bing.net/th/id/OIP.XIZDhSibILo3WFUdQjLM-wHaE8?pid=Api&P=0&h=180"
+                                        class="co-logo">
+                                    IBM
+                                </td>
+                                <td>Cloud Developer</td>
+                                <td class="score-high">87%</td>
+                                <td><span class="badge success">Eligible</span></td>
+                                <td><button class="btn-sm">Apply</button></td>
+                            </tr>
 
 
 

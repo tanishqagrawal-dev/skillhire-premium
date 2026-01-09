@@ -25,23 +25,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('sidebar-overlay');
 
     function toggleMenu() {
-        sidebar.classList.toggle('active');
-        overlay.classList.toggle('active');
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            document.querySelector('.main-content').classList.toggle('expanded');
+            // Trigger resize for charts
+            setTimeout(() => window.dispatchEvent(new Event('resize')), 300);
+        }
     }
 
-    if (menuToggle) {
-        menuToggle.addEventListener('click', toggleMenu);
-    }
+    window.showAuthView = function (view) {
+        const options = document.getElementById('login-options');
+        const emailLogin = document.getElementById('email-login-form');
+        const signup = document.getElementById('signup-form');
 
-    if (closeSidebar) {
-        closeSidebar.addEventListener('click', toggleMenu);
-    }
+        options.classList.add('hidden');
+        emailLogin.classList.add('hidden');
+        signup.classList.add('hidden');
 
-    if (overlay) {
-        overlay.addEventListener('click', toggleMenu);
-    }
+        if (view === 'options') options.classList.remove('hidden');
+        else if (view === 'email-login') emailLogin.classList.remove('hidden');
+        else if (view === 'signup') signup.classList.remove('hidden');
 
-    // Close sidebar when clicking menu items on mobile
+        lucide.createIcons();
+    };
+
+    if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
+    if (closeSidebar) closeSidebar.addEventListener('click', toggleMenu);
+    if (overlay) overlay.addEventListener('click', toggleMenu);
+
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', () => {
             if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
@@ -49,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
     // Profile Photo Upload Handling
     const avatarInput = document.getElementById('avatar-input');
     const profileImgPreview = document.getElementById('profile-img-preview');
