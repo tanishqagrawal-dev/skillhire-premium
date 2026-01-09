@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="interview.css">
     <link rel="stylesheet" href="dsa.css">
     <link rel="stylesheet" href="roadmap.css">
+    <link rel="stylesheet" href="ai_coach.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -761,12 +762,36 @@
         </main>
     </div>
 
+    <div id="ai-coach-widget">
+        <div id="ai-chat-body" class="ai-chat-window hidden">
+            <div class="chat-header">
+                <i data-lucide="bot"></i>
+                <h3>SkillHire AI Coach</h3>
+                <button onclick="toggleChat()"
+                    style="margin-left:auto; background:none; border:none; cursor:pointer; color:var(--text-muted);"><i
+                        data-lucide="x"></i></button>
+            </div>
+            <div id="ai-messages" class="chat-messages">
+                <!-- Messages go here -->
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="ai-input" placeholder="Ask me anything...">
+                <button onclick="sendMessage()"><i data-lucide="send"></i></button>
+            </div>
+        </div>
+        <div class="ai-fab" onclick="toggleChat()">
+            <i data-lucide="message-square"></i>
+        </div>
+    </div>
+
     <script src="config.js"></script>
     <script src="dashboard.js"></script>
     <script src="resume_builder.js"></script>
     <script src="interview.js"></script>
     <script src="dsa.js"></script>
+    <script src="dsa.js"></script>
     <script src="roadmap.js"></script>
+    <script src="ai_coach.js"></script>
     <script>lucide.createIcons();</script>
 
 
