@@ -247,7 +247,9 @@
                         <div class="avatar-upload">
                             <img id="profile-img-preview" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
                                 alt="Profile">
-                            <button class="edit-icon"><i data-lucide="camera"></i></button>
+                            <input type="file" id="avatar-input" accept="image/*" class="hidden">
+                            <button class="edit-icon" onclick="document.getElementById('avatar-input').click()"><i
+                                    data-lucide="camera"></i></button>
                         </div>
                         <h3 id="profile-name-display">Alex Johnson</h3>
                         <p class="role-text">Full Stack Developer</p>

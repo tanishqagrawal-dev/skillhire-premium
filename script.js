@@ -49,6 +49,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    // Profile Photo Upload Handling
+    const avatarInput = document.getElementById('avatar-input');
+    const profileImgPreview = document.getElementById('profile-img-preview');
+    const headerAvatar = document.getElementById('header-avatar');
+
+    if (avatarInput) {
+        avatarInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const base64Image = event.target.result;
+                    // Update user state
+                    user.photo = base64Image;
+                    // Update UI previews
+                    profileImgPreview.src = base64Image;
+                    headerAvatar.src = base64Image;
+                    // Persist to local storage
+                    saveUserToLocal();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
 });
 
 // --- AUTH FUNCTIONS ---
@@ -65,6 +89,7 @@ function handleLogin() {
         document.getElementById('login-screen').classList.add('hidden');
         document.getElementById('app-container').classList.remove('hidden');
         initCharts(); // Render graphs only after login
+        window.dispatchEvent(new Event('resize'));
     }, 1000);
 }
 
@@ -82,7 +107,10 @@ function checkLogin() {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('app-container').classList.remove('hidden');
             updateUI();
-            setTimeout(initCharts, 500); // Small delay for DOM to settle
+            setTimeout(() => {
+                initCharts();
+                window.dispatchEvent(new Event('resize'));
+            }, 500); // Small delay for DOM to settle
         }
     }
 }

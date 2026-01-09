@@ -167,6 +167,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    width: 100%;
 }
 
 .user-pill {
@@ -178,6 +179,7 @@ body {
     align-items: center;
     gap: 10px;
     cursor: pointer;
+    margin-left: auto;
 }
 
 .user-pill img {
@@ -250,6 +252,8 @@ body {
     border: 1px solid var(--border);
     border-radius: 20px;
     padding: 1.5rem;
+    overflow: hidden;
+    position: relative;
 }
 
 /* Tables */
@@ -340,6 +344,8 @@ th {
 
 .avatar-upload img {
     width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
     border-radius: 50%;
     border: 3px solid var(--sidebar);
 }
@@ -637,23 +643,27 @@ th {
 }
 
 /* Responsive Styles */
+/* --- UTILITIES --- */
+.hidden {
+    display: none !important;
+}
+
+.mobile-only {
+    display: none !important;
+}
+
 #menu-toggle,
-.close-btn {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--text-main);
-    cursor: pointer;
-    padding: 8px;
+#close-sidebar {
+    display: none !important;
 }
 
-.close-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 2002;
+.chart-box {
+    min-height: 350px;
 }
 
+/* --- RESPONSIVE OVERRIDES --- */
+
+/* Tablet & Smaller Laptops */
 @media (max-width: 1024px) {
     .charts-grid {
         grid-template-columns: 1fr;
@@ -661,10 +671,12 @@ th {
     }
 
     .chart-box {
-        height: 300px;
+        height: 350px;
+        margin-bottom: 1.5rem;
     }
 }
 
+/* Mobile Devices */
 @media (max-width: 768px) {
     body {
         overflow-y: auto;
@@ -706,11 +718,28 @@ th {
         display: block;
     }
 
+    .mobile-only {
+        display: flex !important;
+    }
+
     #menu-toggle,
     .close-btn {
-        display: flex;
+        display: flex !important;
+        background: none !important;
+        border: none !important;
+        color: var(--text-main);
+        cursor: pointer;
+        padding: 8px;
+        outline: none;
         align-items: center;
         justify-content: center;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 2002;
     }
 
     .main-content {
@@ -748,12 +777,9 @@ th {
     .top-bar h2 {
         font-size: 1.2rem;
     }
-
-    .glass-login-card {
-        padding: 2rem;
-    }
 }
 
+/* Small Phones */
 @media (max-width: 480px) {
     .top-bar {
         margin-bottom: 1.5rem;
