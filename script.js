@@ -109,6 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Initialize Market Data
+    initMarketData();
 });
 
 // Guest Login (Simulated) - GLOBAL FUNCTION
@@ -506,6 +509,87 @@ function initCharts() {
 }
 
 // --- MARKET INTELLIGENCE (Gemini Powered) ---
+const testMarketData = [
+    {
+        "company": "Google",
+        "role": "Frontend Engineer",
+        "cutoff": 92,
+        "status": "Upskill",
+        "logo_url": "https://logo.clearbit.com/google.com"
+    },
+    {
+        "company": "Amazon",
+        "role": "SDE-1",
+        "cutoff": 84,
+        "status": "Eligible",
+        "logo_url": "https://logo.clearbit.com/amazon.com"
+    },
+    {
+        "company": "Netflix",
+        "role": "Sr. UI Eng",
+        "cutoff": 95,
+        "status": "Not Ready",
+        "logo_url": "https://logo.clearbit.com/netflix.com"
+    },
+    {
+        "company": "Microsoft",
+        "role": "Software Engineer",
+        "cutoff": 89,
+        "status": "Eligible",
+        "logo_url": "https://logo.clearbit.com/microsoft.com"
+    },
+    {
+        "company": "Apple",
+        "role": "IOS Engineer",
+        "cutoff": 85,
+        "status": "Upskill",
+        "logo_url": "https://logo.clearbit.com/apple.com"
+    },
+    {
+        "company": "Facebook",
+        "role": "Product Engineer",
+        "cutoff": 90,
+        "status": "Eligible",
+        "logo_url": "https://logo.clearbit.com/facebook.com"
+    },
+    {
+        "company": "Adobe",
+        "role": "UI/UX Developer",
+        "cutoff": 83,
+        "status": "Upskill",
+        "logo_url": "https://logo.clearbit.com/adobe.com"
+    },
+    {
+        "company": "Salesforce",
+        "role": "CRM Developer",
+        "cutoff": 88,
+        "status": "Eligible",
+        "logo_url": "https://logo.clearbit.com/salesforce.com"
+    },
+    {
+        "company": "Oracle",
+        "role": "Backend Engineer",
+        "cutoff": 80,
+        "status": "Upskill",
+        "logo_url": "https://logo.clearbit.com/oracle.com"
+    },
+    {
+        "company": "IBM",
+        "role": "Cloud Developer",
+        "cutoff": 87,
+        "status": "Eligible",
+        "logo_url": "https://logo.clearbit.com/ibm.com"
+    }
+];
+
+function initMarketData() {
+    const tbody = document.getElementById('market-data-body');
+    // Check if table is empty (contains placeholder)
+    if (tbody && tbody.querySelector('td[colspan="5"]')) {
+        renderMarketTable(testMarketData);
+    }
+}
+
 async function fetchMarketData() {
     if (typeof geminiConfig === 'undefined' || !geminiConfig || !geminiConfig.apiKey || geminiConfig.apiKey === "YOUR_GEMini_API_KEY") {
         alert("Gemini API Key is missing. Please update config.js.");
@@ -568,8 +652,16 @@ function renderMarketTable(data) {
         const row = document.createElement('tr');
 
         let badgeClass = 'success';
-        if (item.status === 'Upskill') badgeClass = 'warning';
-        if (item.status === 'Not Ready') badgeClass = 'danger';
+        let actionBtn = `<button class="btn-sm" style="background: var(--success); color: #000;">Apply</button>`;
+
+        if (item.status === 'Upskill') {
+            badgeClass = 'warning';
+            actionBtn = `<button class="btn-sm" style="background: rgba(255,255,255,0.1); border: 1px solid var(--warning); color: var(--warning);">View Gaps</button>`;
+        }
+        if (item.status === 'Not Ready') {
+            badgeClass = 'danger';
+            actionBtn = `<button class="btn-sm" style="background: rgba(255,255,255,0.1); border: 1px solid var(--danger); color: var(--danger);">View Gaps</button>`;
+        }
 
         let scoreClass = 'score-high';
         if (item.cutoff < 85) scoreClass = 'score-med';
@@ -583,7 +675,7 @@ function renderMarketTable(data) {
             <td>${item.role}</td>
             <td class="${scoreClass}">${item.cutoff}%</td>
             <td><span class="badge ${badgeClass}">${item.status}</span></td>
-            <td><button class="btn-sm">Apply</button></td>
+            <td>${actionBtn}</td>
         `;
         tbody.appendChild(row);
     });

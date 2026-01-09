@@ -1017,6 +1017,200 @@ th {
     .mobile-hide {
         display: none !important;
     }
+
+    /* Small Phones */
+    @media (max-width: 480px) {
+        .top-bar {
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            padding: 1rem;
+            gap: 1rem;
+        }
+
+        .icon-box {
+            width: 40px;
+            height: 40px;
+        }
+
+        .stat-info .number {
+            font-size: 1.5rem;
+        }
+
+        .upload-zone {
+            padding: 2rem 1rem;
+        }
+
+        .course-img {
+            height: 140px;
+        }
+    }
+
+    /* Login Enhancement */
+    .login-subtext {
+        margin: 1.25rem 0;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-weight: 600;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        transform: translateZ(15px);
+        /* 3D depth */
+    }
+
+    .login-subtext::before,
+    .login-subtext::after {
+        content: "";
+        height: 1px;
+        background: var(--border);
+        flex: 1;
+    }
+
+    /* Ensure Google Button is centered */
+    .g_id_signin {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    /* Manual Auth Styles */
+    .manual-auth-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 320px;
+        margin: 0 auto;
+    }
+
+    .btn-outline {
+        background: rgba(15, 23, 42, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-main);
+        padding: 16px 24px;
+        border-radius: 50px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateZ(10px);
+        /* 3D effect */
+    }
+
+    .btn-outline:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .toggle-text {
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+
+    .toggle-text a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .btn-back {
+        margin-top: 1rem;
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.85rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-back:hover {
+        color: var(--text);
+    }
+
+    #email-login-form,
+    #signup-form {
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    #email-login-form h2,
+    #signup-form h2 {
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+    }
+
+    .form-group input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        color: var(--text);
+        margin-bottom: 1rem;
+        outline: none;
+    }
+
+    .form-group input:focus {
+        border-color: var(--primary);
+    }
+
+    /* Enable Hamburger on Desktop */
+    @media (min-width: 769px) {
+        #menu-toggle {
+            display: flex !important;
+            margin-right: 1.5rem;
+        }
+
+        .sidebar.collapsed {
+            width: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .main-content.expanded {
+            margin-left: 0;
+        }
+    }
+
+    .login-footer {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    .login-footer span {
+        cursor: pointer;
+    }
+
+    .table-card {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 600px;
+    }
+
+    .top-bar h2 {
+        font-size: 1.2rem;
+    }
+
+    .mobile-hide {
+        display: none !important;
+    }
 }
 
 /* Small Phones */
@@ -1200,5 +1394,99 @@ th {
 
 .login-footer span:hover {
     color: var(--text-main);
-}/ *   L e a r n i n g   P a t h   I n t e r a c t i v e   * /   . r o a d m a p - h e a d e r   {   b a c k g r o u n d :   v a r ( - - c a r d - b g ) ;   p a d d i n g :   1 . 5 r e m ;   b o r d e r - r a d i u s :   1 6 p x ;   m a r g i n - b o t t o m :   2 r e m ;   b o r d e r :   1 p x   s o l i d   v a r ( - - b o r d e r ) ;   d i s p l a y :   f l e x ;   a l i g n - i t e m s :   c e n t e r ;   j u s t i f y - c o n t e n t :   s p a c e - b e t w e e n ;   f l e x - w r a p :   w r a p ;   g a p :   1 r e m ;   }   . p r o g r e s s - b o x   {   w i d t h :   1 0 0 % ;   m a x - w i d t h :   3 0 0 p x ;   }   . p r o g r e s s - i n f o   {   d i s p l a y :   f l e x ;   j u s t i f y - c o n t e n t :   s p a c e - b e t w e e n ;   m a r g i n - b o t t o m :   0 . 5 r e m ;   f o n t - s i z e :   0 . 9 r e m ;   c o l o r :   v a r ( - - t e x t - m u t e d ) ;   }   . p r o g r e s s - b a r   {   w i d t h :   1 0 0 % ;   h e i g h t :   8 p x ;   b a c k g r o u n d :   r g b a ( 2 5 5 , 2 5 5 , 2 5 5 , 0 . 1 ) ;   b o r d e r - r a d i u s :   4 p x ;   o v e r f l o w :   h i d d e n ;   }   . p r o g r e s s - f i l l   {   h e i g h t :   1 0 0 % ;   b a c k g r o u n d :   v a r ( - - p r i m a r y ) ;   t r a n s i t i o n :   w i d t h   0 . 5 s   e a s e ;   b o x - s h a d o w :   0   0   1 0 p x   v a r ( - - g l o w - p r i m a r y ) ;   }   . c o u r s e - c a r d . i n t e r a c t i v e   {   c u r s o r :   p o i n t e r ;   d i s p l a y :   f l e x ;   a l i g n - i t e m s :   f l e x - s t a r t ;   g a p :   1 r e m ;   p a d d i n g :   1 . 5 r e m ;   }   . c o u r s e - c a r d . i n t e r a c t i v e : h o v e r   {   b o r d e r - c o l o r :   v a r ( - - p r i m a r y ) ;   t r a n s f o r m :   t r a n s l a t e Y ( - 3 p x ) ;   }   . c h e c k b o x - w r a p p e r   i n p u t   {   w i d t h :   2 4 p x ;   h e i g h t :   2 4 p x ;   a c c e n t - c o l o r :   v a r ( - - p r i m a r y ) ;   c u r s o r :   p o i n t e r ;   m a r g i n - t o p :   5 p x ;   }  
- 
+}
+
+/* Learning Path Interactive */
+.roadmap-header {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.progress-box {
+    width: 100%;
+    max-width: 300px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary);
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px var(--glow-primary);
+}
+
+.course-card.interactive {
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+}
+
+.course-card.interactive:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+}
+
+.checkbox-wrapper input {
+    width: 24px;
+    height: 24px;
+    accent-color: var(--primary);
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+/* Search Styles */
+.search-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: white;
+    outline: none;
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+
+.search-input:focus {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.table-actions {
+    display: flex;
+    gap: 10px;
+}
