@@ -306,6 +306,11 @@
             Login
         </button>
 
+        <button class="auth-btn btn-white" onclick="handleCreateAccount()">
+            <i data-lucide="user-plus" style="width: 20px; height: 20px;"></i>
+            Create Account
+        </button>
+
         <button class="auth-btn btn-white" onclick="handleGoogleLogin()">
             <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="G" style="width: 20px; height: 20px;">
             Continue with Google
@@ -377,6 +382,25 @@
                 })
                 .catch((error) => {
                     alert("Email Login Error: " + error.message);
+                });
+        }
+
+        function handleCreateAccount() {
+            const email = document.getElementById('email-input').value;
+            const password = document.getElementById('password-input').value;
+
+            if (!email || !password) {
+                alert("Please enter an email and password to create an account.");
+                return;
+            }
+
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    alert("Account created successfully! Logging you in...");
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    alert("Account Creation Error: " + error.message);
                 });
         }
     </script>
