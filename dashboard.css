@@ -47,6 +47,10 @@ body {
     position: fixed;
     width: 100%;
     z-index: 1000;
+    overflow-y: auto;
+    /* Allow scroll */
+    padding: 20px 0;
+    /* Vertical breathing room */
 }
 
 .glass-login-card {
@@ -58,11 +62,10 @@ body {
     border-radius: 40px;
     text-align: center;
     max-width: 440px;
-    width: 90%;
-    box-shadow:
-        0 40px 100px -20px rgba(0, 0, 0, 0.8),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+    width: 95%;
+    margin: auto;
+    /* Flex centering */
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
     perspective: 2000px;
     transform-style: preserve-3d;
     transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
