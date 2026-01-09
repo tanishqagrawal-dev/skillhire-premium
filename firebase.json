@@ -10,12 +10,6 @@
             "**/.*",
             ".agent/**",
             "README.md"
-        ],
-        "rewrites": [
-            {
-                "source": "**",
-                "destination": "/index.html"
-            }
         ]
     }
 }

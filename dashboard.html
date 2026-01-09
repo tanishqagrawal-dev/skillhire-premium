@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Hire | Career Intelligence Platform</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+</head>
+
+<body>
+
+    <div id="login-screen" class="login-container">
+        <div class="glass-login-card" data-tilt>
+            <div class="logo-large">
+                <i data-lucide="cpu"></i>
+                <span>Skill Hire</span>
+            </div>
+            <h1>Unlock Your Career Potential</h1>
+            <p>AI-driven resume analysis and skill bridging for top-tier tech roles.</p>
+            <div class="email-login-form" style="margin-bottom: 20px; width: 100%;">
+                <input type="email" id="email-input" placeholder="Email" class="auth-input"
+                    style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
+                <input type="password" id="password-input" placeholder="Password" class="auth-input"
+                    style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
+                <button class="btn-primary" onclick="handleEmailLogin()" style="width: 100%;">Login</button>
+            </div>
+
+            <div id="login-options">
+                <button class="google-btn firebase-google-btn" onclick="handleGoogleLogin()">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="G" style="width: 20px;">
+                    Continue with Google
+                </button>
+
+                <div class="manual-auth-buttons">
+                    <button class="google-btn" onclick="handleLogin()">
+                        <i data-lucide="user"></i> Continue as Guest
+                    </button>
+                </div>
+            </div>
+
+            <div class="login-footer">
+                <span>Privacy Policy</span> • <span>Terms of Service</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="app-container" class="app-container hidden">
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+        <aside class="sidebar">
+            <button id="close-sidebar" class="mobile-only close-btn">
+                <i data-lucide="chevron-left"></i>
+            </button>
+
+            <nav>
+                <button class="nav-item active" onclick="switchTab('dashboard')">
+                    <i data-lucide="layout-dashboard"></i> Dashboard
+                </button>
+                <button class="nav-item" onclick="switchTab('analyzer')">
+                    <i data-lucide="scan-line"></i> AI Analyzer
+                </button>
+                <button class="nav-item" onclick="switchTab('companies')">
+                    <i data-lucide="building-2"></i> Company Intel
+                </button>
+                <button class="nav-item" onclick="switchTab('learning')">
+                    <i data-lucide="graduation-cap"></i> Learning Path
+                </button>
+                <button class="nav-item" onclick="switchTab('profile')">
+                    <i data-lucide="user-circle"></i> Profile
+                </button>
+                <button class="nav-item" onclick="switchTab('faq')">
+                    <i data-lucide="help-circle"></i> FAQ
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i data-lucide="log-out"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <button id="menu-toggle" class="menu-btn">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <div class="header-metadata">
+                        <div class="brand">
+                            <i data-lucide="cpu"></i>
+                            <span>Skill Hire</span>
+                        </div>
+                        <h2 id="page-title">Overview</h2>
+                    </div>
+                </div>
+                <div class="user-pill" onclick="switchTab('profile')">
+                    <span id="header-username">Guest User</span>
+                    <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User">
+                </div>
+            </header>
+
+            <section id="dashboard" class="view-section active">
+                <div class="stats-row">
+                    <div class="stat-card" data-tilt>
+                        <div class="icon-box cyan"><i data-lucide="activity"></i></div>
+                        <div class="stat-info">
+                            <h3>ATS Score</h3>
+                            <div class="number">88%</div>
+                            <span class="trend up">+12% vs last week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card" data-tilt>
+                        <div class="icon-box purple"><i data-lucide="briefcase"></i></div>
+                        <div class="stat-info">
+                            <h3>Eligible Jobs</h3>
+                            <div class="number">14</div>
+                            <span class="trend">Based on skills</span>
+                        </div>
+                    </div>
+                    <div class="stat-card" data-tilt>
+                        <div class="icon-box green"><i data-lucide="eye"></i></div>
+                        <div class="stat-info">
+                            <h3>Profile Views</h3>
+                            <div class="number">342</div>
+                            <span class="trend up">Recruiters active</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-box">
+                        <h3>Performance Trajectory</h3>
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                    <div class="chart-box">
+                        <h3>Skill Gap Matrix</h3>
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="analyzer" class="view-section hidden">
+                <div class="analyzer-container">
+                    <div class="upload-zone" id="drop-zone">
+                        <i data-lucide="cloud-upload"></i>
+                        <h3>Analyze Your Resume via Gemini AI</h3>
+                        <textarea id="resume-text" class="resume-input"
+                            placeholder="Paste your resume text here (PDF support coming soon)..."></textarea>
+                        <button class="btn-primary" onclick="handleResumeAnalysis()">Analyze Now</button>
+                    </div>
+
+                    <div id="analysis-loader" class="loader-container hidden">
+                        <div class="spinner"></div>
+                        <p>AI is analyzing keywords, formatting, and impact...</p>
+                    </div>
+
+                    <div id="analysis-result" class="result-dashboard hidden">
+                        <div class="score-circle">
+                            <svg viewBox="0 0 36 36" class="circular-chart green">
+                                <path class="circle-bg"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="circle" stroke-dasharray="82, 100"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div class="percentage">82%</div>
+                        </div>
+                        <div class="feedback-grid">
+                            <div class="feedback-item good">
+                                <h4>Strengths</h4>
+                                <ul>
+                                    <li><i data-lucide="check"></i> React Architecture</li>
+                                    <li><i data-lucide="check"></i> System Design</li>
+                                </ul>
+                            </div>
+                            <div class="feedback-item bad">
+                                <h4>Missing Skills</h4>
+                                <ul>
+                                    <li><i data-lucide="x"></i> Docker / Kubernetes</li>
+                                    <li><i data-lucide="x"></i> AWS Deployment</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="companies" class="view-section hidden">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Live Hiring Data (AI Powered)</h3>
+                        <div class="table-actions">
+                            <button class="btn-sm" onclick="fetchMarketData()">Refresh Data</button>
+                            <input type="text" placeholder="Search companies..." class="search-input">
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Role</th>
+                                <th>ATS Cutoff</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="market-data-body">
+                            <!-- Populated by AI -->
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 2rem;">
+                                    Click "Refresh Data" to get live market insights.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </section>
+
+            <section id="learning" class="view-section hidden">
+                <div class="roadmap-header">
+                    <h3>Personalized Learning Roadmap</h3>
+                    <div class="progress-box">
+                        <div class="progress-info">
+                            <span>Progress</span>
+                            <span id="progress-text">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="learning-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="learning-grid">
+                    <!-- Dynamic Checklist Item -->
+                    <div class="course-card interactive" onclick="toggleTask(this, 'task1')">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="task1" onchange="event.stopPropagation(); updateProgress()">
+                        </div>
+                        <div class="course-content">
+                            <span class="tag">Fundamentals</span>
+                            <h4>Data Structures & Algorithms</h4>
+                            <p>Master Arrays, Linked Lists, and Trees for interviews.</p>
+                        </div>
+                    </div>
+
+                    <div class="course-card interactive" onclick="toggleTask(this, 'task2')">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="task2" onchange="event.stopPropagation(); updateProgress()">
+                        </div>
+                        <div class="course-content">
+                            <span class="tag">System Design</span>
+                            <h4>Scalable Architecture</h4>
+                            <p>Learn Load Balancers, Caching, and Sharding.</p>
+                        </div>
+                    </div>
+
+                    <div class="course-card interactive" onclick="toggleTask(this, 'task3')">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="task3" onchange="event.stopPropagation(); updateProgress()">
+                        </div>
+                        <div class="course-content">
+                            <span class="tag">Cloud</span>
+                            <h4>AWS Essentials</h4>
+                            <p>Deploy a full-stack app on EC2 with CI/CD pipelines.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="profile" class="view-section hidden">
+                <div class="profile-layout">
+                    <div class="profile-card">
+                        <div class="avatar-upload">
+                            <img id="profile-img-preview" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
+                                alt="Profile">
+                            <input type="file" id="avatar-input" accept="image/*" class="hidden">
+                            <button class="edit-icon" onclick="document.getElementById('avatar-input').click()"><i
+                                    data-lucide="camera"></i></button>
+                        </div>
+                        <h3 id="profile-name-display">Alex Johnson</h3>
+                        <p class="role-text">Full Stack Developer</p>
+                    </div>
+
+                    <div class="form-card">
+                        <h3>Personal Details</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="input-name" value="Alex Johnson">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="input-email" value="alex@example.com" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Target Role</label>
+                                <input type="text" id="input-role" value="Software Engineer">
+                            </div>
+                            <div class="form-group">
+                                <label>LinkedIn URL</label>
+                                <input type="text" placeholder="https://linkedin.com/in/...">
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="saveProfile()">Save Changes</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="faq" class="view-section hidden">
+                <div class="faq-container">
+                    <h3>Frequently Asked Questions</h3>
+                    <div class="faq-item">
+                        <button class="faq-question">How is the ATS score calculated? <i
+                                data-lucide="chevron-down"></i></button>
+                        <div class="faq-answer">We use a proprietary algorithm that scans for keywords, formatting, and
+                            quantifiable impact metrics used by Fortune 500 ATS systems.</div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">Is my resume data stored? <i
+                                data-lucide="chevron-down"></i></button>
+                        <div class="faq-answer">No. We process your resume in real-time within your session. Data is not
+                            permanently stored on our servers for privacy.</div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="dashboard.js"></script>
+    <script>lucide.createIcons();</script>
+
+
+
+</body>
+
+</html>

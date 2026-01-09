@@ -198,11 +198,11 @@ function handleLogout() {
     if (auth) {
         auth.signOut().then(() => {
             localStorage.removeItem('skillhire_user');
-            window.location.reload();
+            window.location.href = 'auth.html';
         });
     } else {
         localStorage.removeItem('skillhire_user');
-        window.location.reload();
+        window.location.href = 'index.html';
     }
 }
 
@@ -251,17 +251,8 @@ function setupAuthObserver() {
                 window.dispatchEvent(new Event('resize'));
             }, 500);
         } else {
-            // Only force show login screen if we are not manually toggling it
-            // This prevents a race condition, but for now standard behavior is fine
-            user.isLoggedIn = false;
-            // Note: We don't automatically show login screen here to allow Guest Mode to work if needed, 
-            // but strict auth observer usually overrides. 
-            // In this app, Guest Login is just local state. 
-            // If auth state is "null", it might re-show login screen if we are not careful.
-
-            // If we are currently in "Guest Mode", user.isLoggedIn might be true from handleLogin
-            // But this observer fires on load. 
-            // We will let the Default Logic apply, but handleLogin overrides the UI classes manually.
+            console.log("No authenticated user, redirecting to login...");
+            window.location.href = 'auth.html';
         }
     });
 }

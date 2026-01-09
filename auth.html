@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth | Skill Hire</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Firebase SDKs (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+    <!-- App Config & Styles -->
+    <script src="config.js"></script>
+    <link rel="stylesheet" href="landing page/landing.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+            padding-top: 0;
+            /* Override landing.css body padding */
+        }
+
+        .auth-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            padding: 60px 40px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            color: var(--primary);
+        }
+
+        .auth-card h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .auth-card p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        .auth-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 18px;
+            border-radius: 100px;
+            /* Pill shape like image */
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .auth-btn-google {
+            background: white;
+            color: #000;
+        }
+
+        .auth-btn-dark {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .auth-btn-guest {
+            background: white;
+            color: #000;
+            margin-top: 8px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 24px 0;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .divider:not(:empty)::before {
+            margin-right: 1.5em;
+        }
+
+        .divider:not(:empty)::after {
+            margin-left: 1.5em;
+        }
+
+        .auth-btn i {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-glow"></div>
+    <div class="bg-glow-2"></div>
+
+    <div class="auth-card">
+        <div class="auth-logo">
+            <i data-lucide="cpu"></i>
+            <span>Skill Hire</span>
+        </div>
+
+        <h1>Unlock Your <br> Career Potential</h1>
+        <p>AI-driven resume analysis and skill bridging for top-tier tech roles.</p>
+
+        <div class="auth-methods">
+            <button class="auth-btn auth-btn-google" onclick="handleGoogleLogin()">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="G" style="width: 24px;">
+                Continue with Google
+            </button>
+
+            <div class="divider">OR</div>
+
+            <button class="auth-btn auth-btn-dark" onclick="showEmailLogin()">
+                <i data-lucide="mail"></i> Email Login
+            </button>
+
+            <button class="auth-btn auth-btn-dark" onclick="showCreateAccount()">
+                <i data-lucide="user-plus"></i> Create Account
+            </button>
+
+            <button class="auth-btn auth-btn-guest" onclick="handleGuestLogin()">
+                <i data-lucide="user"></i> Continue as Guest
+            </button>
+        </div>
+    </div>
+
+    <!-- Reusing landing logic for redirection -->
+    <script src="landing page/landing.js"></script>
+    <script>
+        lucide.createIcons();
+
+        // Specific handlers for this page
+        function handleGoogleLogin() {
+            startLogin(); // Defined in landing.js
+        }
+
+        function handleGuestLogin() {
+            // Store guest flag and redirect
+            localStorage.setItem('skillhire_guest', 'true');
+            window.location.href = 'dashboard.html';
+        }
+
+        function showEmailLogin() {
+            alert("Email login coming soon! Use Google or Guest for now.");
+        }
+
+        function showCreateAccount() {
+            alert("Account creation coming soon! Use Google for now.");
+        }
+    </script>
+</body>
+
+</html>
