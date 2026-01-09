@@ -30,20 +30,26 @@
             min-height: 100vh;
             padding: 20px;
             margin: 0;
-            padding-top: 0;
-            /* Override landing.css body padding */
+            background: #0f172a;
+            /* Fallback */
+            overflow: hidden;
+            /* Prevent scrollbars from background blobs */
         }
 
         .auth-card {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
-            padding: 60px 40px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 32px;
+            padding: 48px 40px;
             width: 100%;
-            max-width: 450px;
+            max-width: 420px;
             text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05),
+                0 20px 40px -12px rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 10;
         }
 
         .auth-logo {
@@ -51,98 +57,159 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            font-size: 2.5rem;
+            margin-bottom: 24px;
+        }
+
+        .auth-logo span {
+            font-size: 2rem;
             font-weight: 800;
-            margin-bottom: 40px;
-            color: var(--primary);
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .auth-logo i,
+        .auth-logo svg {
+            color: #00f2fe;
+            width: 32px;
+            height: 32px;
         }
 
         .auth-card h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 16px;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+            margin: 0 0 12px 0;
             line-height: 1.2;
         }
 
         .auth-card p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 40px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 32px;
             line-height: 1.5;
         }
 
-        .auth-methods {
+        .input-group {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .input-field {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .input-field::placeholder {
+            color: #64748b;
+        }
+
+        .input-field:focus {
+            border-color: #00f2fe;
+            background: rgba(30, 41, 59, 0.8);
+            box-shadow: 0 0 0 4px rgba(0, 242, 254, 0.1);
         }
 
         .auth-btn {
             width: 100%;
-            padding: 18px;
+            padding: 14px;
             border-radius: 100px;
-            /* Pill shape like image */
-            font-weight: 700;
-            font-size: 1.1rem;
+            font-weight: 600;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             border: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-decoration: none;
         }
 
-        .auth-btn-google {
+        .btn-primary-login {
+            background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+            color: #0f172a;
+            font-weight: 700;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+        }
+
+        .btn-primary-login:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
+        }
+
+        .btn-white {
             background: white;
-            color: #000;
+            color: #0f172a;
+            font-weight: 700;
+            margin-bottom: 12px;
         }
 
-        .auth-btn-dark {
+        .btn-white:hover {
+            background: #f1f5f9;
+            transform: translateY(-1px);
+        }
+
+        .footer-links {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 24px;
+            left: 24px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
-        .auth-btn-guest {
-            background: white;
-            color: #000;
-            margin-top: 8px;
-        }
-
-        .auth-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .divider {
+            color: #94a3b8;
+            padding: 10px 16px;
+            border-radius: 50px;
             display: flex;
             align-items: center;
-            text-align: center;
-            margin: 24px 0;
-            color: var(--text-muted);
-            font-weight: 700;
+            gap: 8px;
+            text-decoration: none;
             font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            z-index: 20;
+            cursor: pointer;
         }
 
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(-2px);
         }
 
-        .divider:not(:empty)::before {
-            margin-right: 1.5em;
-        }
-
-        .divider:not(:empty)::after {
-            margin-left: 1.5em;
-        }
-
-        .auth-btn i {
-            width: 20px;
-            height: 20px;
+        .back-btn i {
+            width: 18px;
+            height: 18px;
         }
     </style>
 </head>
@@ -151,59 +218,101 @@
     <div class="bg-glow"></div>
     <div class="bg-glow-2"></div>
 
+    <a href="index.html" class="back-btn">
+        <i data-lucide="arrow-left"></i>
+        <span>Back</span>
+    </a>
+
     <div class="auth-card">
         <div class="auth-logo">
             <i data-lucide="cpu"></i>
             <span>Skill Hire</span>
         </div>
 
-        <h1>Unlock Your <br> Career Potential</h1>
+        <h1>Unlock Your Career <br> Potential</h1>
         <p>AI-driven resume analysis and skill bridging for top-tier tech roles.</p>
 
-        <div class="auth-methods">
-            <button class="auth-btn auth-btn-google" onclick="handleGoogleLogin()">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="G" style="width: 24px;">
-                Continue with Google
-            </button>
+        <div class="input-group">
+            <input type="email" id="email-input" class="input-field" placeholder="Email">
+            <input type="password" id="password-input" class="input-field" placeholder="Password">
+        </div>
 
-            <div class="divider">OR</div>
+        <button class="auth-btn btn-primary-login" onclick="handleEmailLogin()">
+            Login
+        </button>
 
-            <button class="auth-btn auth-btn-dark" onclick="showEmailLogin()">
-                <i data-lucide="mail"></i> Email Login
-            </button>
+        <button class="auth-btn btn-white" onclick="handleGoogleLogin()">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="G" style="width: 20px; height: 20px;">
+            Continue with Google
+        </button>
 
-            <button class="auth-btn auth-btn-dark" onclick="showCreateAccount()">
-                <i data-lucide="user-plus"></i> Create Account
-            </button>
+        <button class="auth-btn btn-white" onclick="handleGuestLogin()">
+            <i data-lucide="user" style="width: 20px; height: 20px;"></i>
+            Continue as Guest
+        </button>
 
-            <button class="auth-btn auth-btn-guest" onclick="handleGuestLogin()">
-                <i data-lucide="user"></i> Continue as Guest
-            </button>
+        <div class="footer-links">
+            Privacy Policy • Terms of Service
         </div>
     </div>
 
-    <!-- Reusing landing logic for redirection -->
+    <!-- Script Logic -->
     <script src="landing page/landing.js"></script>
     <script>
         lucide.createIcons();
 
+        // Check and Initialize Firebase
+        if (typeof firebaseConfig !== 'undefined' && typeof firebase !== 'undefined') {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+                console.log("Firebase Initialized in Auth Page");
+            }
+        } else {
+            console.error("Firebase Config missing!");
+            alert("Configuration Error: Firebase not loaded.");
+        }
+
         // Specific handlers for this page
         function handleGoogleLogin() {
-            startLogin(); // Defined in landing.js
+            if (!firebase.apps.length) {
+                console.error("Firebase not initialized!");
+                alert("System Error: Firebase not loaded.");
+                return;
+            }
+
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    console.log("Google Login Success");
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    console.error("Login Error:", error);
+                    alert("Login failed: " + error.message);
+                });
         }
 
         function handleGuestLogin() {
-            // Store guest flag and redirect
             localStorage.setItem('skillhire_guest', 'true');
             window.location.href = 'dashboard.html';
         }
 
-        function showEmailLogin() {
-            alert("Email login coming soon! Use Google or Guest for now.");
-        }
+        function handleEmailLogin() {
+            const email = document.getElementById('email-input').value;
+            const password = document.getElementById('password-input').value;
 
-        function showCreateAccount() {
-            alert("Account creation coming soon! Use Google for now.");
+            if (!email || !password) {
+                alert("Please enter both email and password.");
+                return;
+            }
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    alert("Email Login Error: " + error.message);
+                });
         }
     </script>
 </body>

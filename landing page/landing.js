@@ -17,17 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Google Sign-In Handler for Landing Page Buttons
+    // Redirect to Auth Page
     window.startLogin = () => {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider)
-            .then((result) => {
-                console.log("Login successful, auth observer will redirect.");
-            })
-            .catch((error) => {
-                console.error("Login Error:", error);
-                alert("Login failed: " + error.message);
-            });
+        window.location.href = 'auth.html';
     };
 
     // Simple Scroll Animations

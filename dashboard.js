@@ -198,10 +198,12 @@ function handleLogout() {
     if (auth) {
         auth.signOut().then(() => {
             localStorage.removeItem('skillhire_user');
+            localStorage.removeItem('skillhire_guest');
             window.location.href = 'auth.html';
         });
     } else {
         localStorage.removeItem('skillhire_user');
+        localStorage.removeItem('skillhire_guest');
         window.location.href = 'index.html';
     }
 }
@@ -250,8 +252,22 @@ function setupAuthObserver() {
                 initCharts();
                 window.dispatchEvent(new Event('resize'));
             }, 500);
+        } else if (localStorage.getItem('skillhire_guest') === 'true') {
+            console.log("Guest mode active, staying on dashboard.");
+            user.isLoggedIn = false;
+            user.name = "Test User";
+            user.photo = "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"; // Matching likely seed or keeping consistent
+
+            updateUI();
+            if (loginScreen) loginScreen.classList.add('hidden');
+            if (appContainer) appContainer.classList.remove('hidden');
+
+            setTimeout(() => {
+                initCharts();
+                window.dispatchEvent(new Event('resize'));
+            }, 500);
         } else {
-            console.log("No authenticated user, redirecting to login...");
+            console.log("No authenticated user or guest flag, redirecting to login...");
             window.location.href = 'auth.html';
         }
     });
