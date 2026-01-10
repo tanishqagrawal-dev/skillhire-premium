@@ -1,0 +1,144 @@
+/* Footer Styles */
+.dashboard-footer {
+    background: rgba(13, 17, 23, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 60px 40px 20px;
+    margin-top: 60px;
+    border-radius: 20px 20px 0 0;
+    color: #fff;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.footer-logo i {
+    color: #00f2fe;
+    /* Primary Cyan */
+}
+
+.footer-tagline {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    max-width: 250px;
+    line-height: 1.5;
+}
+
+.social-links {
+    display: flex;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.social-link {
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.05);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.social-link:hover {
+    background: #00f2fe;
+    color: #000;
+    transform: translateY(-2px);
+}
+
+.social-link i {
+    width: 18px;
+    height: 18px;
+}
+
+.footer-column h4 {
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-links li a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.footer-links li a:hover {
+    color: #00f2fe;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.made-with {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.made-with i {
+    color: #ef4444;
+    width: 14px;
+    height: 14px;
+    fill: #ef4444;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .dashboard-footer {
+        padding: 40px 20px 20px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}

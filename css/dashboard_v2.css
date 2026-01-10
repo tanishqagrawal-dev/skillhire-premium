@@ -1,0 +1,275 @@
+/* --- DASHBOARD V2 STYLES --- */
+
+/* Hero Banner */
+.welcome-banner {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 24px 32px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, transparent 70%);
+    filter: blur(40px);
+}
+
+.welcome-text h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.welcome-text p {
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+.streak-badge {
+    background: rgba(255, 149, 0, 0.1);
+    border: 1px solid rgba(255, 149, 0, 0.3);
+    color: #ff9500;
+    padding: 8px 16px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 0 15px rgba(255, 149, 0, 0.1);
+}
+
+/* Stats 2.0 */
+.stats-grid-v2 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* Strict 4-column for alignment */
+    gap: 24px;
+    /* Match split gap */
+    margin-bottom: 30px;
+}
+
+@media (max-width: 1200px) {
+    .stats-grid-v2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid-v2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+.stat-card-v2 {
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.stat-card-v2:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.stat-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.icon-blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+}
+
+.icon-purple {
+    background: rgba(168, 85, 247, 0.15);
+    color: #a855f7;
+}
+
+.icon-green {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+}
+
+.icon-pink {
+    background: rgba(236, 72, 153, 0.15);
+    color: #ec4899;
+}
+
+.stat-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.stat-label {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.stat-trend {
+    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.trend-up {
+    color: #22c55e;
+}
+
+.trend-down {
+    color: #ef4444;
+}
+
+/* Dashboard Split Layout */
+/* Dashboard Split Layout - Converted to Vertical Stack */
+.dashboard-split {
+    display: flex;
+    flex-direction: column;
+    /* Vertical, straight order */
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+@media (min-width: 1024px) {
+
+    /* Optional: Ensure full width even on large screens if strictly requested. 
+       The user explicitly asked for vertical order, avoiding horizontal. 
+       So we keep it column even on desktop. */
+    .dashboard-split {
+        flex-direction: column;
+    }
+}
+
+.section-card {
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* Systematic alignment */
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chart-container-large {
+    height: 300px;
+    width: 100%;
+}
+
+/* AI Action Items */
+.action-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.action-item {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(4px);
+    border-left: 3px solid #00f2fe;
+}
+
+.action-icon-box {
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 242, 254, 0.1);
+    color: #00f2fe;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.action-content h4 {
+    font-size: 0.95rem;
+    color: #f1f5f9;
+    margin-bottom: 4px;
+}
+
+.action-content p {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    line-height: 1.4;
+}
+
+/* Skill Radar & Insights Row */
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 768px) {
+    .bottom-grid {
+        grid-template-columns: 1fr;
+    }
+}
