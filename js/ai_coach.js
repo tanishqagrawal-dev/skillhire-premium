@@ -179,7 +179,14 @@ async function sendMessage() {
     if (!text) return;
 
     if (!window.geminiService.hasApiKey()) {
-        addMessage('model', "Configuration Error: API Key missing.");
+        const key = prompt("Please enter your Google Gemini API Key to enable the AI Coach:");
+        if (key) {
+            localStorage.setItem('GEMINI_API_KEY', key.trim());
+            window.geminiService.apiKey = key.trim();
+            addMessage('model', "API Key saved successfully! I am ready to help.");
+        } else {
+            addMessage('model', "⚠️ API Key is required to use the AI Coach. Please refresh and try again.");
+        }
         return;
     }
 
