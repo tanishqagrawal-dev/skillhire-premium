@@ -141,6 +141,33 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 300); // 300ms delay to play nice with other init logic
     }
+    // Update UI with User Data
+    function updateUI() {
+        console.log("Updating UI with:", user);
+
+        // Update Header
+        document.getElementById('header-username').innerText = user.name;
+        document.getElementById('header-avatar').src = user.photo;
+
+        // Update Dynamic Welcome Message on Dashboard
+        const welcomeName = document.getElementById('user-name-display');
+        if (welcomeName) {
+            // Use first name only for greeting
+            const firstName = user.name.split(' ')[0];
+            welcomeName.innerText = firstName;
+        }
+
+        // Update Input Fields (if profile section exists)
+        const nameInput = document.getElementById('profile-name');
+        const emailInput = document.getElementById('profile-email');
+        if (nameInput) nameInput.value = user.name;
+        if (emailInput) emailInput.value = user.email;
+
+        // Update Profile Preview Avatar
+        const profileImgPreview = document.getElementById('profile-image-preview');
+        if (profileImgPreview) profileImgPreview.src = user.photo;
+    }
+    window.updateUI = updateUI;
 });
 
 // Guest Login (Simulated) - GLOBAL FUNCTION
@@ -148,7 +175,7 @@ window.handleLogin = function () {
     console.log("Guest Login Clicked");
     alert("Guest Login Activated"); // Debug alert
     user.isLoggedIn = true;
-    user.name = "Test User";
+    user.name = "User";
     user.email = "testuser@gmail.com";
     user.photo = "https://api.dicebear.com/7.x/avataaars/svg?seed=Guest";
 
@@ -284,8 +311,8 @@ function setupAuthObserver() {
         } else if (localStorage.getItem('skilmatrix_guest') === 'true') {
             console.log("Guest mode active, staying on dashboard.");
             user.isLoggedIn = false;
-            user.name = "Test User";
-            user.photo = "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"; // Matching likely seed or keeping consistent
+            user.name = "User"; // Default Guest Name
+            user.photo = "https://api.dicebear.com/7.x/avataaars/svg?seed=Guest";
 
             updateUI();
             if (loginScreen) loginScreen.classList.add('hidden');
@@ -483,12 +510,14 @@ function displayAnalysisResults(data) {
 }
 
 // --- PROFILE LOGIC ---
+// --- PROFILE LOGIC ---
 function saveProfile() {
-    const newName = document.getElementById('input-name').value;
-    const newRole = document.getElementById('input-role').value;
+    const newName = document.getElementById('profile-name').value;
+    const newRole = document.getElementById('profile-title').value; // Assuming 'title' is role
 
-    user.name = newName;
-    user.role = newRole;
+    if (newName) user.name = newName;
+    // user.role = newRole; // No role in user obj currently, but can add if needed
+
     saveUserToLocal();
     updateUI();
     alert("Profile Updated Successfully!");
