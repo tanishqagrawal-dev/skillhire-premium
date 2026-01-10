@@ -1,6 +1,6 @@
 # 🚀 SKiL MATRiX | Career Intelligence Platform
 
-[**🔴 Live Demo**](https://tanishqagrawal-dev.github.io/skillhire-premium/)
+[**🔴 Live Demo**](https://skill-hire-62fda.web.app/)
 
 ## 📖 Overview
 **SKiL MATRiX** is a next-generation career acceleration ecosystem designed to solve the "employability paradox" faced by millions of fresh graduates and job seekers. While traditional job boards only list vacancies, SKiL MATRiX acts as an intelligent bridge, analyzing the user's current baseline and charting a precise, data-driven path to their target role.
