@@ -4,7 +4,7 @@
   "description": "🔗 **Live Demo:**  \r https://tanishqagrawal-dev.github.io/skillhire-premium/",
   "main": "script.js",
   "scripts": {
-    "serve": "npx serve -s .",
+    "serve": "npx serve",
     "serve:firebase": "firebase serve --only hosting",
     "deploy": "firebase deploy --only hosting:skill-hire-62fda",
     "test": "echo \"Error: no test specified\" && exit 1"
