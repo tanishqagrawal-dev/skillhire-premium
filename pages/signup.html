@@ -311,6 +311,65 @@
             opacity: 0.5;
             z-index: 10;
         }
+
+        /* Light Mode Overrides */
+        [data-theme="light"] {
+            --bg-dark: linear-gradient(135deg, #e0f2fe 0%, #ffffff 100%);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --input-bg: rgba(255, 255, 255, 0.8);
+            --primary: #0ea5e9;
+        }
+
+        [data-theme="light"] body {
+            background-image: none;
+            background: var(--bg-dark);
+        }
+
+        [data-theme="light"] .glass-card {
+            background: #ffffff;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            /* Soft shadow */
+            border: 1px solid var(--border);
+            backdrop-filter: none;
+        }
+
+        [data-theme="light"] .header h2 {
+            background: none;
+            -webkit-text-fill-color: initial;
+            color: #0f172a;
+        }
+
+        [data-theme="light"] .logo {
+            text-shadow: none;
+            color: var(--primary);
+        }
+
+        [data-theme="light"] input {
+            background: #f1f5f9;
+            color: #1e293b;
+            border-color: #cbd5e1;
+        }
+
+        [data-theme="light"] input:focus {
+            background: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+        }
+
+        [data-theme="light"] .back-btn,
+        [data-theme="light"] #theme-toggle {
+            color: #475569;
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="light"] .stars,
+        [data-theme="light"] .floating-shape {
+            display: none;
+        }
     </style>
 </head>
 
@@ -319,6 +378,16 @@
     <div class="stars"></div>
     <div class="floating-shape shape-1"></div>
     <div class="floating-shape shape-2"></div>
+
+    <a href="../index.html" class="back-btn"
+        style="position: absolute; top: 30px; left: 30px; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 8px; font-size: 1rem; z-index: 100; transition: color 0.3s;">
+        <i data-lucide="arrow-left" style="width: 20px;"></i> Back
+    </a>
+
+    <button id="theme-toggle" onclick="toggleTheme()"
+        style="position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; z-index: 100; transition: all 0.3s; backdrop-filter: blur(5px);">
+        <i data-lucide="sun" id="theme-icon" style="width: 20px;"></i>
+    </button>
 
     <div class="container" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
         <div class="glass-card">
@@ -398,6 +467,36 @@
             glare: true,
             "max-glare": 0.2
         });
+
+        // Theme Logic
+        function toggleTheme() {
+            const currentTheme = document.body.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('skilmatrix_theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-icon');
+            if (theme === 'light') {
+                icon.setAttribute('data-lucide', 'moon');
+                document.documentElement.style.setProperty('--bg-dark', '#f8fafc');
+                document.documentElement.style.setProperty('--text-main', '#0f172a');
+                document.documentElement.style.setProperty('--text-muted', '#64748b');
+            } else {
+                icon.setAttribute('data-lucide', 'sun');
+                document.documentElement.style.setProperty('--bg-dark', '#07090E');
+                document.documentElement.style.setProperty('--text-main', '#ffffff');
+                document.documentElement.style.setProperty('--text-muted', '#9ca3af');
+            }
+            lucide.createIcons();
+        }
+
+        // Init Theme
+        const savedTheme = localStorage.getItem('skilmatrix_theme') || 'dark';
+        document.body.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
 
         // File Input Change
         const fileInput = document.querySelector('input[type="file"]');

@@ -44,44 +44,10 @@
 
 <body>
 
-    <div id="login-screen" class="login-container">
-        <div class="glass-login-card" data-tilt>
-            <div class="logo-large">
-                <img src="../assets/skil-matrix-logo.jpg" alt="SKiL MATRiX"
-                    style="height: 50px; width: 50px; border-radius: 50%; object-fit: cover; margin-bottom: 0;">
-                <span>SKiL MATRiX</span>
-            </div>
-            <h1>Unlock Your Career Potential</h1>
-            <p>AI-driven resume analysis and skill bridging for top-tier tech roles.</p>
-            <div class="email-login-form" style="margin-bottom: 20px; width: 100%;">
-                <input type="email" id="email-input" placeholder="Email" class="auth-input"
-                    style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
-                <input type="password" id="password-input" placeholder="Password" class="auth-input"
-                    style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white;">
-                <button class="btn-primary" onclick="handleEmailLogin()" style="width: 100%;">Login</button>
-            </div>
-
-            <div id="login-options">
-                <button class="google-btn firebase-google-btn" onclick="handleGoogleLogin()">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="G" style="width: 20px;">
-                    Continue with Google
-                </button>
-
-                <div class="manual-auth-buttons">
-                    <button class="google-btn" onclick="handleLogin()">
-                        <i data-lucide="user"></i> Continue as Guest
-                    </button>
-                </div>
-            </div>
-
-            <div class="login-footer">
-                <span>Privacy Policy</span> • <span>Terms of Service</span>
-            </div>
-        </div>
-    </div>
 
 
-    <div id="app-container" class="app-container hidden">
+
+    <div id="app-container" class="app-container">
         <div id="sidebar-overlay" class="sidebar-overlay"></div>
         <aside class="sidebar">
             <button id="close-sidebar" class="mobile-only close-btn">
