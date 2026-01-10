@@ -361,7 +361,7 @@ function switchTab(tabId) {
         'analyzer': 'AI Resume Analyzer',
         'companies': 'Market Intelligence',
         'profile': 'My Profile',
-        'learning': 'Skil Matrix Academy',
+        'learning': 'SKiL MATRiX Academy',
         'faq': 'Help Center',
         'resume-builder': 'Resume Builder',
         'interview-prep': 'Mock Interview',

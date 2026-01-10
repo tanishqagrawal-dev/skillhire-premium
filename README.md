@@ -1,4 +1,4 @@
-# 🚀 Skil Matrix Premium – AI-Powered Skill Gap & Hiring Intelligence Platform
+# 🚀 SKiL MATRiX Premium – AI-Powered Skill Gap & Hiring Intelligence Platform
 
 🔗 **Live Demo:**  
 https://tanishqagrawal-dev.github.io/skillhire-premium/
@@ -7,7 +7,7 @@ https://tanishqagrawal-dev.github.io/skillhire-premium/
 
 ## 📌 Project Overview
 
-**Skil Matrix Premium** is a modern, AI-inspired career intelligence web platform designed to help students and job seekers understand their **resume strength, skill gaps, and job readiness** in a structured and visual way.
+**SKiL MATRiX Premium** is a modern, AI-inspired career intelligence web platform designed to help students and job seekers understand their **resume strength, skill gaps, and job readiness** in a structured and visual way.
 
 The project simulates how real-world **ATS (Applicant Tracking System)** tools, hiring dashboards, and skill-based platforms work, giving users a clear idea of where they stand and what to improve to become job-ready.
 
@@ -23,7 +23,7 @@ Many students:
 - Don’t get structured guidance on how to improve  
 - Lack a single platform combining resume analysis, job insights, and learning paths  
 
-**Skil Matrix Premium solves this by combining all these into one unified dashboard.**
+**SKiL MATRiX Premium solves this by combining all these into one unified dashboard.**
 
 ---
 
