@@ -349,7 +349,7 @@ function switchTab(tabId) {
         'analyzer': 'AI Resume Analyzer',
         'companies': 'Market Intelligence',
         'profile': 'My Profile',
-        'learning': 'Learning Roadmap',
+        'learning': 'Skill Hire Academy',
         'faq': 'Help Center',
         'resume-builder': 'Resume Builder',
         'interview-prep': 'Mock Interview',
@@ -482,58 +482,117 @@ function saveProfile() {
     alert("Profile Updated Successfully!");
 }
 
-// --- CHARTS (Chart.js) ---
+// --- CHART INITIALIZATION ---
+let performanceChartV2 = null;
+let skillRadarChartV2 = null;
+
 function initCharts() {
-    const ctx1 = document.getElementById('lineChart');
-    if (ctx1) {
-        new Chart(ctx1.getContext('2d'), {
+    // 1. Performance Trajectory (Line Chart) v2
+    const ctxLine = document.getElementById('performanceChartV2');
+    if (ctxLine) {
+        if (performanceChartV2) performanceChartV2.destroy();
+
+        // Gradient
+        const gradient = ctxLine.getContext('2d').createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(0, 242, 254, 0.5)'); // Cyan
+        gradient.addColorStop(1, 'rgba(0, 242, 254, 0.0)');
+
+        performanceChartV2 = new Chart(ctxLine, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
                 datasets: [{
-                    label: 'Resume Score',
+                    label: 'Overall Progress',
                     data: [45, 52, 49, 68, 75, 88],
                     borderColor: '#00f2fe',
-                    backgroundColor: 'rgba(0, 242, 254, 0.1)',
+                    backgroundColor: gradient,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#00f2fe',
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
                     fill: true,
-                    tension: 0.4
+                    tension: 0.4 // Smooth curve
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleColor: '#fff',
+                        bodyColor: '#cbd5e1',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1
+                    }
+                },
                 scales: {
-                    y: { grid: { color: 'rgba(255,255,255,0.05)' } },
-                    x: { grid: { display: false } }
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { color: '#94a3b8' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#94a3b8' }
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
                 }
             }
         });
     }
 
-    const ctx2 = document.getElementById('radarChart');
-    if (ctx2) {
-        new Chart(ctx2.getContext('2d'), {
+    // 2. Skill Gap Matrix (Radar Chart) v2
+    const ctxRadar = document.getElementById('skillRadarChartV2');
+    if (ctxRadar) {
+        if (skillRadarChartV2) skillRadarChartV2.destroy();
+
+        skillRadarChartV2 = new Chart(ctxRadar, {
             type: 'radar',
             data: {
                 labels: ['Coding', 'Design', 'Communication', 'System Design', 'Cloud'],
                 datasets: [{
                     label: 'Current Skills',
-                    data: [90, 60, 80, 70, 50],
-                    backgroundColor: 'rgba(188, 122, 249, 0.4)',
-                    borderColor: '#bc7af9',
-                    borderWidth: 2
+                    data: [85, 60, 70, 50, 40],
+                    backgroundColor: 'rgba(168, 85, 247, 0.2)', // Purple
+                    borderColor: '#a855f7',
+                    pointBackgroundColor: '#a855f7',
+                    borderWidth: 2,
+                    pointRadius: 4
+                }, {
+                    label: 'Target Role (SDE-2)',
+                    data: [90, 75, 80, 85, 80],
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                    borderWidth: 1,
+                    pointRadius: 0,
+                    borderDash: [5, 5]
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: '#94a3b8', font: { size: 11 } }
+                    }
+                },
                 scales: {
                     r: {
-                        grid: { color: 'rgba(255,255,255,0.1)' },
-                        angleLines: { color: 'rgba(255,255,255,0.1)' },
-                        suggestedMin: 0,
-                        suggestedMax: 100
+                        angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                        pointLabels: { color: '#cbd5e1', font: { size: 12 } },
+                        ticks: { backdropColor: 'transparent', display: false }
                     }
                 }
             }

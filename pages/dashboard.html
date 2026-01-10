@@ -23,6 +23,9 @@
     <link rel="stylesheet" href="../css/roadmap.css">
     <link rel="stylesheet" href="../css/ai_coach.css">
     <link rel="stylesheet" href="../css/settings.css">
+    <link rel="stylesheet" href="../css/courses.css">
+    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="../css/dashboard_v2.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -149,44 +152,208 @@
                         <span id="header-username">Guest User</span>
                         <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User">
                     </div>
+                </div>
             </header>
 
+            <!-- Overview Section (Redesigned) -->
             <section id="dashboard" class="view-section active">
-                <div class="stats-row">
-                    <div class="stat-card" data-tilt>
-                        <div class="icon-box cyan"><i data-lucide="activity"></i></div>
-                        <div class="stat-info">
-                            <h3>ATS Score</h3>
-                            <div class="number">88%</div>
-                            <span class="trend up">+12% vs last week</span>
+                <!-- Welcome Banner -->
+                <div class="welcome-banner">
+                    <div class="welcome-text">
+                        <h1>Good Evening, <span id="user-name-display">Alex</span> 👋</h1>
+                        <p>You're on track! Complete 2 more interview sessions to reach your weekly goal.</p>
+                    </div>
+                    <div class="streak-badge">
+                        <i data-lucide="flame"></i> 3 Day Streak
+                    </div>
+                </div>
+
+                <!-- Stats Grid V2 -->
+                <div class="stats-grid-v2">
+                    <div class="stat-card-v2">
+                        <div class="stat-header">
+                            <div class="stat-icon-wrapper icon-blue">
+                                <i data-lucide="activity"></i>
+                            </div>
+                            <span class="stat-trend trend-up"><i data-lucide="trending-up"></i> +12%</span>
+                        </div>
+                        <span class="stat-value">88%</span>
+                        <span class="stat-label">ATS Score Avg</span>
+                    </div>
+
+                    <div class="stat-card-v2">
+                        <div class="stat-header">
+                            <div class="stat-icon-wrapper icon-purple">
+                                <i data-lucide="briefcase"></i>
+                            </div>
+                            <span class="stat-trend trend-up"><i data-lucide="check"></i> 4 New</span>
+                        </div>
+                        <span class="stat-value">14</span>
+                        <span class="stat-label">Eligible Jobs</span>
+                    </div>
+
+                    <div class="stat-card-v2">
+                        <div class="stat-header">
+                            <div class="stat-icon-wrapper icon-green">
+                                <i data-lucide="eye"></i>
+                            </div>
+                            <span class="stat-trend trend-up"><i data-lucide="users"></i> +34</span>
+                        </div>
+                        <span class="stat-value">342</span>
+                        <span class="stat-label">Profile Views</span>
+                    </div>
+
+                    <div class="stat-card-v2">
+                        <div class="stat-header">
+                            <div class="stat-icon-wrapper icon-pink">
+                                <i data-lucide="target"></i>
+                            </div>
+                            <span class="stat-trend trend-down" style="color:#94a3b8"><i data-lucide="clock"></i> 2h
+                                left</span>
+                        </div>
+                        <span class="stat-value">85%</span>
+                        <span class="stat-label">Goal Progress</span>
+                    </div>
+                </div>
+
+                <!-- Systematic Row 1: Analytics -->
+                <div class="dashboard-split">
+                    <!-- Left: Performance Chart -->
+                    <div class="section-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i data-lucide="bar-chart-2" style="color:#3b82f6;"></i> Performance Trajectory
+                            </div>
+                            <select
+                                style="background:rgba(0,0,0,0.2); color:#fff; border:1px solid rgba(255,255,255,0.1); padding:4px 8px; border-radius:6px;">
+                                <option>Last 30 Days</option>
+                                <option>Last 3 Months</option>
+                            </select>
+                        </div>
+                        <div class="chart-container-large">
+                            <canvas id="performanceChartV2"></canvas>
                         </div>
                     </div>
-                    <div class="stat-card" data-tilt>
-                        <div class="icon-box purple"><i data-lucide="briefcase"></i></div>
-                        <div class="stat-info">
-                            <h3>Eligible Jobs</h3>
-                            <div class="number">14</div>
-                            <span class="trend">Based on skills</span>
+
+                    <!-- Right: Skill Gap Matrix -->
+                    <div class="section-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i data-lucide="hexagon" style="color:#ec4899;"></i> Skill Gap Matrix
+                            </div>
                         </div>
-                    </div>
-                    <div class="stat-card" data-tilt>
-                        <div class="icon-box green"><i data-lucide="eye"></i></div>
-                        <div class="stat-info">
-                            <h3>Profile Views</h3>
-                            <div class="number">342</div>
-                            <span class="trend up">Recruiters active</span>
+                        <div
+                            style="height: 100%; min-height: 250px; display:flex; justify-content:center; align-items:center;">
+                            <canvas id="skillRadarChartV2"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <div class="charts-grid">
-                    <div class="chart-box">
-                        <h3>Performance Trajectory</h3>
-                        <canvas id="lineChart"></canvas>
+                <!-- Systematic Row 2: Actionable Info -->
+                <div class="dashboard-split">
+                    <!-- Left: Recent Applications -->
+                    <div class="section-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i data-lucide="briefcase" style="color:#00f2fe;"></i> Recent Applications
+                            </div>
+                            <button class="btn-sm" style="background:rgba(255,255,255,0.05);">View All</button>
+                        </div>
+
+                        <table style="width:100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <th style="text-align:left; padding:12px; color:#94a3b8; font-weight:500;">
+                                        Company</th>
+                                    <th style="padding:12px; color:#94a3b8; font-weight:500;">Role</th>
+                                    <th style="text-align:right; padding:12px; color:#94a3b8; font-weight:500;">
+                                        Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <td style="padding:16px 12px; display:flex; align-items:center; gap:8px;">
+                                        <div
+                                            style="width:24px; height:24px; background:#fff; border-radius:4px; display:flex; align-items:center; justify-content:center;">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Amazon_icon.svg"
+                                                width="16">
+                                        </div>
+                                        Amazon
+                                    </td>
+                                    <td style="padding:16px 12px; color:#cbd5e1;">SDE-1</td>
+                                    <td style="padding:16px 12px; text-align:right;"><span class="badge success"
+                                            style="font-size:0.75rem;">Applied</span></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <td style="padding:16px 12px; display:flex; align-items:center; gap:8px;">
+                                        <div
+                                            style="width:24px; height:24px; background:#fff; border-radius:4px; display:flex; align-items:center; justify-content:center;">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg"
+                                                width="16">
+                                        </div>
+                                        Google
+                                    </td>
+                                    <td style="padding:16px 12px; color:#cbd5e1;">L3 Engineer</td>
+                                    <td style="padding:16px 12px; text-align:right;"><span class="badge warning"
+                                            style="font-size:0.75rem;">Interview</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:16px 12px; display:flex; align-items:center; gap:8px;">
+                                        <div
+                                            style="width:24px; height:24px; background:#fff; border-radius:4px; display:flex; align-items:center; justify-content:center;">
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
+                                                width="16">
+                                        </div>
+                                        Netflix
+                                    </td>
+                                    <td style="padding:16px 12px; color:#cbd5e1;">UI Engineer</td>
+                                    <td style="padding:16px 12px; text-align:right;"><span class="badge"
+                                            style="background:rgba(255,255,255,0.1); color:#94a3b8; font-size:0.75rem;">Review</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="chart-box">
-                        <h3>Skill Gap Matrix</h3>
-                        <canvas id="radarChart"></canvas>
+
+                    <!-- Right: AI Action Items -->
+                    <div class="section-card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <i data-lucide="zap" style="color:#eab308;"></i> AI Action Items
+                            </div>
+                        </div>
+                        <div class="action-list">
+                            <div class="action-item" onclick="switchTab('analyzer')">
+                                <div class="action-icon-box">
+                                    <i data-lucide="file-search"></i>
+                                </div>
+                                <div class="action-content">
+                                    <h4>Resume Optimization</h4>
+                                    <p>Score dropped 2%. Update Skills.</p>
+                                </div>
+                            </div>
+
+                            <div class="action-item" onclick="switchTab('interview-prep')">
+                                <div class="action-icon-box"
+                                    style="background:rgba(168, 85, 247, 0.15); color:#a855f7;">
+                                    <i data-lucide="mic"></i>
+                                </div>
+                                <div class="action-content">
+                                    <h4>Mock Interview</h4>
+                                    <p>Schedule "System Design".</p>
+                                </div>
+                            </div>
+
+                            <div class="action-item" onclick="switchTab('dsa-practice')">
+                                <div class="action-icon-box" style="background:rgba(34, 197, 94, 0.15); color:#22c55e;">
+                                    <i data-lucide="code"></i>
+                                </div>
+                                <div class="action-content">
+                                    <h4>Daily Challenge</h4>
+                                    <p>Solve "Merge Intervals".</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -243,7 +410,8 @@
                         <div class="table-header">
                             <h3>Live Hiring Data (AI Powered)</h3>
                             <div class="table-actions">
-                                <button class="btn-primary-sm" onclick="renderCompanyTable()">Refresh Data</button>
+                                <button class="btn-primary-sm" onclick="renderCompanyTable()">Refresh
+                                    Data</button>
                                 <input type="text" placeholder="Search companies..." class="search-input"
                                     oninput="filterCompanies(this.value)">
                             </div>
@@ -269,7 +437,8 @@
                 <div id="company-intel-detail" class="company-insights-view hidden">
                     <div class="insights-top-bar">
                         <h1 class="section-title-sm">Company Insights</h1>
-                        <p class="text-muted-sm">Get detailed information about roles, hiring processes, and company
+                        <p class="text-muted-sm">Get detailed information about roles, hiring processes, and
+                            company
                             culture</p>
                     </div>
 
@@ -304,12 +473,14 @@
                         <!-- Navigation Tabs -->
                         <div class="company-nav-tabs">
                             <button class="nav-tab active" onclick="switchCompanySubTab('roles')">Roles</button>
-                            <button class="nav-tab" onclick="switchCompanySubTab('process')">Hiring Process</button>
+                            <button class="nav-tab" onclick="switchCompanySubTab('process')">Hiring
+                                Process</button>
                             <button class="nav-tab" onclick="switchCompanySubTab('culture')">Culture</button>
                             <button class="nav-tab" onclick="switchCompanySubTab('about')">About</button>
                             <button class="nav-tab" onclick="switchCompanySubTab('roadmaps')">Roadmaps</button>
                             <button class="nav-tab" onclick="switchCompanySubTab('insights')">Insights</button>
-                            <button class="nav-tab" onclick="switchCompanySubTab('tracker')">Job Tracker</button>
+                            <button class="nav-tab" onclick="switchCompanySubTab('tracker')">Job
+                                Tracker</button>
                         </div>
 
                         <!-- Content Area -->
@@ -321,52 +492,268 @@
             </section>
 
             <section id="learning" class="view-section hidden">
-                <div class="roadmap-header">
-                    <h3>Personalized Learning Roadmap</h3>
-                    <div class="progress-box">
-                        <div class="progress-info">
-                            <span>Progress</span>
-                            <span id="progress-text">0%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="learning-progress" style="width: 0%"></div>
-                        </div>
-                    </div>
-                </div>
+                <div class="courses-container">
 
-                <div class="learning-grid">
-                    <!-- Dynamic Checklist Item -->
-                    <div class="course-card interactive" onclick="toggleTask(this, 'task1')">
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="task1" onchange="event.stopPropagation(); updateProgress()">
-                        </div>
-                        <div class="course-content">
-                            <span class="tag">Fundamentals</span>
-                            <h4>Data Structures & Algorithms</h4>
-                            <p>Master Arrays, Linked Lists, and Trees for interviews.</p>
-                        </div>
-                    </div>
+                    <!-- Hero Section -->
+                    <div class="courses-hero">
+                        <div style="position: relative; z-index: 1;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 24px;">
+                                <i data-lucide="graduation-cap" style="color: #fff; width: 32px; height: 32px;"></i>
+                                <span style="font-size: 1.2rem; font-weight: 600; color: #fff;">Skill Hire
+                                    Academy</span>
+                            </div>
+                            <h1>Master Skills That Matter</h1>
+                            <p>Learn from industry experts with hands-on projects, real-world applications, and
+                                AI-powered feedback.</p>
 
-                    <div class="course-card interactive" onclick="toggleTask(this, 'task2')">
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="task2" onchange="event.stopPropagation(); updateProgress()">
-                        </div>
-                        <div class="course-content">
-                            <span class="tag">System Design</span>
-                            <h4>Scalable Architecture</h4>
-                            <p>Learn Load Balancers, Caching, and Sharding.</p>
+                            <div class="hero-actions">
+                                <button class="btn-hero-primary">
+                                    <i data-lucide="play-circle"></i> Start Learning
+                                </button>
+                                <button class="btn-hero-secondary">
+                                    Browse Catalog
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="course-card interactive" onclick="toggleTask(this, 'task3')">
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="task3" onchange="event.stopPropagation(); updateProgress()">
+                    <!-- Toolbar -->
+                    <div class="courses-toolbar">
+                        <div class="search-bar-wrapper">
+                            <i data-lucide="search"></i>
+                            <input type="text" placeholder="Search courses, instructors, or topics..."
+                                class="course-search-input">
                         </div>
-                        <div class="course-content">
-                            <span class="tag">Cloud</span>
-                            <h4>AWS Essentials</h4>
-                            <p>Deploy a full-stack app on EC2 with CI/CD pipelines.</p>
+
+                        <div class="filter-dropdown">
+                            <span>All Categories</span>
+                            <i data-lucide="chevron-down"></i>
                         </div>
+
+                        <button class="filter-btn">
+                            <i data-lucide="filter"></i> Filters
+                        </button>
+                    </div>
+
+                    <!-- Categories -->
+                    <h2 class="section-title">Explore by Category</h2>
+                    <div class="categories-grid">
+                        <div class="category-card">
+                            <div class="cat-icon"><i data-lucide="code-2"></i></div>
+                            <h3>Programming</h3>
+                            <span>45 courses</span>
+                        </div>
+                        <div class="category-card">
+                            <div class="cat-icon"><i data-lucide="bar-chart-2"></i></div>
+                            <h3>Data Science</h3>
+                            <span>28 courses</span>
+                        </div>
+                        <div class="category-card">
+                            <div class="cat-icon"><i data-lucide="globe"></i></div>
+                            <h3>Web Development</h3>
+                            <span>38 courses</span>
+                        </div>
+                        <div class="category-card">
+                            <div class="cat-icon"><i data-lucide="stars"></i></div>
+                            <h3>Mobile Development</h3>
+                            <span>22 courses</span>
+                        </div>
+                        <div class="category-card">
+                            <div class="cat-icon"><i data-lucide="shield"></i></div>
+                            <h3>DevOps & Cloud</h3>
+                            <span>19 courses</span>
+                        </div>
+                        <div class="category-card">
+                            <div class="cat-icon"><i data-lucide="pen-tool"></i></div>
+                            <h3>UI/UX Design</h3>
+                            <span>15 courses</span>
+                        </div>
+                    </div>
+
+                    <!-- Featured Courses -->
+                    <div class="featured-header">
+                        <h2 class="section-title" style="margin-bottom: 0;">Featured Courses</h2>
+                        <a href="#" class="view-all-link">View All <i data-lucide="arrow-right"></i></a>
+                    </div>
+
+                    <div class="courses-grid">
+
+                        <!-- Course 1 -->
+                        <div class="course-card-new">
+                            <div class="course-gradient-overlay overlay-blue"></div>
+
+                            <div class="card-top-badges">
+                                <span class="badge badge-level">Beginner to Advanced</span>
+                                <button class="bookmark-btn"><i data-lucide="bookmark"></i></button>
+                            </div>
+
+                            <div class="course-info">
+                                <div class="instructor-row">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah"
+                                        class="instructor-avatar">
+                                    <div class="instructor-details">
+                                        <h4>JavaScript Mastery: From Zero to Hero</h4>
+                                        <p>by Sarah Chen</p>
+                                    </div>
+                                </div>
+
+                                <p class="course-desc">Complete JavaScript course with hands-on practice
+                                    problems and
+                                    interactive quizzes</p>
+
+                                <div class="rating-row">
+                                    <div style="display: flex; color: #fbbf24;">
+                                        <i data-lucide="star" style="fill: #fbbf24"></i>
+                                        <span style="margin-left: 4px; color: #fff; font-weight: 600;">4.9</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                        <i data-lucide="users"></i> 15,420
+                                    </div>
+                                </div>
+
+                                <div class="progress-section">
+                                    <div class="progress-header">
+                                        <span>Progress</span>
+                                        <span>35%</span>
+                                    </div>
+                                    <div class="progress-track">
+                                        <div class="progress-fill" style="width: 35%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="tags-row">
+                                    <span class="course-tag">JavaScript</span>
+                                    <span class="course-tag">ES6+</span>
+                                    <span class="course-tag">DOM</span>
+                                    <span class="course-tag">Async</span>
+                                </div>
+
+                                <div class="course-meta-tags" style="margin-top: 0; margin-bottom: 16px;">
+                                    <span class="meta-item"><i data-lucide="clock" style="width: 14px;"></i> 12
+                                        weeks</span>
+                                    <span class="meta-item">Free</span>
+                                </div>
+                            </div>
+
+                            <button class="btn-course-action">
+                                Continue Learning <i data-lucide="arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Course 2 -->
+                        <div class="course-card-new">
+                            <div class="course-gradient-overlay overlay-purple"></div>
+
+                            <div class="card-top-badges">
+                                <span class="badge badge-level">Intermediate</span>
+                                <button class="bookmark-btn"><i data-lucide="bookmark"></i></button>
+                            </div>
+
+                            <div class="course-info">
+                                <div class="instructor-row">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex"
+                                        class="instructor-avatar">
+                                    <div class="instructor-details">
+                                        <h4>React Complete: Modern Development</h4>
+                                        <p>by Alex Rodriguez</p>
+                                    </div>
+                                </div>
+
+                                <p class="course-desc">Master React with hooks, context, testing, and advanced
+                                    patterns
+                                </p>
+
+                                <div class="rating-row">
+                                    <div style="display: flex; color: #fbbf24;">
+                                        <i data-lucide="star" style="fill: #fbbf24"></i>
+                                        <span style="margin-left: 4px; color: #fff; font-weight: 600;">4.8</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                        <i data-lucide="users"></i> 12,850
+                                    </div>
+                                </div>
+
+                                <div class="tags-row" style="margin-top: 36px;">
+                                    <span class="course-tag">React</span>
+                                    <span class="course-tag">Hooks</span>
+                                    <span class="course-tag">Redux</span>
+                                    <span class="course-tag">Testing</span>
+                                </div>
+
+                                <div class="course-meta-tags" style="margin-top: 0; margin-bottom: 16px;">
+                                    <span class="meta-item"><i data-lucide="clock" style="width: 14px;"></i> 10
+                                        weeks</span>
+                                    <span class="meta-item">$49</span>
+                                </div>
+                            </div>
+
+                            <button class="btn-course-action">
+                                Start Course <i data-lucide="arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Course 3 -->
+                        <div class="course-card-new">
+                            <div class="course-gradient-overlay overlay-pink"></div>
+
+                            <div class="card-top-badges">
+                                <span class="badge badge-level">Intermediate</span>
+                                <button class="bookmark-btn"><i data-lucide="bookmark"></i></button>
+                            </div>
+
+                            <div class="course-info">
+                                <div class="instructor-row">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Maria"
+                                        class="instructor-avatar">
+                                    <div class="instructor-details">
+                                        <h4>Python for Data Science</h4>
+                                        <p>by Dr. Maria Santos</p>
+                                    </div>
+                                </div>
+
+                                <p class="course-desc">Complete data science journey with Python, pandas, and
+                                    machine
+                                    learning</p>
+
+                                <div class="rating-row">
+                                    <div style="display: flex; color: #fbbf24;">
+                                        <i data-lucide="star" style="fill: #fbbf24"></i>
+                                        <span style="margin-left: 4px; color: #fff; font-weight: 600;">4.9</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                        <i data-lucide="users"></i> 18,920
+                                    </div>
+                                </div>
+
+                                <div class="progress-section">
+                                    <div class="progress-header">
+                                        <span>Progress</span>
+                                        <span>12%</span>
+                                    </div>
+                                    <div class="progress-track">
+                                        <div class="progress-fill" style="width: 12%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="tags-row">
+                                    <span class="course-tag">Python</span>
+                                    <span class="course-tag">Pandas</span>
+                                    <span class="course-tag">ML</span>
+                                    <span class="course-tag">Visualization</span>
+                                </div>
+
+                                <div class="course-meta-tags" style="margin-top: 0; margin-bottom: 16px;">
+                                    <span class="meta-item"><i data-lucide="clock" style="width: 14px;"></i> 14
+                                        weeks</span>
+                                    <span class="meta-item">$79</span>
+                                </div>
+                            </div>
+
+                            <button class="btn-course-action">
+                                Continue Learning <i data-lucide="arrow-right"></i>
+                            </button>
+                        </div>
+
                     </div>
                 </div>
             </section>
@@ -416,13 +803,15 @@
                     <div class="faq-item">
                         <button class="faq-question">How is the ATS score calculated? <i
                                 data-lucide="chevron-down"></i></button>
-                        <div class="faq-answer">We use a proprietary algorithm that scans for keywords, formatting, and
+                        <div class="faq-answer">We use a proprietary algorithm that scans for keywords,
+                            formatting, and
                             quantifiable impact metrics used by Fortune 500 ATS systems.</div>
                     </div>
                     <div class="faq-item">
                         <button class="faq-question">Is my resume data stored? <i
                                 data-lucide="chevron-down"></i></button>
-                        <div class="faq-answer">No. We process your resume in real-time within your session. Data is not
+                        <div class="faq-answer">No. We process your resume in real-time within your session.
+                            Data is not
                             permanently stored on our servers for privacy.</div>
                     </div>
                 </div>
@@ -504,7 +893,8 @@
                                     <div id="experience-list">
                                         <!-- Dynamic Items -->
                                     </div>
-                                    <button class="btn-outline-sm" onclick="addExperience()">+ Add Position</button>
+                                    <button class="btn-outline-sm" onclick="addExperience()">+ Add
+                                        Position</button>
                                 </div>
                             </div>
 
@@ -518,7 +908,8 @@
                                     <div id="education-list">
                                         <!-- Dynamic Items -->
                                     </div>
-                                    <button class="btn-outline-sm" onclick="addEducation()">+ Add Education</button>
+                                    <button class="btn-outline-sm" onclick="addEducation()">+ Add
+                                        Education</button>
                                 </div>
                             </div>
                         </div>
@@ -544,7 +935,8 @@
                     <!-- Right: Preview -->
                     <div class="resume-preview-container">
                         <div class="preview-actions">
-                            <button class="btn-sm" onclick="downloadPDF()"><i data-lucide="download"></i> Download
+                            <button class="btn-sm" onclick="downloadPDF()"><i data-lucide="download"></i>
+                                Download
                                 PDF</button>
                         </div>
                         <div id="resume-preview" class="paper">
@@ -717,7 +1109,8 @@
                                     <h2 id="prob-title">Two Sum</h2>
                                     <span class="badge easy" id="prob-difficulty">Easy</span>
                                 </div>
-                                <p id="prob-desc">Given an array of integers nums and an integer target, return indices
+                                <p id="prob-desc">Given an array of integers nums and an integer target, return
+                                    indices
                                     of the two numbers such that they add up to target.</p>
 
                                 <div class="companies-tag" id="prob-companies">
@@ -753,10 +1146,12 @@
                                 <div class="tabs">
                                     <button class="tab active" onclick="switchOutputTab('testcase')">Test
                                         Results</button>
-                                    <button class="tab" onclick="switchOutputTab('neuron')">Neuron AI Coach</button>
+                                    <button class="tab" onclick="switchOutputTab('neuron')">Neuron AI
+                                        Coach</button>
                                 </div>
                                 <div id="tab-testcase" class="tab-content">
-                                    <div id="run-status" class="status-msg">Click "Run Code" to verify solution.</div>
+                                    <div id="run-status" class="status-msg">Click "Run Code" to verify solution.
+                                    </div>
                                 </div>
                                 <div id="tab-neuron" class="tab-content hidden">
                                     <div id="ai-hints-container">
@@ -806,7 +1201,8 @@
                             </div>
                         </div>
                         <div class="setup-footer">
-                            <button class="btn-primary full-width" onclick="generateRoadmap()">Generate Roadmap</button>
+                            <button class="btn-primary full-width" onclick="generateRoadmap()">Generate
+                                Roadmap</button>
                         </div>
                     </div>
 
@@ -895,7 +1291,8 @@
                                         src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User Avatar">
                                 </div>
                                 <button class="change-photo-btn"
-                                    onclick="document.getElementById('avatar-input').click()">Change Photo</button>
+                                    onclick="document.getElementById('avatar-input').click()">Change
+                                    Photo</button>
                                 <h3 class="user-display-name">User</h3>
                                 <button class="edit-profile-action-btn" onclick="switchTab('profile')">Edit
                                     Profile</button>
@@ -1002,7 +1399,8 @@
                                     <input type="password" placeholder="Confirm new password">
                                 </div>
                                 <button class="btn-primary full-width"
-                                    onclick="alert('Password Update Simulated')">Update Password</button>
+                                    onclick="alert('Password Update Simulated')">Update
+                                    Password</button>
                             </div>
                         </div>
 
@@ -1036,6 +1434,65 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Dashboard Footer -->
+            <footer class="dashboard-footer">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <i data-lucide="cpu"></i>
+                            <span>Skill Hire</span>
+                        </div>
+                        <p class="footer-tagline">
+                            Empowering developers with AI-driven career intelligence and personalized learning
+                            paths.
+                        </p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i data-lucide="instagram"></i></a>
+                            <a href="#" class="social-link"><i data-lucide="twitter"></i></a>
+                            <a href="#" class="social-link"><i data-lucide="linkedin"></i></a>
+                            <a href="#" class="social-link"><i data-lucide="mail"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Platform</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Resume Builder</a></li>
+                            <li><a href="#">Mock Interview</a></li>
+                            <li><a href="#">DSA Practice</a></li>
+                            <li><a href="#">Roadmap</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Cookie Policy</a></li>
+                            <li><a href="#">Security</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2026 Skill Hire. All rights reserved.</p>
+                    <div class="made-with">
+                        <span>Made for developers worldwide</span>
+                    </div>
+                </div>
+            </footer>
 
         </main>
     </div>
