@@ -237,34 +237,86 @@
             </section>
 
             <section id="companies" class="view-section hidden">
-                <div class="table-card">
-                    <div class="table-header">
-                        <h3>Live Hiring Data (AI Powered)</h3>
-                        <div class="table-actions">
-                            <button class="btn-sm" onclick="fetchMarketData()">Refresh Data</button>
-                            <input type="text" placeholder="Search companies..." class="search-input">
+                <!-- Main View: Company List / Job Board -->
+                <div id="company-intel-main" class="companies-main-view">
+                    <div class="table-card">
+                        <div class="table-header">
+                            <h3>Live Hiring Data (AI Powered)</h3>
+                            <div class="table-actions">
+                                <button class="btn-primary-sm" onclick="renderCompanyTable()">Refresh Data</button>
+                                <input type="text" placeholder="Search companies..." class="search-input"
+                                    oninput="filterCompanies(this.value)">
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Company</th>
+                                    <th>Role</th>
+                                    <th>ATS Cutoff</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="market-data-body">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Detail View: Company Insights -->
+                <div id="company-intel-detail" class="company-insights-view hidden">
+                    <div class="insights-top-bar">
+                        <h1 class="section-title-sm">Company Insights</h1>
+                        <p class="text-muted-sm">Get detailed information about roles, hiring processes, and company
+                            culture</p>
+                    </div>
+
+                    <div class="company-selection-panel">
+                        <label>Select Company</label>
+                        <div class="custom-select-wrapper" onclick="toggleCompanyDropdown(event)">
+                            <div class="custom-select-trigger">
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <img id="dropdown-company-logo" src="" style="width:20px; display:none;">
+                                    <span id="selected-company-name">Select a Company</span>
+                                </div>
+                                <i data-lucide="chevron-down"></i>
+                            </div>
+                            <div class="custom-options hidden" id="company-dropdown-options">
+                                <!-- Populated by JS -->
+                            </div>
                         </div>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Company</th>
-                                <th>Role</th>
-                                <th>ATS Cutoff</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="market-data-body">
-                            <!-- Populated by AI -->
-                            <tr>
-                                <td colspan="5" style="text-align: center; padding: 2rem;">
-                                    Click "Refresh Data" to get live market insights.
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
 
+                    <!-- Company Header Info -->
+                    <div id="company-detail-content" class="hidden">
+                        <div class="company-brand-header">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <img id="detail-company-logo" src="" class="brand-logo-lg">
+                                <div class="brand-info">
+                                    <h2 id="detail-company-name">Amazon</h2>
+                                    <p id="detail-company-desc">Technology Company</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Tabs -->
+                        <div class="company-nav-tabs">
+                            <button class="nav-tab active" onclick="switchCompanySubTab('roles')">Roles</button>
+                            <button class="nav-tab" onclick="switchCompanySubTab('process')">Hiring Process</button>
+                            <button class="nav-tab" onclick="switchCompanySubTab('culture')">Culture</button>
+                            <button class="nav-tab" onclick="switchCompanySubTab('about')">About</button>
+                            <button class="nav-tab" onclick="switchCompanySubTab('roadmaps')">Roadmaps</button>
+                            <button class="nav-tab" onclick="switchCompanySubTab('insights')">Insights</button>
+                            <button class="nav-tab" onclick="switchCompanySubTab('tracker')">Job Tracker</button>
+                        </div>
+
+                        <!-- Content Area -->
+                        <div id="company-sub-content" class="company-content-area">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
                 </div>
             </section>
 
