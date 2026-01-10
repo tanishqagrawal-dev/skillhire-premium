@@ -399,17 +399,29 @@
         }
 
         // Logic
+        // Helper to determine destination
+        function getRedirectUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const destination = params.get('redirect');
+            if (destination) {
+                // If destination is specifically 'dashboard', just go to root (optional, but consistent with tab logic)
+                // Actually, passing ?tab=dashboard is fine too as dashboard.js handles it.
+                return `dashboard.html?tab=${destination}`;
+            }
+            return 'dashboard.html';
+        }
+
         function handleGoogleLogin() {
             if (!firebase.apps.length) return alert("System Error: Firebase not loaded.");
             const provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider)
-                .then(() => window.location.href = 'dashboard.html')
+                .then(() => window.location.href = getRedirectUrl())
                 .catch((error) => alert("Login failed: " + error.message));
         }
 
         function handleGuestLogin() {
             localStorage.setItem('skillhire_guest', 'true');
-            window.location.href = 'dashboard.html';
+            window.location.href = getRedirectUrl();
         }
 
         function handleEmailLogin() {
@@ -417,7 +429,7 @@
             const password = document.getElementById('password-input').value;
             if (!email || !password) return alert("Please enter both email and password.");
             firebase.auth().signInWithEmailAndPassword(email, password)
-                .then(() => window.location.href = 'dashboard.html')
+                .then(() => window.location.href = getRedirectUrl())
                 .catch((error) => alert("Email Login Error: " + error.message));
         }
 

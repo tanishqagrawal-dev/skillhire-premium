@@ -129,6 +129,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Market Data
     initMarketData();
+
+    // Check for Deep Link (Tab Switching)
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam) {
+        // Delay slightly to ensure elements are ready (though DOMContentLoaded is sufficient for existence)
+        setTimeout(() => {
+            if (typeof switchTab === 'function') {
+                switchTab(tabParam);
+            }
+        }, 300); // 300ms delay to play nice with other init logic
+    }
 });
 
 // Guest Login (Simulated) - GLOBAL FUNCTION
