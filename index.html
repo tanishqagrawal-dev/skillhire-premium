@@ -29,13 +29,76 @@
     <div class="bg-glow-2"></div>
 
     <!-- Navbar -->
-    <nav class="navbar">
+    <!-- Navbar -->
+    <nav class="navbar new-navbar">
         <div class="nav-container">
-            <div class="logo">
-                <i data-lucide="cpu"></i>
-                <span>Skill Hire</span>
+            <div class="nav-left">
+                <div class="logo">
+                    <i data-lucide="cpu"></i>
+                    <span>Skill Hire</span>
+                </div>
+
+                <div class="nav-menu">
+                    <a href="#" class="nav-link">Home</a>
+                    <a href="#features" class="nav-link">Features</a>
+
+                    <!-- Tools Dropdown -->
+                    <div class="nav-dropdown">
+                        <button class="dropdown-trigger">
+                            <i data-lucide="code-2"></i> Tools <i data-lucide="chevron-down" class="chevron"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <div class="dropdown-header">
+                                <i data-lucide="zap"></i> AI Power Tools
+                            </div>
+                            <a href="pages/dashboard.html" class="dropdown-item">
+                                <i data-lucide="file-search"></i> Resume Analyzer
+                            </a>
+                            <a href="pages/dashboard.html" class="dropdown-item">
+                                <i data-lucide="mic"></i> Mock Interview
+                            </a>
+                            <a href="pages/dashboard.html" class="dropdown-item">
+                                <i data-lucide="code"></i> DSA Practice
+                            </a>
+                        </div>
+                    </div>
+
+                    <a href="#pricing" class="nav-link">Pricing</a>
+
+                    <!-- More Dropdown -->
+                    <div class="nav-dropdown">
+                        <button class="dropdown-trigger">
+                            <i data-lucide="settings"></i> More <i data-lucide="chevron-down" class="chevron"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <div class="dropdown-header">
+                                <i data-lucide="building"></i> Company & Support
+                            </div>
+                            <a href="#" class="dropdown-item">
+                                <i data-lucide="book"></i> Documentation
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i data-lucide="message-square"></i> Blogs
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i data-lucide="info"></i> About
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i data-lucide="phone"></i> Contact
+                            </a>
+                            <div style="height: 1px; background: var(--border); margin: 8px 0;"></div>
+                            <a href="pages/dashboard.html" class="dropdown-item">
+                                <i data-lucide="bar-chart-2"></i> Progress Dashboard
+                            </a>
+                            <a href="pages/dashboard.html" class="dropdown-item">
+                                <i data-lucide="settings"></i> Settings
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="nav-links" style="display: flex; align-items: center; gap: 10px;">
+
+            <div class="nav-right">
                 <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()">
                     <i data-lucide="sun"></i>
                 </button>
@@ -218,7 +281,8 @@
                 <h3>Free Starter</h3>
                 <div class="price">₹0 <span>/mo</span></div>
                 <p>Basic resume scoring and 1 mock interview session.</p>
-                <button class="btn btn-secondary full-width" onclick="location.href='pages/auth.html'">Choose Free</button>
+                <button class="btn btn-secondary full-width" onclick="location.href='pages/auth.html'">Choose
+                    Free</button>
             </div>
             <div class="card price-card featured">
                 <h3>Premium Student</h3>
