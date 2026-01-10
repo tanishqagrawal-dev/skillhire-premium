@@ -514,26 +514,51 @@
                                 <button class="btn-hero-secondary">
                                     Browse Catalog
                                 </button>
+                                <button class="btn-hero-secondary" onclick="openCreateCourseModal()">
+                                    <i data-lucide="plus-circle"></i> Create Course
+                                </button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Toolbar -->
+                    <!-- Toolbar -->
                     <div class="courses-toolbar">
                         <div class="search-bar-wrapper">
                             <i data-lucide="search"></i>
-                            <input type="text" placeholder="Search courses, instructors, or topics..."
-                                class="course-search-input">
+                            <input type="text" id="course-search-input"
+                                placeholder="Search courses, instructors, or topics..." class="course-search-input"
+                                oninput="filterCourses()">
                         </div>
 
-                        <div class="filter-dropdown">
-                            <span>All Categories</span>
-                            <i data-lucide="chevron-down"></i>
+                        <div class="filter-dropdown-wrapper" style="position: relative;">
+                            <select id="course-category-filter" class="filter-dropdown glass-input"
+                                onchange="filterCourses()"
+                                style="appearance: none; cursor: pointer; padding-right: 30px; margin-top: 0;">
+                                <option value="">All Categories</option>
+                                <option value="Programming">Programming</option>
+                                <option value="Data Science">Data Science</option>
+                                <option value="Web Development">Web Development</option>
+                                <option value="Mobile Development">Mobile Development</option>
+                                <option value="DevOps">DevOps & Cloud</option>
+                                <option value="Design">UI/UX Design</option>
+                            </select>
+                            <i data-lucide="chevron-down"
+                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
                         </div>
 
-                        <button class="filter-btn">
-                            <i data-lucide="filter"></i> Filters
-                        </button>
+                        <div class="filter-dropdown-wrapper" style="position: relative;">
+                            <select id="course-level-filter" class="filter-dropdown glass-input"
+                                onchange="filterCourses()"
+                                style="appearance: none; cursor: pointer; padding-right: 30px; margin-top: 0;">
+                                <option value="">All Levels</option>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                            </select>
+                            <i data-lucide="filter"
+                                style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+                        </div>
                     </div>
 
                     <!-- Categories -->
@@ -594,7 +619,7 @@
                                         class="instructor-avatar">
                                     <div class="instructor-details">
                                         <h4>JavaScript Mastery: From Zero to Hero</h4>
-                                        <p>by Sarah Chen</p>
+                                        <p>by SKiL MATRiX Academy</p>
                                     </div>
                                 </div>
 
@@ -656,7 +681,7 @@
                                         class="instructor-avatar">
                                     <div class="instructor-details">
                                         <h4>React Complete: Modern Development</h4>
-                                        <p>by Alex Rodriguez</p>
+                                        <p>by SKiL MATRiX Academy</p>
                                     </div>
                                 </div>
 
@@ -708,7 +733,7 @@
                                         class="instructor-avatar">
                                     <div class="instructor-details">
                                         <h4>Python for Data Science</h4>
-                                        <p>by Dr. Maria Santos</p>
+                                        <p>by SKiL MATRiX Academy</p>
                                     </div>
                                 </div>
 
@@ -752,6 +777,57 @@
 
                             <button class="btn-course-action">
                                 Continue Learning <i data-lucide="arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Course 4 -->
+                        <div class="course-card-new">
+                            <div class="course-gradient-overlay overlay-green"></div>
+
+                            <div class="card-top-badges">
+                                <span class="badge badge-level">Advanced</span>
+                                <button class="bookmark-btn"><i data-lucide="bookmark"></i></button>
+                            </div>
+
+                            <div class="course-info">
+                                <div class="instructor-row">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=James"
+                                        class="instructor-avatar">
+                                    <div class="instructor-details">
+                                        <h4>AWS Cloud Masterclass</h4>
+                                        <p>by SKiL MATRiX Academy</p>
+                                    </div>
+                                </div>
+
+                                <p class="course-desc">Deploy scalable applications and master cloud infrastructure with
+                                    AWS services.</p>
+
+                                <div class="rating-row">
+                                    <div style="display: flex; color: #fbbf24;">
+                                        <i data-lucide="star" style="fill: #fbbf24"></i>
+                                        <span style="margin-left: 4px; color: #fff; font-weight: 600;">4.95</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                        <i data-lucide="users"></i> 8,420
+                                    </div>
+                                </div>
+
+                                <div class="tags-row" style="margin-top: 36px;">
+                                    <span class="course-tag">AWS</span>
+                                    <span class="course-tag">Cloud</span>
+                                    <span class="course-tag">DevOps</span>
+                                    <span class="course-tag">Serverless</span>
+                                </div>
+
+                                <div class="course-meta-tags" style="margin-top: 0; margin-bottom: 16px;">
+                                    <span class="meta-item"><i data-lucide="clock" style="width: 14px;"></i> 16
+                                        weeks</span>
+                                    <span class="meta-item">$89</span>
+                                </div>
+                            </div>
+
+                            <button class="btn-course-action">
+                                Start Course <i data-lucide="arrow-right"></i>
                             </button>
                         </div>
 
@@ -1493,6 +1569,184 @@
             </footer>
 
         </main>
+    </div>
+
+    <!-- Create Course Modal -->
+    <div id="create-course-modal" class="modal-overlay hidden" style="z-index: 1000;">
+        <div class="modal-glass-card" style="max-width: 800px; width: 90%;">
+            <div class="modal-header">
+                <h3>Create New Course</h3>
+                <button class="close-modal-btn" onclick="closeCreateCourseModal()"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="create-course-form" onsubmit="handleCreateCourse(event)">
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label>Course Title *</label>
+                            <input type="text" name="title" placeholder="Enter course title" required
+                                class="glass-input">
+                        </div>
+                        <div class="form-group half">
+                            <label>Instructor Name *</label>
+                            <input type="text" name="instructor" value="SKiL MATRiX Academy" readonly
+                                class="glass-input" style="opacity: 0.7; cursor: not-allowed;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Course Description *</label>
+                        <textarea name="description" placeholder="Describe what students will learn..." rows="3"
+                            required class="glass-input"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group quarter">
+                            <label>Level</label>
+                            <select name="level" class="glass-input">
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                            </select>
+                        </div>
+                        <div class="form-group quarter">
+                            <label>Duration</label>
+                            <input type="text" name="duration" placeholder="e.g. 8 weeks" class="glass-input">
+                        </div>
+                        <div class="form-group quarter">
+                            <label>Price</label>
+                            <input type="text" name="price" placeholder="Free / $XX" class="glass-input">
+                        </div>
+                        <div class="form-group quarter">
+                            <label>Category</label>
+                            <select name="category" class="glass-input">
+                                <option value="Programming">Programming</option>
+                                <option value="Design">Design</option>
+                                <option value="Data Science">Data Science</option>
+                                <option value="Business">Business</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tags</label>
+                        <input type="text" name="tags" placeholder="Add tags (comma separated)" class="glass-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Course Modules (Syllabus)</label>
+                        <div id="module-list" class="module-list">
+                            <!-- Dynamic Modules will go here -->
+                        </div>
+                        <button type="button" class="btn-secondary-sm" onclick="addModuleField()">
+                            <i data-lucide="plus"></i> Add Module
+                        </button>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-text" onclick="closeCreateCourseModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">Create Course</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Player Modal -->
+    <div id="course-player-modal" class="modal-overlay hidden" style="z-index: 1000;">
+        <div class="modal-glass-card"
+            style="max-width: 1000px; width: 95%; height: 85vh; display: flex; flex-direction: column; padding: 0;">
+            <div class="player-header"
+                style="padding: 15px 25px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <span class="badge badge-level" id="player-course-tag">Course</span>
+                    <h3 id="player-course-title" style="margin: 5px 0 0; font-size: 1.2rem;">Course Title</h3>
+                </div>
+                <button class="close-modal-btn bg-none" onclick="closeCoursePlayer()"><i data-lucide="x"></i></button>
+            </div>
+
+            <div class="player-body" style="flex: 1; display: flex; overflow: hidden;">
+                <!-- Sidebar -->
+                <div class="player-sidebar"
+                    style="width: 300px; border-right: 1px solid rgba(255,255,255,0.1); overflow-y: auto; padding: 20px; background: rgba(0,0,0,0.2);">
+                    <h4
+                        style="margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px;">
+                        Course Content</h4>
+                    <div id="player-modules-list" class="player-modules">
+                        <!-- Modules injected here -->
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="player-content"
+                    style="flex: 1; padding: 0; overflow-y: auto; position: relative; display: flex; flex-direction: column;">
+                    <!-- Video Section -->
+                    <!-- Content Section (Notes/AI) -->
+                    <div id="player-content-container"
+                        style="width: 100%; height: 500px; background: rgba(0,0,0,0.2); position: relative; overflow-y: hidden;">
+
+                        <!-- Notes Viewer -->
+                        <div id="player-notes-viewer"
+                            style="width: 100%; height: 100%; overflow-y: auto; padding: 40px;">
+                            <div id="player-notes-content"
+                                style="max-width: 800px; margin: 0 auto; color: var(--text-main); line-height: 1.8; font-size: 1.05rem;">
+                                <!-- Dynamic Content -->
+                            </div>
+                        </div>
+
+                        <!-- Locked Overlay -->
+                        <div id="enroll-overlay" class="hidden"
+                            style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; backdrop-filter: blur(8px);">
+                            <div style="text-align: center; max-width: 400px;">
+                                <i data-lucide="lock"
+                                    style="width: 48px; height: 48px; color: var(--primary); margin-bottom: 20px;"></i>
+                                <h2 style="margin-bottom: 10px;">Premium Academy Content</h2>
+                                <p style="color: var(--text-muted); margin-bottom: 25px;">Enroll in this course to
+                                    access the comprehensive study notes, AI insights, and practice questions.</p>
+                                <button class="btn-primary" onclick="enrollInCourse()">Enroll Now - Free</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Tabs -->
+                    <div class="player-tabs"
+                        style="padding: 0 30px; border-bottom: 1px solid var(--border); background: var(--card-bg);">
+                        <button class="tab-btn active" id="tab-btn-lesson" onclick="switchPlayerTab('lesson')">Lesson
+                            Details</button>
+                        <button class="tab-btn" id="tab-btn-quiz" onclick="switchPlayerTab('quiz')">Practice
+                            Questions</button>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="player-tab-content" style="padding: 30px; flex: 1;">
+
+                        <!-- Lesson Tab -->
+                        <div id="player-tab-lesson">
+                            <h2 id="player-lesson-title" style="margin-bottom: 10px;">Select a module</h2>
+                            <p id="player-lesson-desc"
+                                style="color: var(--text-muted); line-height: 1.6; margin-bottom: 20px;">
+                                Watch the video above to master this topic.
+                            </p>
+                            <div class="action-row"
+                                style="display: flex; justify-content: space-between; align-items: center;">
+                                <button class="btn-primary" id="mark-complete-btn" onclick="markLessonComplete()">
+                                    <i data-lucide="check-circle" style="width: 18px;"></i> Mark as Complete
+                                </button>
+                                <span id="lesson-status"
+                                    style="color: var(--success); font-weight: 600; display: none;">Completed</span>
+                            </div>
+                        </div>
+
+                        <!-- Quiz Tab -->
+                        <div id="player-tab-quiz" class="hidden">
+                            <div id="quiz-container">
+                                <!-- Dynamic Quiz -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="ai-coach-widget">

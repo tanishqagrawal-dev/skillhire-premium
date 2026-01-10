@@ -1951,3 +1951,445 @@ document.addEventListener('DOMContentLoaded', () => {
 const savedTheme = localStorage.getItem('skilmatrix_theme') || 'dark';
 document.body.dataset.theme = savedTheme;
 updateThemeIcon();
+
+// --- COURSE MANAGEMENT & PLAYER ---
+
+// Global function to open Create Course Modal
+window.openCreateCourseModal = function () {
+    document.getElementById('create-course-modal').classList.remove('hidden');
+    const list = document.getElementById('module-list');
+    if (list.children.length === 0) addModuleField();
+}
+
+// Global function to close Create Course Modal
+window.closeCreateCourseModal = function () {
+    document.getElementById('create-course-modal').classList.add('hidden');
+    document.getElementById('create-course-form').reset();
+    document.getElementById('module-list').innerHTML = '';
+}
+
+// Global function to add dynamic module inputs
+window.addModuleField = function () {
+    const moduleList = document.getElementById('module-list');
+    const div = document.createElement('div');
+    div.className = 'module-item';
+    div.innerHTML = `
+        <i data-lucide="grip-vertical" style="color:var(--text-muted); cursor:grab;"></i>
+        <input type="text" name="modules[]" placeholder="Module Title (e.g., Intro to UI Design)" required>
+        <i data-lucide="trash-2" class="remove-module-btn" onclick="this.parentElement.remove()"></i>
+    `;
+    moduleList.appendChild(div);
+    if (window.lucide) lucide.createIcons();
+}
+
+// Global handler for form submission
+window.handleCreateCourse = function (e) {
+    e.preventDefault();
+    const form = e.target;
+    // Simple mock form data extraction
+    const title = form.querySelector('[name="title"]').value;
+    const instructor = form.querySelector('[name="instructor"]').value;
+    const description = form.querySelector('[name="description"]').value;
+    const level = form.querySelector('[name="level"]').value;
+    const duration = form.querySelector('[name="duration"]').value;
+    const price = form.querySelector('[name="price"]').value;
+    const category = form.querySelector('[name="category"]').value;
+    const tags = form.querySelector('[name="tags"]').value.split(',').map(t => t.trim());
+
+    const modules = [];
+    form.querySelectorAll('input[name="modules[]"]').forEach(input => {
+        if (input.value) modules.push(input.value);
+    });
+
+    const newCourse = {
+        title, instructor, description, level, duration, price, category, tags, modules,
+        rating: 5.0,
+        students: 0,
+        progress: 0
+    };
+
+    addCourseToGrid(newCourse);
+
+    // Show simple notification/alert for now
+    alert('Course "' + title + '" created successfully!');
+    closeCreateCourseModal();
+}
+
+function addCourseToGrid(course) {
+    const grid = document.querySelector('.courses-grid');
+    const card = document.createElement('div');
+    card.className = 'course-card-new';
+
+    // Pick a random gradient
+    const gradients = ['overlay-blue', 'overlay-purple', 'overlay-green', 'overlay-orange'];
+    const gradientClass = gradients[Math.floor(Math.random() * gradients.length)];
+
+    // Generate avatar seed
+    const avatarSeed = course.instructor.replace(/\s/g, '');
+
+    card.innerHTML = `
+        <div class="course-gradient-overlay ${gradientClass}"></div>
+        <div class="card-top-badges">
+            <span class="badge badge-level">${course.level}</span>
+            <button class="bookmark-btn"><i data-lucide="bookmark"></i></button>
+        </div>
+        <div class="course-info">
+            <div class="instructor-row">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${avatarSeed}" class="instructor-avatar">
+                <div class="instructor-details">
+                    <h4>${course.title}</h4>
+                    <p>by ${course.instructor}</p>
+                </div>
+            </div>
+            <p class="course-desc">${course.description.substring(0, 80)}${course.description.length > 80 ? '...' : ''}</p>
+            <div class="rating-row">
+                <div style="display: flex; color: #fbbf24;">
+                    <i data-lucide="star" style="fill: #fbbf24"></i>
+                    <span style="margin-left: 4px; color: #fff; font-weight: 600;">5.0</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 4px;">
+                    <i data-lucide="users"></i> New
+                </div>
+            </div>
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span>Progress</span>
+                    <span>0%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+             <div class="tags-row">
+                ${course.tags.map(tag => `<span class="course-tag">${tag}</span>`).join('')}
+            </div>
+            <div class="course-meta-tags" style="margin-top: 0; margin-bottom: 16px;">
+                <span class="meta-item"><i data-lucide="clock" style="width: 14px;"></i> ${course.duration}</span>
+                <span class="meta-item">${course.price}</span>
+            </div>
+        </div>
+        <button class="btn-course-action">
+            Start Learning <i data-lucide="arrow-right"></i>
+        </button>
+    `;
+
+    // Bind click event directly
+    card.querySelector('.btn-course-action').onclick = () => openCoursePlayer(course);
+
+    // Insert at top of grid (after the featured header, or just prepend to grid container)
+    // The grid container starts with course cards, so prepend is perfect.
+    grid.prepend(card);
+
+    if (window.lucide) lucide.createIcons();
+}
+
+// Player Logic
+// Player Logic
+let currentCourseData = null;
+
+window.openCoursePlayer = function (courseData) {
+    currentCourseData = courseData;
+    const modal = document.getElementById('course-player-modal');
+
+    // Set Header
+    document.getElementById('player-course-title').innerText = courseData.title || courseData.name || "Untitled Course";
+    document.getElementById('player-course-tag').innerText = courseData.level || "Course";
+
+    // Initialize modules if not present (Mock Data for demo)
+    if (!courseData.modules || courseData.modules.length === 0 || typeof courseData.modules[0] === 'string') {
+
+        // Mock Notes/Lecture Content Generator
+        const generateNotes = (topic, moduleTitle) => {
+            return `
+                <h3>${moduleTitle}</h3>
+                <p><strong>Topic Overview:</strong> ${topic} is a critical component of modern software development. In this module, we will explore the fundamental principles that drive efficiency and scalability.</p>
+                
+                <h4>Key Concepts</h4>
+                <ul>
+                    <li>Understanding the core architecture of ${topic}.</li>
+                    <li>Best practices for implementation in production environments.</li>
+                    <li>Common pitfalls and how to avoid them (e.g., performance bottlenecks).</li>
+                    <li>Integration with existing toolchains and workflows.</li>
+                </ul>
+
+                <h4>Detailed Analysis</h4>
+                <p>When working with ${topic}, it is essential to maintain a modular approach. This ensures that your codebase remains maintainable and testable. Recent updates in the ecosystem have introduced new patterns that simplify state management and data flow.</p>
+
+                <p>Consider the following example where we apply these principles to a real-world scenario. The resulting improvement in load times and user experience is significant.</p>
+
+                <h4>Summary</h4>
+                <p>By mastering ${moduleTitle}, you set a strong foundation for advanced topics in this course. Ensure you complete the practice questions to reinforce your learning.</p>
+            `;
+        };
+
+        const rawModules = courseData.modules && courseData.modules.length > 0 ? courseData.modules : [
+            "Introduction & Overview", "Core Concepts", "Advanced Techniques", "Final Project"
+        ];
+
+        courseData.modules = rawModules.map((m, i) => ({
+            title: typeof m === 'string' ? m : m.title,
+            content: generateNotes(courseData.title, typeof m === 'string' ? m : m.title),
+            completed: false,
+            id: i
+        }));
+
+        courseData.enrolled = false; // Default to not enrolled for demo
+        courseData.quiz = [
+            { q: "What is the primary purpose of this technology?", options: ["Data Analysis", "Web Development", "System Administration", "All of the above"], answer: 3 },
+            { q: "Which of the following is a key feature?", options: ["Scalability", "Latency", "Redundancy", "None"], answer: 0 }
+        ];
+    }
+
+    renderPlayerSidebar();
+    loadModule(0);
+    checkEnrollmentStatus();
+    renderQuiz();
+
+    modal.classList.remove('hidden');
+    if (window.lucide) lucide.createIcons();
+}
+
+function renderPlayerSidebar() {
+    const moduleList = document.getElementById('player-modules-list');
+    moduleList.innerHTML = '';
+
+    currentCourseData.modules.forEach((mod, index) => {
+        const div = document.createElement('div');
+        div.className = `player-module-item ${index === 0 ? 'active' : ''} ${mod.completed ? 'completed' : ''}`;
+        div.dataset.index = index;
+        div.innerHTML = `
+            <i data-lucide="${mod.completed ? 'check-circle' : (index === 0 || currentCourseData.enrolled ? 'book-open' : 'lock')}" style="width:16px;"></i>
+            <span>Module ${index + 1}: ${mod.title}</span>
+        `;
+        div.onclick = () => loadModule(index);
+        moduleList.appendChild(div);
+    });
+    if (window.lucide) lucide.createIcons();
+}
+
+function loadModule(index) {
+    if (!currentCourseData.enrolled && index > 0) return; // Block access content if not enrolled
+
+    // Update UI Active State
+    document.querySelectorAll('.player-module-item').forEach(el => el.classList.remove('active'));
+    const activeItem = document.querySelector(`.player-module-item[data-index="${index}"]`);
+    if (activeItem) activeItem.classList.add('active');
+
+    // Load Content
+    const mod = currentCourseData.modules[index];
+    document.getElementById('player-lesson-title').innerText = mod.title;
+    document.getElementById('player-lesson-desc').innerText = `Read the lecture notes below to master this topic.`;
+
+    // Inject Notes
+    const notesContainer = document.getElementById('player-notes-content');
+    if (notesContainer) {
+        notesContainer.innerHTML = currentCourseData.enrolled ? mod.content : "<p><em>Content is locked. Please enroll to view lecture notes.</em></p>";
+    }
+
+    // Button State
+    const btn = document.getElementById('mark-complete-btn');
+    const status = document.getElementById('lesson-status');
+    if (mod.completed) {
+        btn.style.display = 'none';
+        status.style.display = 'inline-block';
+    } else {
+        btn.style.display = 'inline-flex';
+        status.style.display = 'none';
+        btn.disabled = !currentCourseData.enrolled;
+    }
+}
+
+function checkEnrollmentStatus() {
+    const overlay = document.getElementById('enroll-overlay');
+    // Toggle content visibility vs lock overlay
+    if (currentCourseData.enrolled) {
+        overlay.classList.add('hidden');
+    } else {
+        overlay.classList.remove('hidden');
+    }
+}
+
+window.enrollInCourse = function () {
+    if (!currentCourseData) return;
+    currentCourseData.enrolled = true;
+    checkEnrollmentStatus();
+    renderPlayerSidebar();
+    loadModule(0);
+    // Refresh Grid to show enrolled status (optional)
+    alert("You have successfully enrolled in " + currentCourseData.title);
+}
+
+window.switchPlayerTab = function (tabName) {
+    // Buttons
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(`tab-btn-${tabName}`).classList.add('active');
+
+    // Content
+    document.getElementById('player-tab-lesson').classList.add('hidden');
+    document.getElementById('player-tab-quiz').classList.add('hidden');
+
+    document.getElementById(`player-tab-${tabName}`).classList.remove('hidden');
+}
+
+function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = '';
+
+    currentCourseData.quiz.forEach((q, qIdx) => {
+        const qDiv = document.createElement('div');
+        qDiv.className = 'quiz-question';
+        qDiv.innerHTML = `<h4>Question ${qIdx + 1}: ${q.q}</h4>`;
+
+        const optsDiv = document.createElement('div');
+        optsDiv.className = 'quiz-options';
+
+        q.options.forEach((opt, oIdx) => {
+            const optDiv = document.createElement('div');
+            optDiv.className = 'quiz-option';
+            optDiv.innerText = opt;
+            optDiv.onclick = function () {
+                // Reset this question's options
+                optsDiv.querySelectorAll('.quiz-option').forEach(el => el.className = 'quiz-option');
+
+                // Check answer
+                if (oIdx === q.answer) {
+                    this.classList.add('correct');
+                } else {
+                    this.classList.add('wrong');
+                }
+                this.classList.add('selected');
+            }
+            optsDiv.appendChild(optDiv);
+        });
+
+        qDiv.appendChild(optsDiv);
+        container.appendChild(qDiv);
+    });
+}
+
+window.closeCoursePlayer = function () {
+    const doc = document; // Safety ref
+    const iframe = doc.getElementById('player-iframe');
+    if (iframe) iframe.src = ""; // Stop video playback
+    doc.getElementById('course-player-modal').classList.add('hidden');
+
+    // Update Progress on Card in Grid (Find card by matching Title)
+    if (currentCourseData) {
+        updateCardProgress(currentCourseData);
+    }
+}
+
+window.markLessonComplete = function () {
+    if (!currentCourseData || !currentCourseData.enrolled) return;
+
+    const activeItem = document.querySelector('.player-module-item.active');
+    const index = parseInt(activeItem.dataset.index);
+
+    currentCourseData.modules[index].completed = true;
+    renderPlayerSidebar(); // Refresh icons
+    loadModule(index); // Refresh button state
+
+    // Trigger progress update
+    updateCardProgress(currentCourseData);
+}
+
+function updateCardProgress(courseData) {
+    // Calculate %
+    const total = courseData.modules.length;
+    const completed = courseData.modules.filter(m => m.completed).length;
+    const percent = Math.round((completed / total) * 100);
+
+    courseData.progress = percent; // Save to data
+
+    // Update DOM
+    const cards = document.querySelectorAll('.course-card-new');
+    cards.forEach(card => {
+        const title = card.querySelector('h4').innerText;
+        if (title === courseData.title) {
+            const fill = card.querySelector('.progress-fill');
+            const text = card.querySelector('.progress-header span:last-child');
+            if (fill) fill.style.width = `${percent}%`;
+            if (text) text.innerText = `${percent}%`;
+
+            // Change button text if started
+            const btn = card.querySelector('.btn-course-action');
+            if (percent > 0 && percent < 100) {
+                btn.innerHTML = 'Continue Learning <i data-lucide="arrow-right"></i>';
+            } else if (percent === 100) {
+                btn.innerHTML = 'Completed <i data-lucide="check"></i>';
+                btn.disabled = true;
+            }
+        }
+    });
+}
+
+
+// Initialize existing static buttons
+function initExistingCourses() {
+    const staticButtons = document.querySelectorAll('.course-card-new .btn-course-action');
+    staticButtons.forEach(btn => {
+        // Avoid re-binding if already bound (check purely by attribute presence or logic)
+        if (btn.dataset.bound) return;
+
+        const card = btn.closest('.course-card-new');
+        if (!card) return;
+
+        const titleEl = card.querySelector('.instructor-details h4');
+        const levelEl = card.querySelector('.badge-level');
+        const tagEls = card.querySelectorAll('.course-tag');
+
+        if (titleEl) {
+            const title = titleEl.innerText;
+            const level = levelEl ? levelEl.innerText : 'Course';
+            const tags = Array.from(tagEls).map(t => t.innerText);
+
+            const mockData = { title, level, tags, modules: [] }; // Empty modules triggers mock generation
+
+            btn.onclick = () => openCoursePlayer(mockData);
+            btn.dataset.bound = "true";
+        }
+    });
+}
+
+// Run init on load
+initExistingCourses();
+// Also re-run periodically in case of tab switches
+setInterval(initExistingCourses, 2000);
+// --- FILTER & SEARCH LOGIC ---
+window.filterCourses = function () {
+    const query = document.getElementById('course-search-input').value.toLowerCase();
+    const category = document.getElementById('course-category-filter').value;
+    const level = document.getElementById('course-level-filter').value;
+
+    const courses = document.querySelectorAll('.course-card-new');
+
+    courses.forEach(card => {
+        const title = card.querySelector('h4').innerText.toLowerCase();
+        const instructor = card.querySelector('.instructor-details p').innerText.toLowerCase();
+        const desc = card.querySelector('.course-desc').innerText.toLowerCase();
+        const tags = Array.from(card.querySelectorAll('.course-tag')).map(t => t.innerText.toLowerCase()).join(' ');
+        const cardLevel = card.querySelector('.badge-level').innerText;
+
+        const matchesSearch = title.includes(query) || instructor.includes(query) || desc.includes(query) || tags.includes(query);
+
+        let matchesCategory = true;
+        if (category) {
+            // Check if any tag matches the category loosely or map categories
+            // Simple approach: check if text content contains category keyword
+            matchesCategory = card.innerText.includes(category) ||
+                (category === "Programming" && (tags.includes("javascript") || tags.includes("python") || tags.includes("java"))) ||
+                (category === "DevOps" && (tags.includes("aws") || tags.includes("cloud")));
+        }
+
+        let matchesLevel = true;
+        if (level) {
+            matchesLevel = cardLevel.includes(level);
+        }
+
+        if (matchesSearch && matchesCategory && matchesLevel) {
+            card.style.display = 'flex'; // Restore flex display
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
