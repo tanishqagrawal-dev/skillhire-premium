@@ -1,4 +1,9 @@
 // --- LANDING PAGE LOGIC & AUTH REDIRECTION ---
+console.log("Landing JS Loaded successfully!");
+
+window.onerror = function (msg, url, line) {
+    console.error("Global Error: " + msg + "\n" + url + ":" + line);
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     // Check if Firebase is available
@@ -162,9 +167,149 @@ window.closeFounder = function () {
     }, 300);
 }
 
-// Close on outside click
+// Close on outside click for Founder Modal
 document.getElementById('founder-modal')?.addEventListener('click', (e) => {
     if (e.target.id === 'founder-modal') {
         window.closeFounder();
     }
 });
+
+// --- PLAN SELECTION MODAL LOGIC ---
+const plansData = {
+    free: {
+        name: "Free Starter",
+        price: "₹0 <span>/mo</span>",
+        features: [
+            "Basic Resume Analysis (3/mo)",
+            "1 Mock Interview Session",
+            "Basic Skill Roadmap",
+            "Community Forum Access",
+            "Limited AI Chat Support"
+        ]
+    },
+    premium: {
+        name: "Premium Student",
+        price: "₹199 <span>/mo</span>",
+        features: [
+            "Unlimited Resume Scans & ATS Checks",
+            "Unlimited AI Mock Interviews",
+            "Deep Interview Feedback & Analysis",
+            "Full Personalized Learning Roadmap",
+            "Company-Specific Insights",
+            "Ad-free Experience"
+        ]
+    },
+    pro: {
+        name: "Pro Intensive",
+        price: "₹499 <span>/mo</span>",
+        features: [
+            "Everything in Premium",
+            "1-on-1 Human Career Coaching (1/mo)",
+            "Manual Resume Review by Expert",
+            "Priority Support (24/7)",
+            "Verified Skill Badge Certification"
+        ]
+    },
+    campus: {
+        name: "Campus / Teams",
+        price: "Custom",
+        features: [
+            "Full access for entire Batch/College",
+            "Admin Dashboard for TPO",
+            "Student Progress Tracking",
+            "Bulk Resume Export & Filtering",
+            "Custom Onboarding Workshop"
+        ]
+    }
+};
+
+window.openPlanModal = (planId) => {
+    const plan = plansData[planId];
+    if (!plan) return;
+
+    // Populate Modal Content
+    document.getElementById('modal-plan-name').textContent = plan.name;
+    document.getElementById('modal-plan-price').innerHTML = plan.price;
+
+    // Generate Features List
+    const featuresContainer = document.querySelector('.modal-features-list');
+    featuresContainer.innerHTML = plan.features.map(feature => `
+        <div class="modal-feature-item">
+            <i data-lucide="check-circle-2"></i>
+            <span>${feature}</span>
+        </div>
+    `).join('');
+
+    // Refresh icons
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    // Show Modal
+    const modal = document.getElementById('plan-modal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+window.closePlanModal = () => {
+    document.getElementById('plan-modal').classList.remove('active');
+    document.body.style.overflow = '';
+};
+
+// Close on outside click for Plan Modal
+document.getElementById('plan-modal')?.addEventListener('click', (e) => {
+    if (e.target.id === 'plan-modal') {
+        closePlanModal();
+    }
+});
+
+// Navigate to Auth with Cleanup
+window.gridToAuth = () => {
+    closePlanModal();
+    setTimeout(() => {
+        window.location.href = 'pages/auth.html';
+    }, 100);
+};
+
+// Force Cleanup on Page Show/Restore (Fixes BF Cache Hangs)
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        // Page was restored from cache
+        console.log("Page restored from cache - cleaning up...");
+    }
+    document.body.style.overflow = ''; // Always enable scroll on load
+    document.getElementById('plan-modal')?.classList.remove('active');
+    document.getElementById('founder-modal')?.classList.remove('active');
+});
+
+// Mobile Menu Toggle
+// Mobile/Sidebar Menu Toggle
+window.toggleMobileMenu = function () {
+    console.log("Toggle Sidebar Clicked");
+    const sidebar = document.getElementById('mobile-sidebar');
+    let backdrop = document.querySelector('.sidebar-backdrop');
+
+    // Create backdrop if not exists
+    if (!backdrop) {
+        backdrop = document.createElement('div');
+        backdrop.className = 'sidebar-backdrop';
+        backdrop.onclick = window.toggleMobileMenu; // Click/Tap outside to close
+        document.body.appendChild(backdrop);
+    }
+
+    if (sidebar) {
+        sidebar.classList.toggle('active');
+        backdrop.classList.toggle('active');
+
+        // Prevent body scroll if active
+        if (sidebar.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    } else {
+        console.error("Sidebar menu not found!");
+    }
+
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+}

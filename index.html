@@ -109,6 +109,11 @@
                 <a href="pages/signup.html" class="btn btn-primary"
                     style="text-decoration: none; padding: 10px 24px;">Sign Up</a>
             </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i data-lucide="menu"></i>
+            </button>
         </div>
     </nav>
 
@@ -142,24 +147,42 @@
     <section id="problems">
         <h2 class="section-title">Why Smart Students Get Rejected</h2>
         <div class="problems-grid">
-            <div class="card">
-                <span class="problem-icon">📄</span>
-                <h3>Resume Blind Spot</h3>
-                <p>98% of resumes are filtered out by ATS before a human ever sees them. We show you the missing
-                    keywords.</p>
-            </div>
-            <div class="card">
-                <span class="problem-icon">🎤</span>
-                <h3>Interview Anxiety</h3>
-                <p>Practicing in your head isn't enough. Get real-time AI feedback on your clarity, structure, and
-                    confidence.</p>
-            </div>
-            <div class="card">
-                <span class="problem-icon">❓</span>
-                <h3>Unknown Skill Gaps</h3>
-                <p>Don't guess what companies want. We analyze job descriptions and map them directly to your skills.
-                </p>
-            </div>
+            <!-- Resume Blind Spot -> Connects to Resume Builder -->
+            <a href="pages/dashboard.html" class="card">
+                <div class="card-content">
+                    <div class="icon-3d">
+                        <i data-lucide="file-scan"></i>
+                    </div>
+                    <h3>Resume Blind Spot</h3>
+                    <p>98% of resumes are filtered out by ATS before a human ever sees them. We show you the missing
+                        keywords.</p>
+                </div>
+            </a>
+
+            <!-- Interview Anxiety -> Connects to Mock Interview -->
+            <a href="pages/dashboard.html" class="card">
+                <div class="card-content">
+                    <div class="icon-3d">
+                        <i data-lucide="mic"></i>
+                    </div>
+                    <h3>Interview Anxiety</h3>
+                    <p>Practicing in your head isn't enough. Get real-time AI feedback on your clarity, structure, and
+                        confidence.</p>
+                </div>
+            </a>
+
+            <!-- Unknown Skill Gaps -> Connects to Roadmap/Analysis -->
+            <a href="pages/dashboard.html" class="card">
+                <div class="card-content">
+                    <div class="icon-3d">
+                        <i data-lucide="puzzle"></i>
+                    </div>
+                    <h3>Unknown Skill Gaps</h3>
+                    <p>Don't guess what companies want. We analyze job descriptions and map them directly to your
+                        skills.
+                    </p>
+                </div>
+            </a>
         </div>
     </section>
 
@@ -173,12 +196,12 @@
                     <p>Google Gemini 2.0 scans your resume as an expert recruiter would. Get an instant score and
                         actionable feedback in seconds.</p>
                 </div>
-                <div class="feature-visual">
+                <div class="feature-visual feature-img-box">
                     <img src="assets/hero-preview.png" alt="Resume Analysis">
                 </div>
             </div>
             <div class="feature-item reverse">
-                <div class="feature-visual">
+                <div class="feature-visual feature-img-box">
                     <img src="assets/interview-feature.png" alt="Interview Practice">
                 </div>
                 <div class="feature-content">
@@ -193,17 +216,18 @@
                     <p>Close your skill gaps with a personalized learning path. Track your progress as you become ready
                         for your dream job.</p>
                 </div>
-                <div class="feature-visual">
+                <div class="feature-visual feature-img-box">
                     <img src="assets/roadmap-feature.png" alt="Learning Roadmap">
                 </div>
             </div>
 
+            <!-- Feature 3: DSA -->
             <div class="feature-item reverse">
                 <div class="feature-visual">
-                    <!-- Placeholder visual for DSA -->
+                    <!-- Wide Capsule Visual for DSA -->
                     <div
-                        style="width:100%; height:100%; background: linear-gradient(135deg, rgba(6,182,212,0.1), rgba(168,85,247,0.1)); border-radius: 16px; display:flex; align-items:center; justify-content:center; border: 1px solid rgba(255,255,255,0.1);">
-                        <i data-lucide="code-2" style="width:64px; height:64px; color: #00f2fe;"></i>
+                        style="width:100%; height:140px; background: linear-gradient(to right, #0f172a, #1e1b4b); border-radius: 99px; display:flex; align-items:center; justify-content:center; border: 1px solid rgba(124, 58, 237, 0.2); box-shadow: 0 0 30px rgba(124, 58, 237, 0.1);">
+                        <i data-lucide="code-2" style="width:48px; height:48px; color: #00f2fe;"></i>
                     </div>
                 </div>
                 <div class="feature-content">
@@ -213,6 +237,7 @@
                 </div>
             </div>
 
+            <!-- Feature 4: AI Coach -->
             <div class="feature-item">
                 <div class="feature-content">
                     <h3>24/7 AI Career Coach</h3>
@@ -220,10 +245,10 @@
                         answer career questions and provide context-aware tips.</p>
                 </div>
                 <div class="feature-visual">
-                    <!-- Placeholder visual for AI Coach -->
+                    <!-- Wide Capsule Visual for AI Coach -->
                     <div
-                        style="width:100%; height:100%; background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(6,182,212,0.1)); border-radius: 16px; display:flex; align-items:center; justify-content:center; border: 1px solid rgba(255,255,255,0.1);">
-                        <i data-lucide="bot" style="width:64px; height:64px; color: #22c55e;"></i>
+                        style="width:100%; height:140px; background: linear-gradient(to right, #022c22, #115e59); border-radius: 99px; display:flex; align-items:center; justify-content:center; border: 1px solid rgba(20, 184, 166, 0.2); box-shadow: 0 0 30px rgba(20, 184, 166, 0.1);">
+                        <i data-lucide="bot" style="width:48px; height:48px; color: #22c55e;"></i>
                     </div>
                 </div>
             </div>
@@ -301,40 +326,43 @@
                 <thead>
                     <tr>
                         <th>Feature</th>
-                        <th>Rezi/Jobscan</th>
-                        <th>Skil Matrix Premium</th>
+                        <th>Generic Tools</th>
+                        <th class="highlight-col">
+                            Skil Matrix
+                            <i data-lucide="crown" class="header-crown"></i>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Resume AI Analysis</td>
-                        <td class="check">✓</td>
-                        <td class="check">✓</td>
+                        <td class="check"><i data-lucide="check"></i></td>
+                        <td class="check highlight-cell"><i data-lucide="check"></i></td>
                     </tr>
                     <tr>
                         <td>AI Mock Interviews</td>
-                        <td class="cross">✗</td>
-                        <td class="check">✓</td>
+                        <td class="cross"><i data-lucide="x"></i></td>
+                        <td class="check highlight-cell"><i data-lucide="check"></i></td>
                     </tr>
                     <tr>
                         <td>Skill Gap Learning Paths</td>
-                        <td class="cross">✗</td>
-                        <td class="check">✓</td>
+                        <td class="cross"><i data-lucide="x"></i></td>
+                        <td class="check highlight-cell"><i data-lucide="check"></i></td>
                     </tr>
                     <tr>
                         <td>Interview Failure Analysis</td>
-                        <td class="cross">✗</td>
-                        <td class="check">✓</td>
+                        <td class="cross"><i data-lucide="x"></i></td>
+                        <td class="check highlight-cell"><i data-lucide="check"></i></td>
                     </tr>
                     <tr>
                         <td>DSA & Code Editor</td>
-                        <td class="cross">✗</td>
-                        <td class="check">✓</td>
+                        <td class="cross"><i data-lucide="x"></i></td>
+                        <td class="check highlight-cell"><i data-lucide="check"></i></td>
                     </tr>
                     <tr>
                         <td>Student-First Pricing</td>
-                        <td class="cross">✗</td>
-                        <td class="check">✓</td>
+                        <td class="cross"><i data-lucide="x"></i></td>
+                        <td class="check highlight-cell"><i data-lucide="check"></i></td>
                     </tr>
                 </tbody>
             </table>
@@ -345,24 +373,78 @@
     <section id="pricing">
         <h2 class="section-title">Simple Student Pricing</h2>
         <div class="pricing-grid">
-            <div class="card price-card">
-                <h3>Free Starter</h3>
-                <div class="price">₹0 <span>/mo</span></div>
-                <p>Basic resume scoring and 1 mock interview session.</p>
-                <button class="btn btn-secondary full-width" onclick="location.href='pages/auth.html'">Choose
-                    Free</button>
+            <!-- Free Plan -->
+            <div class="price-card">
+                <div class="plan-header">
+                    <h3>FREE</h3>
+                    <div class="price">₹0 <span>/mo</span></div>
+                    <button class="btn-price-outline" onclick="openPlanModal('free')">Current Plan</button>
+                </div>
+                <div class="plan-features">
+                    <ul>
+                        <li><i data-lucide="check-circle-2"></i> <span>Basic Resume Analysis (3/mo)</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>1 Mock Interview Session</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Basic Skill Roadmap</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Community Forum Access</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Limited AI Chat Support</span></li>
+                    </ul>
+                </div>
             </div>
-            <div class="card price-card featured">
-                <h3>Premium Student</h3>
-                <div class="price">₹199 <span>/mo</span></div>
-                <p>Unlimited analysis, deep interview coaching, and roadmap tracking.</p>
-                <button class="btn btn-primary full-width" onclick="location.href='pages/auth.html'">Go Premium</button>
+
+            <!-- Premium Student (Popular) -->
+            <div class="price-card popular">
+                <div class="popular-badge">POPULAR</div>
+                <div class="plan-header">
+                    <h3>PREMIUM <i data-lucide="crown" class="crown-icon"></i></h3>
+                    <div class="price">₹199 <span>/mo</span></div>
+                    <button class="btn-price-solid" onclick="openPlanModal('premium')">Select Plan</button>
+                </div>
+                <div class="plan-features">
+                    <ul>
+                        <li><i data-lucide="check-circle-2"></i> <span>Unlimited Resume Scans & ATS Checks</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Unlimited AI Mock Interviews</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Deep Interview Feedback & Analysis</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Full Personalized Learning Roadmap</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Company-Specific Insights</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Ad-free Experience</span></li>
+                    </ul>
+                </div>
             </div>
-            <div class="card price-card">
-                <h3>Pro Intensive</h3>
-                <div class="price">₹499 <span>/mo</span></div>
-                <p>Everything in Premium + AI Career Coach and Resume Review.</p>
-                <button class="btn btn-secondary full-width" onclick="location.href='pages/auth.html'">Join Pro</button>
+
+            <!-- Pro Intensive -->
+            <div class="price-card">
+                <div class="plan-header">
+                    <h3>PRO <i data-lucide="zap" class="crown-icon"></i></h3>
+                    <div class="price">₹499 <span>/mo</span></div>
+                    <button class="btn-price-outline" onclick="openPlanModal('pro')">Select Plan</button>
+                </div>
+                <div class="plan-features">
+                    <ul>
+                        <li><i data-lucide="check-circle-2"></i> <span>Everything in Premium, plus:</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>1-on-1 Human Career Coaching (1/mo)</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Manual Resume Review by Expert</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Priority Support (24/7)</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Verified Skill Badge Certification</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Campus/Teams -->
+            <div class="price-card">
+                <div class="plan-header">
+                    <h3>CAMPUS <i data-lucide="building-2" class="crown-icon"></i></h3>
+                    <div class="price">Custom <span>pricing</span></div>
+                    <button class="btn-price-outline" onclick="openPlanModal('campus')">Contact Sales</button>
+                </div>
+                <div class="plan-features">
+                    <ul>
+                        <li><i data-lucide="check-circle-2"></i> <span>Full access for entire Batch/College</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Admin Dashboard for TPO</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Student Progress Tracking</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Bulk Resume Export & Filtering</span></li>
+                        <li><i data-lucide="check-circle-2"></i> <span>Custom Onboarding Workshop</span></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
@@ -465,17 +547,17 @@
             <div class="footer-column">
                 <h4>Platform</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Resume Builder</a></li>
-                    <li><a href="#">Mock Interview</a></li>
-                    <li><a href="#">DSA Practice</a></li>
-                    <li><a href="#">Roadmap</a></li>
+                    <li><a href="pages/dashboard.html">Resume Builder</a></li>
+                    <li><a href="pages/dashboard.html">Mock Interview</a></li>
+                    <li><a href="pages/dashboard.html">DSA Practice</a></li>
+                    <li><a href="pages/dashboard.html">Roadmap</a></li>
                 </ul>
             </div>
 
             <div class="footer-column">
                 <h4>Company</h4>
                 <ul class="footer-links">
-                    <li><a href="#">About Us</a></li>
+                    <li><a href="#founders">About Us</a></li>
                     <li><a href="#">Careers</a></li>
                     <li><a href="#">Blog</a></li>
                     <li><a href="#">Contact</a></li>
@@ -593,6 +675,75 @@
     <script src="js/config.js"></script>
     <script src="js/services/gemini_service.js"></script>
     <script src="js/ai_coach.js"></script>
+    <!-- Plan Selection Modal -->
+    <div id="plan-modal" class="modal-overlay">
+        <div class="modal-container plan-modal-content">
+            <button class="modal-close" onclick="closePlanModal()">&times;</button>
+            <div class="modal-border-anim"></div> <!-- Animated Border Layer -->
+            <div class="modal-inner">
+                <div class="plan-badge" id="modal-plan-badge">SELECTED</div>
+                <h2 id="modal-plan-name">Pro Plan</h2>
+                <div class="modal-price" id="modal-plan-price">₹199 <span>/mo</span></div>
+                <div class="modal-features-list">
+                    <!-- Features injected by JS -->
+                </div>
+                <button class="btn btn-primary full-width modal-btn" onclick="gridToAuth()">
+                    Subscribe Now
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Mobile/Sidebar Menu (Hidden by default) -->
+    <div id="mobile-sidebar" class="sidebar-menu">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="assets/skil-matrix-logo.jpg" alt="SKiL MATRiX"
+                    style="height: 32px; width: 32px; border-radius: 50%;">
+                <span>SKiL MATRiX</span>
+            </div>
+            <button class="close-sidebar" onclick="toggleMobileMenu()">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-content">
+            <a href="pages/auth.html?redirect=dashboard" class="sidebar-item active">
+                <i data-lucide="layout-grid"></i> Dashboard
+            </a>
+            <a href="pages/auth.html?redirect=resume" class="sidebar-item">
+                <i data-lucide="file-text"></i> Resume Builder
+            </a>
+            <a href="pages/auth.html?redirect=interview" class="sidebar-item">
+                <i data-lucide="video"></i> Mock Interview
+            </a>
+            <a href="pages/auth.html?redirect=dsa" class="sidebar-item">
+                <i data-lucide="code-2"></i> DSA Practice
+            </a>
+            <a href="pages/auth.html?redirect=roadmap" class="sidebar-item">
+                <i data-lucide="map"></i> My Roadmap
+            </a>
+            <a href="pages/auth.html?redirect=analyzer" class="sidebar-item">
+                <i data-lucide="scan"></i> AI Analyzer
+            </a>
+            <a href="pages/auth.html?redirect=company" class="sidebar-item">
+                <i data-lucide="building-2"></i> Company Intel
+            </a>
+            <a href="pages/auth.html?redirect=courses" class="sidebar-item">
+                <i data-lucide="graduation-cap"></i> Courses
+            </a>
+
+            <div class="sidebar-divider"></div>
+
+            <a href="pages/auth.html?redirect=profile" class="sidebar-item">
+                <i data-lucide="user-circle"></i> Profile
+            </a>
+            <a href="pages/auth.html?redirect=settings" class="sidebar-item">
+                <i data-lucide="settings"></i> Settings
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="js/landing.js"></script>
     <script>lucide.createIcons();</script>
 </body>
