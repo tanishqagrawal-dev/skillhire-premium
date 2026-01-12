@@ -355,9 +355,7 @@ section {
     }
 }
 
-@keyframes rotate-border {
-    display: none;
-}
+/* Removed invalid keyframe */
 
 /* Clear old anim */
 
@@ -1342,6 +1340,15 @@ body[data-theme="light"] {
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .hero {
+        min-height: auto;
+        /* Remove 100vh constraint */
+        padding-top: 100px;
+        /* Adjust for fixed navbar */
+        padding-bottom: 40px;
+        height: auto;
     }
 
     .hero-visual {
@@ -2707,4 +2714,53 @@ body[data-theme="light"] {
     background: #f8fafc;
     border-top: 1px solid #e2e8f0;
     color: #0f172a;
+}
+
+/* =========================================
+   FINAL MOBILE OVERRIDES
+   Forcefully fix spacing issues on small screens
+   ========================================= */
+@media (max-width: 900px) {
+
+    /* Reset Height constraints to prevent blank spaces */
+    html,
+    body {
+        height: auto !important;
+        overflow-x: hidden;
+    }
+
+    /* Force Hero to wrap content naturally */
+    .hero {
+        min-height: unset !important;
+        height: auto !important;
+        padding-top: 120px !important;
+        /* Space for navbar */
+        padding-bottom: 60px !important;
+        display: block !important;
+        /* Disable flex centering vertical stretch */
+    }
+
+    .hero-container {
+        display: flex !important;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    /* Ensure Image fits */
+    .hero-visual img {
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+    }
+
+    /* Reduce Section Padding generally */
+    section {
+        padding: 60px 20px !important;
+    }
+
+    .section-title {
+        font-size: 2.2rem !important;
+        margin-bottom: 40px !important;
+    }
 }
