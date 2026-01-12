@@ -84,84 +84,103 @@ body {
 }
 
 /* Hero Section */
+/* Hero Section */
 .hero {
     min-height: 100vh;
     display: flex;
     align-items: center;
     padding: 120px 5% 60px;
-    background: linear-gradient(135deg, rgba(15, 58, 125, 0.2) 0%, transparent 100%);
+    background:
+        radial-gradient(circle at 10% 20%, rgba(20, 184, 166, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
+        linear-gradient(180deg, rgba(6, 17, 33, 0) 0%, #061121 100%);
+    position: relative;
 }
 
 .hero-container {
-    max-width: 1200px;
+    max-width: 1280px;
+    /* Slightly wider for modern feel */
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 60px;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 80px;
     align-items: center;
 }
 
 .hero-headline {
-    font-size: 4rem;
+    font-size: 4.5rem;
+    /* Larger and impactful */
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 24px;
-    background: linear-gradient(to right, #fff, #9CA3AF);
+    letter-spacing: -0.03em;
+    background: linear-gradient(180deg, #FFFFFF 0%, #94A3B8 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.1));
 }
 
 .gradient-text {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    background: linear-gradient(135deg, #2DD4BF 0%, #A78BFA 50%, #F472B6 100%);
+    /* More vibrant tricolor gradient */
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-weight: 800;
 }
 
 .hero-subheadline {
     font-size: 1.25rem;
-    color: var(--text-muted);
+    color: #CBD5E1;
+    /* Lighter for better contrast */
     margin-bottom: 40px;
     max-width: 600px;
+    line-height: 1.7;
+    font-weight: 400;
+    opacity: 0.9;
 }
 
 .btn {
-    padding: 16px 32px;
-    border-radius: 12px;
-    font-weight: 700;
+    padding: 16px 36px;
+    border-radius: 100px;
+    /* Pill shape for modern tech look */
+    font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     display: inline-flex;
     align-items: center;
     gap: 12px;
     border: none;
     text-decoration: none;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-primary {
-    background: var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, #0D9488 100%);
     color: #fff;
-    box-shadow: 0 0 20px var(--primary-glow);
+    box-shadow: 0 10px 30px -10px var(--primary-glow), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 0 30px var(--primary-glow);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -10px var(--primary-glow);
+    filter: brightness(1.1);
 }
 
 .btn-outline {
-    background: transparent;
-    border: 1px solid var(--primary);
-    color: var(--primary);
-    padding: 10px 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    backdrop-filter: blur(10px);
 }
 
 .btn-outline:hover {
-    background: var(--primary);
-    color: #fff;
-    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+    transform: translateY(-4px);
 }
 
 .hero-visual img {
@@ -2720,7 +2739,7 @@ body[data-theme="light"] {
    FINAL MOBILE OVERRIDES
    Forcefully fix spacing issues on small screens
    ========================================= */
-@media (max-width: 900px) {
+@media (max-width: 1300px) {
 
     /* Reset Height constraints to prevent blank spaces */
     html,
@@ -2729,38 +2748,99 @@ body[data-theme="light"] {
         overflow-x: hidden;
     }
 
+    body {
+        padding-top: 80px;
+        /* Keep navbar space */
+    }
+
     /* Force Hero to wrap content naturally */
     .hero {
         min-height: unset !important;
         height: auto !important;
-        padding-top: 120px !important;
-        /* Space for navbar */
+        /* Reduced padding because body already has 80px */
+        padding-top: 40px !important;
         padding-bottom: 60px !important;
         display: block !important;
-        /* Disable flex centering vertical stretch */
     }
 
     .hero-container {
         display: flex !important;
         flex-direction: column;
-        gap: 40px;
+        gap: 30px;
     }
 
-    /* Ensure Image fits */
+    .hero-content {
+        align-items: center !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    .hero-headline {
+        font-size: 2.5rem !important;
+        line-height: 1.2 !important;
+    }
+
+    /* Make the text pop more on mobile */
+    .hero-headline br {
+        display: none;
+        /* Let text wrap naturally */
+    }
+
+    .hero-subheadline {
+        font-size: 1rem !important;
+        padding: 0 10px;
+        margin-bottom: 30px !important;
+    }
+
+    .hero-ctas {
+        justify-content: center !important;
+        width: 100%;
+    }
+
+    .hero-ctas .btn {
+        width: 100%;
+        justify-content: center;
+        max-width: 300px;
+    }
+
+    /* Ensure Image fits & Looks premium */
+    .hero-visual {
+        margin-top: 20px;
+        padding: 0 10px;
+        width: 100%;
+    }
+
     .hero-visual img {
         max-width: 100%;
         height: auto;
         margin: 0 auto;
         display: block;
+        /* Add a mobile-specific glow/shadow */
+        box-shadow: 0 10px 30px rgba(0, 242, 254, 0.2) !important;
     }
 
     /* Reduce Section Padding generally */
     section {
-        padding: 60px 20px !important;
+        padding: 50px 20px !important;
     }
 
     .section-title {
-        font-size: 2.2rem !important;
-        margin-bottom: 40px !important;
+        font-size: 2rem !important;
+        margin-bottom: 30px !important;
+    }
+
+    /* Ensure Nav collapses if it was stuck open */
+    .nav-menu,
+    .nav-right {
+        display: none !important;
+    }
+
+    .mobile-menu-btn {
+        display: flex !important;
+        margin-left: auto !important;
+    }
+
+    .logo {
+        flex-grow: 1;
     }
 }
