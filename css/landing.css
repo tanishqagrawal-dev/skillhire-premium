@@ -689,6 +689,38 @@ td:nth-child(2) {
 }
 
 .plan-header h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Sidebar Styles */
+.sidebar-divider {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-btn-primary {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: #000;
+    text-align: center;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px var(--glow-primary);
+}
+
+.plan-header h3 {
     font-size: 1.5rem;
     font-weight: 700;
     color: #fff;
@@ -1284,32 +1316,55 @@ body[data-theme="light"] {
 /* Responsive */
 @media (max-width: 900px) {
 
-    .hero-container,
-    .feature-item,
-    .feature-item.reverse {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 40px;
-    }
-
-    .hero-content {
-        order: 1;
-    }
-
-    .hero-visual {
-        order: 2;
-    }
-
-    .hero-headline {
-        font-size: 3rem;
-    }
-
-    .navbar {
-        padding: 16px 5%;
+    .nav-menu,
+    .nav-right {
+        display: none !important;
+        /* Hide desktop nav and buttons on mobile */
     }
 
     .mobile-menu-btn {
         display: flex;
+        /* Show Hamburger */
+        margin-left: auto;
+        /* Push to right */
+    }
+
+    .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        /* Center align hero content on mobile */
+        gap: 30px;
+        padding-top: 40px;
+    }
+
+    .hero-content {
+        order: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-visual {
+        order: 2;
+        margin-top: 20px;
+    }
+
+    .hero-headline {
+        font-size: 2.8rem;
+        /* Slightly smaller for mobile readability */
+        line-height: 1.2;
+    }
+
+    .hero-subheadline {
+        font-size: 1.1rem;
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    .navbar {
+        padding: 16px 5%;
+        justify-content: space-between;
+        /* Ensure logo and burger spread out */
     }
 }
 
