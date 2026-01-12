@@ -104,7 +104,8 @@ body {
 }
 
 .hero-headline {
-    font-size: 4rem;
+    font-size: 3.5rem;
+    /* Reduced from 4rem per user request */
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 24px;
@@ -168,6 +169,10 @@ body {
 
 .hero-visual img {
     width: 100%;
+    max-width: 85%;
+    /* Reduced size per user request */
+    margin: 0 auto;
+    display: block;
     border-radius: 24px;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border);
@@ -2927,63 +2932,77 @@ body[data-theme="light"] {
         /* Keep navbar space */
     }
 
-    /* Force Hero to wrap content naturally */
+    /* Force Hero to maintain Desktop Layout (Side-by-Side) */
     .hero {
         min-height: unset !important;
         height: auto !important;
-        /* Reduced padding because body already has 80px */
         padding-top: 40px !important;
         padding-bottom: 60px !important;
-        display: block !important;
     }
 
     .hero-container {
-        display: flex !important;
-        flex-direction: column;
-        gap: 30px;
+        display: grid !important;
+        grid-template-columns: 1.2fr 0.8fr !important;
+        /* Keep proportion */
+        gap: 15px !important;
+        align-items: center !important;
     }
 
     .hero-content {
-        align-items: center !important;
-        text-align: center !important;
+        text-align: left !important;
+        align-items: flex-start !important;
         width: 100% !important;
     }
 
     .hero-headline {
-        font-size: 2.5rem !important;
+        font-size: 1.5rem !important;
+        /* Even smaller to be noticeable */
         line-height: 1.2 !important;
+        margin-bottom: 10px !important;
     }
 
     .hero-subheadline {
-        font-size: 1rem !important;
-        padding: 0 10px;
-        margin-bottom: 30px !important;
+        font-size: 0.8rem !important;
+        padding: 0 !important;
+        margin-bottom: 15px !important;
+        line-height: 1.4 !important;
+    }
+
+    .hero-visual img {
+        max-width: 100% !important;
+        /* Allow it to fill the smaller column */
+        height: auto;
+        display: block;
+        box-shadow: 0 5px 15px rgba(0, 242, 254, 0.2) !important;
     }
 
     .hero-ctas {
-        justify-content: center !important;
+        justify-content: flex-start !important;
         width: 100%;
     }
 
     .hero-ctas .btn {
-        width: 100%;
-        justify-content: center;
-        max-width: 300px;
+        width: auto !important;
+        /* Don't stretch full width */
+        padding: 10px 20px !important;
+        font-size: 0.85rem !important;
     }
 
-    /* Ensure Image fits & Looks premium */
+    /* Ensure Image fits tightly */
     .hero-visual {
-        margin-top: 20px;
-        padding: 0 10px;
+        margin-top: 0 !important;
+        padding: 0 !important;
         width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .hero-visual img {
         max-width: 100%;
         height: auto;
-        margin: 0 auto;
         display: block;
-        box-shadow: 0 10px 30px rgba(0, 242, 254, 0.2) !important;
+        box-shadow: 0 5px 15px rgba(0, 242, 254, 0.2) !important;
     }
 
     /* Reduce Section Padding generally */
